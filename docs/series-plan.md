@@ -17,7 +17,7 @@
 | 07 | Agent Harness | 为什么 Claude Code / Codex 这类产品强在工程底座？ | 已完成 |
 | 08 | Coding Agent | Coding Agent 为什么最容易落地？怎么理解 Shell、文件编辑、测试反馈？ | 已完成 |
 | 09 | Subagent / Multi-Agent | 多 Agent 什么时候有用？什么时候反而添乱？ | 已完成 |
-| 10 | Skills | Skill 和 Prompt、Tool、MCP 有什么区别？ | 计划中 |
+| 10 | Skills | Skill 和 Prompt、Tool、MCP 有什么区别？ | 已完成 |
 | 11 | Browser / Computer Use Agent | Browser Agent 为什么难？视觉、点击、失败恢复怎么处理？ | 计划中 |
 | 12 | Evaluation / Trace / Safety | 怎么判断 Agent 真有用？怎么避免瞎跑、越权、退化？ | 计划中 |
 
@@ -59,16 +59,6 @@
 ```
 
 ## 剩余重点选题
-
-### 10 Skills
-
-重点讲 Skill 如何把提示词升级成可复用能力包：
-
-- Skill 和 Prompt 的区别。
-- Skill 和 Tool 的区别。
-- Skill 和 MCP 的区别。
-- 为什么 Skill 适合沉淀流程、脚本、模板和项目经验。
-- Skill 的安全风险和治理方式。
 
 ### 11 Browser / Computer Use Agent
 

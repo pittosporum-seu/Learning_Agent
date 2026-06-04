@@ -5,7 +5,7 @@
 目标不是一上来堆框架，而是把 Agent 学习拆成几件能长期沉淀的事：
 
 - 分清什么时候该用 Workflow，什么时候才需要 Agent。
-- 理解 Agent Loop、Tool Use、RAG、Memory、MCP、Harness、Coding Agent、Subagent 这些基础模块。
+- 理解 Agent Loop、Tool Use、RAG、Memory、MCP、Harness、Coding Agent、Subagent、Skills 这些基础模块。
 - 逐步补充可运行实验，而不是只停留在概念解释。
 - 沉淀可复用的阅读笔记、案例分析和工程清单。
 
@@ -26,6 +26,7 @@
 | 07 | Agent Harness | [真正让 Agent 可靠的不是模型，是工程底座](docs/foundations/07-agent-harness.md) |
 | 08 | Coding Agent | [为什么代码库是 Agent 最好的训练场](docs/foundations/08-coding-agent.md) |
 | 09 | Subagent / Multi-Agent | [多 Agent 不是聊天群，而是上下文隔离和任务分工](docs/foundations/09-subagent-multi-agent.md) |
+| 10 | Skills | [把提示词升级成可复用能力包](docs/foundations/10-skills.md) |
 
 ### Stage 2: 经典资料精读
 
@@ -77,11 +78,16 @@
 │       ├── 06-mcp.md
 │       ├── 07-agent-harness.md
 │       ├── 08-coding-agent.md
-│       └── 09-subagent-multi-agent.md
+│       ├── 09-subagent-multi-agent.md
+│       └── 10-skills.md
+├── hooks/
+│   └── content-update.md
 ├── labs/
 │   └── README.md
-└── resources/
-    └── README.md
+├── resources/
+│   └── README.md
+└── scripts/
+    └── check-content.ps1
 ```
 
 ## 维护原则
@@ -91,6 +97,7 @@
 - 先用最小例子讲清楚，再扩展复杂系统。
 - 所有实验尽量可运行、可复现、可测试。
 - 避免把 Agent 神秘化，优先讨论边界、成本和可靠性。
+- 新增文章后按 `hooks/content-update.md` 同步导航并运行内容检查。
 
 ## 推荐阅读
 

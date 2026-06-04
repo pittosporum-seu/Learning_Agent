@@ -15,6 +15,7 @@
 | 07 | Agent Harness | [07-agent-harness.md](07-agent-harness.md) |
 | 08 | Coding Agent | [08-coding-agent.md](08-coding-agent.md) |
 | 09 | Subagent / Multi-Agent | [09-subagent-multi-agent.md](09-subagent-multi-agent.md) |
+| 10 | Skills | [10-skills.md](10-skills.md) |
 
 核心脉络：
 
@@ -28,4 +29,5 @@
   -> 用 Harness 提升可靠性
   -> 在 Coding Agent 场景里理解真实工程闭环
   -> 用 Subagent / Multi-Agent 管理复杂任务的上下文和分工
+  -> 用 Skills 把重复流程沉淀成可复用能力包
 ```
