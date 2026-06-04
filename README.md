@@ -5,7 +5,7 @@
 目标不是一上来堆框架，而是把 Agent 学习拆成几件能长期沉淀的事：
 
 - 分清什么时候该用 Workflow，什么时候才需要 Agent。
-- 理解 Agent Loop、Tool Use、RAG、Memory、MCP、Harness、Coding Agent 这些基础模块。
+- 理解 Agent Loop、Tool Use、RAG、Memory、MCP、Harness、Coding Agent、Subagent 这些基础模块。
 - 逐步补充可运行实验，而不是只停留在概念解释。
 - 沉淀可复用的阅读笔记、案例分析和工程清单。
 
@@ -25,6 +25,7 @@
 | 06 | MCP | [Agent 的 USB-C，工具和数据源的统一接口](docs/foundations/06-mcp.md) |
 | 07 | Agent Harness | [真正让 Agent 可靠的不是模型，是工程底座](docs/foundations/07-agent-harness.md) |
 | 08 | Coding Agent | [为什么代码库是 Agent 最好的训练场](docs/foundations/08-coding-agent.md) |
+| 09 | Subagent / Multi-Agent | [多 Agent 不是聊天群，而是上下文隔离和任务分工](docs/foundations/09-subagent-multi-agent.md) |
 
 ### Stage 2: 经典资料精读
 
@@ -75,7 +76,8 @@
 │       ├── 05-memory.md
 │       ├── 06-mcp.md
 │       ├── 07-agent-harness.md
-│       └── 08-coding-agent.md
+│       ├── 08-coding-agent.md
+│       └── 09-subagent-multi-agent.md
 ├── labs/
 │   └── README.md
 └── resources/

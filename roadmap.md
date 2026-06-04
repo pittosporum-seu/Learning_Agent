@@ -12,7 +12,7 @@
 - [x] MCP
 - [x] Agent Harness
 - [x] Coding Agent
-- [ ] Subagent / Multi-Agent
+- [x] Subagent / Multi-Agent
 - [ ] Skills
 - [ ] Browser / Computer Use Agent
 - [ ] Evaluation / Trace / Safety
@@ -51,6 +51,6 @@
 - [x] 建立 12 篇文章总规划
 - [x] 明确三组写作节奏
 - [x] 固定每篇文章结构
-- [ ] 为 09-12 补充正式文章正文
+- [ ] 为 10-12 补充正式文章正文
 
 详见：[docs/series-plan.md](docs/series-plan.md)

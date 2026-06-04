@@ -16,7 +16,7 @@
 | 06 | MCP | MCP 到底解决了什么问题？为什么越来越重要？ | 已完成 |
 | 07 | Agent Harness | 为什么 Claude Code / Codex 这类产品强在工程底座？ | 已完成 |
 | 08 | Coding Agent | Coding Agent 为什么最容易落地？怎么理解 Shell、文件编辑、测试反馈？ | 已完成 |
-| 09 | Subagent / Multi-Agent | 多 Agent 什么时候有用？什么时候反而添乱？ | 计划中 |
+| 09 | Subagent / Multi-Agent | 多 Agent 什么时候有用？什么时候反而添乱？ | 已完成 |
 | 10 | Skills | Skill 和 Prompt、Tool、MCP 有什么区别？ | 计划中 |
 | 11 | Browser / Computer Use Agent | Browser Agent 为什么难？视觉、点击、失败恢复怎么处理？ | 计划中 |
 | 12 | Evaluation / Trace / Safety | 怎么判断 Agent 真有用？怎么避免瞎跑、越权、退化？ | 计划中 |
@@ -58,17 +58,7 @@
 6. 最后给一个判断标准 / 提示词模板
 ```
 
-## 后续重点选题
-
-### 09 Subagent / Multi-Agent
-
-重点不是“多个 Agent 互相聊天”，而是讲清楚多 Agent 的真实价值：
-
-- 上下文隔离。
-- 工具隔离。
-- 职责隔离。
-- Planner / Executor / Reviewer 的适用边界。
-- 什么时候单 Agent 反而更稳。
+## 剩余重点选题
 
 ### 10 Skills
 
@@ -98,4 +88,3 @@
 - 成本、延迟、失败原因统计。
 - 权限边界和人工确认节点。
 - 回归测试，防止提示词或工具改动后能力退化。
-
