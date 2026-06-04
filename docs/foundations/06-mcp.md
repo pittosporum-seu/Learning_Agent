@@ -1,4 +1,4 @@
-# Agent基础知识 06| MCP：Agent 的 USB-C，工具和数据源的统一接口
+﻿# Agent基础知识 06| MCP：Agent 的 USB-C，工具和数据源的统一接口
 
 > 从 Model Context Protocol 看 Agent 如何标准化连接工具、数据和外部系统
 
@@ -1178,7 +1178,7 @@ MCP Server 本质上也是后端服务。
 
 不能因为它是“给 AI 用的工具”，就忽略传统后端工程质量。
 
-2025 年针对 MCP Server 的大规模研究发现，MCP 生态虽然增长很快，但 MCP Server 存在安全和可维护性问题，包括 MCP-specific tool poisoning 等风险，说明 MCP 需要专门的安全检测和治理，而不能只套用传统 API 安全经验。([arXiv](https://arxiv.org/abs/2506.13538?utm_source=chatgpt.com "Model Context Protocol (MCP) at First Glance: Studying the Security and Maintainability of MCP Servers"))
+2025 年针对 MCP Server 的大规模研究发现，MCP 生态虽然增长很快，但 MCP Server 存在安全和可维护性问题，包括 MCP-specific tool poisoning 等风险，说明 MCP 需要专门的安全检测和治理，而不能只套用传统 API 安全经验。([arXiv](https://arxiv.org/abs/2506.13538 "Model Context Protocol (MCP) at First Glance: Studying the Security and Maintainability of MCP Servers"))
 
 ---
 

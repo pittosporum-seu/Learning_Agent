@@ -1,4 +1,4 @@
-# Agent基础知识 04| RAG：让 Agent 基于资料回答，而不是靠感觉
+﻿# Agent基础知识 04| RAG：让 Agent 基于资料回答，而不是靠感觉
 
 > 从 RAG、Deep Research 和 Coding Agent 看 Agent 如何基于证据回答问题
 
@@ -1486,11 +1486,11 @@ flowchart TD
 
 > 真正可靠的 RAG，不是每次都回答，而是知道什么时候该查、什么时候该答、什么时候该停。
 
-[1]: https://en.wikipedia.org/wiki/Retrieval-augmented_generation?utm_source=chatgpt.com "Retrieval-augmented generation"
-[2]: https://arxiv.org/abs/2603.09891?utm_source=chatgpt.com "Overview of the TREC 2025 Retrieval Augmented Generation (RAG) Track"
-[3]: https://arxiv.org/abs/2510.25518?utm_source=chatgpt.com "Retrieval Augmented Generation (RAG) for Fintech: Agentic Design and Evaluation"
-[4]: https://www.axios.com/2025/02/02/chatgpt-deep-research-openai-agents?utm_source=chatgpt.com "OpenAI gives ChatGPT new web research skills"
-[5]: https://arxiv.org/abs/2604.14228?utm_source=chatgpt.com "Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems"
-[6]: https://en.wikipedia.org/wiki/Cursor_%28code_editor%29?utm_source=chatgpt.com "Cursor (code editor)"
-[7]: https://arxiv.org/abs/2506.06287?utm_source=chatgpt.com "Deep Research Bench: Evaluating AI Web Research Agents"
-[8]: https://arxiv.org/abs/2501.03468?utm_source=chatgpt.com "MTRAG: A Multi-Turn Conversational Benchmark for Evaluating Retrieval-Augmented Generation Systems"
+[1]: https://en.wikipedia.org/wiki/Retrieval-augmented_generation "Retrieval-augmented generation"
+[2]: https://arxiv.org/abs/2603.09891 "Overview of the TREC 2025 Retrieval Augmented Generation (RAG) Track"
+[3]: https://arxiv.org/abs/2510.25518 "Retrieval Augmented Generation (RAG) for Fintech: Agentic Design and Evaluation"
+[4]: https://www.axios.com/2025/02/02/chatgpt-deep-research-openai-agents "OpenAI gives ChatGPT new web research skills"
+[5]: https://arxiv.org/abs/2604.14228 "Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems"
+[6]: https://en.wikipedia.org/wiki/Cursor_%28code_editor%29 "Cursor (code editor)"
+[7]: https://arxiv.org/abs/2506.06287 "Deep Research Bench: Evaluating AI Web Research Agents"
+[8]: https://arxiv.org/abs/2501.03468 "MTRAG: A Multi-Turn Conversational Benchmark for Evaluating Retrieval-Augmented Generation Systems"

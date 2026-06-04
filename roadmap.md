@@ -11,6 +11,7 @@
 - [x] Memory
 - [x] MCP
 - [x] Agent Harness
+- [x] Coding Agent
 
 ## 2. 资料精读
 
@@ -29,6 +30,7 @@
 - [ ] 加入短期 Memory
 - [ ] 写一个简单 MCP Server
 - [ ] 给 Agent 增加日志和评测
+- [ ] 做一个 Coding Agent 最小修复任务实验
 
 ## 4. 工程化清单
 
@@ -39,4 +41,3 @@
 - [ ] 任务执行日志
 - [ ] 自动化评测集
 - [ ] 人类确认节点
-

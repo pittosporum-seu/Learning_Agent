@@ -1,8 +1,8 @@
-# Agent基础知识 07| Agent Harness：真正让 Agent 可靠的不是模型，是工作台
+﻿# Agent基础知识 07| Agent Harness：真正让 Agent 可靠的不是模型，是工程底座
 
-> 从 Claude Code、Codex 与 Agents SDK 看 Agent 的工具、权限、状态、记忆、评测和运行环境如何组成“工作台”
+> 从 Claude Code、Codex、OpenAI Agents SDK 和 Anthropic Agent Patterns 看 Agent 的运行时、工具、权限、状态、记忆、评测和执行环境如何组成“工程底座”
 
-前面几篇我们讲过：
+前面几篇我们已经讲过：
 
 ```text
 RAG：让 Agent 先查资料，再回答。
@@ -10,40 +10,77 @@ Memory：让 Agent 记住历史、状态和经验。
 MCP：让多个 Agent 复用同一批工具。
 ```
 
-但这里还有一个更底层的问题：
+这一篇讲一个更底层的问题：
 
-> 为什么同一个模型，在不同产品里表现差别这么大？  
-> 为什么 Claude Code、Codex、Cursor 这类产品比“裸模型 + 几个工具”更稳定？
-> 为什么同样是M2.7，在现在的CodeAgent里面时常犯傻，但在ClaudeCode里却备受好评？
-> 为什么有些 Agent 一上来就乱改代码，有些 Agent 却能规划、修改、测试、总结、等待你确认？
+> 为什么同一个模型，放在不同 Agent 产品里，表现差别会很大？
+> 为什么 Claude Code、Codex、Cursor 这类产品，比“裸模型 + 几个工具”稳定？
+> 为什么有些 Agent 一上来就乱改代码，有些却能规划、执行、验证、总结、等待你确认？
 
 答案不是“模型更聪明”这么简单。
 
 真正拉开差距的是：
 
-> **Harness。**
+> **Agent Harness，也就是模型外部的工程底座。**
+
+这里我建议统一用 **“工程底座”**，而不是“工作台”或者“工程化平台”。
+
+| 说法    |      是否推荐 | 原因                  |
+| ----- | --------: | ------------------- |
+| 工作台   |       不推荐 | 太口语，容易让人理解成一个 UI 页面 |
+| 工程化平台 |  可在特定场景使用 | 更像公司统一建设后的平台，范围偏大   |
+| 工程底座  |        推荐 | 准确表达“模型外部支撑系统”      |
+| 工程支撑层 | 推荐但标题不够有力 | 技术含义准确，但表达略平        |
+
+所以后面统一这样理解：
+
+```text
+Harness = Agent 的工程底座 / 工程支撑层
+企业统一建设后的 Harness = Agent 工程化平台
+```
 
 ---
 
-## 一、先看一个真实问题：为什么同一个模型，有的 Agent 好用，有的 Agent 很蠢？
+## 一、先看一个真实问题：为什么同一个模型，在不同 Agent 产品里表现差别很大？
 
-假设你让一个普通模型帮你修一个 bug：
+### 1. 裸模型只能给建议，不能稳定完成任务
+
+假设你对一个普通聊天模型说：
 
 ```text
 这个接口 500 了，帮我修一下。
 ```
 
-如果只是裸模型，它可能直接开始猜：
+如果它只是裸模型，它可能会根据经验猜：
 
 ```text
 可能是参数为空；
 可能是数据库连接失败；
-可能是异常没捕获。
+可能是异常没有捕获；
+可以加一个 try-catch。
 ```
 
-然后给你一段看起来合理但不一定能跑的代码。
+这些建议不是完全没用，但问题是：它没有真正进入你的工程环境。
 
-但一个成熟的 Coding Agent 应该这样做：
+它不知道：
+
+```text
+接口在哪个文件；
+日志里具体报了什么；
+上游服务有没有超时；
+配置文件有没有写错；
+测试命令是什么；
+哪些目录不能改；
+项目代码规范是什么；
+修改后怎么验证。
+```
+
+所以裸模型更像一个“远程建议者”，而不是一个能独立推进任务的工程助手。
+
+---
+
+### 2. 成熟 Agent 能规划、执行、验证和总结
+
+成熟 Coding Agent 的流程应该更像这样：
 
 ```mermaid
 flowchart TD
@@ -57,97 +94,185 @@ flowchart TD
     H --> I{是否通过?}
     I -- 否 --> J[读取失败原因并继续修复]
     J --> H
-    I -- 是 --> K[输出 diff、测试证据和风险]
+    I -- 是 --> K[输出 Diff、测试证据和风险]
 ```
 
-这张图里，真正让 Agent 可靠的不是单独的模型，而是周围这一整套“工作台”：
+这张图里的每一步都不是“模型本身”单独能完成的：
 
-|环节|作用|
-|---|---|
-|读取项目规则|避免 Agent 不知道边界|
-|搜索代码|让 Agent 基于真实项目工作|
-|读取日志和测试|给 Agent 真实反馈|
-|制定计划|避免一上来乱改|
-|申请权限|控制高风险动作|
-|编辑文件|真正执行任务|
-|运行测试|验证结果|
-|输出 diff 和证据|方便人类 review|
+| 环节              | 作用                   |
+| --------------- | -------------------- |
+| 读取项目规则          | 让 Agent 知道当前项目的边界和规范 |
+| 搜索相关接口代码        | 让 Agent 基于真实代码上下文工作  |
+| 读取日志和测试         | 让 Agent 获取真实环境反馈     |
+| 制定修改计划          | 防止 Agent 一上来乱改       |
+| 申请修改权限          | 控制编辑、删除、执行命令等高风险动作   |
+| 编辑文件            | 让 Agent 从“建议”进入“执行”  |
+| 运行测试 / Lint     | 给 Agent 提供客观反馈       |
+| 失败后继续修复         | 形成真正的 Agent Loop     |
+| 输出 Diff、测试证据和风险 | 让人类能审查实际改动           |
 
-这整套系统，就是 **Harness**。
+所以，成熟 Agent 的能力来自两部分：
+
+```text
+模型：负责理解、推理、计划、判断。
+工程底座：负责工具、上下文、权限、执行、状态、验证和审计。
+```
 
 ---
 
-## 二、为什么会出现 Harness？
+### 3. 差距来自模型外部的工程底座
 
-前面说过，Agent 不是一次性回答，而是在循环中工作：
+Claude Code 官方把 Claude Code 描述为一个 agentic coding tool，它能读取代码库、编辑文件、运行命令，并和开发工具集成；它还可以在终端、IDE、桌面应用和浏览器中使用。([Claude API Docs][1])
+
+注意这里的关键词不是“聊天”，而是：
 
 ```text
-观察 → 判断 → 行动 → 再观察
+读取代码库；
+编辑文件；
+运行命令；
+集成开发工具。
 ```
 
-这个循环听起来很简单，但一旦进入真实工程环境，就会遇到很多问题。
+这些都属于模型外部的工程底座。
 
-### 1. 模型自己不会操作环境
+也就是说，Claude Code 不是简单的：
 
-大模型本质上只会生成文本。
+```text
+Claude 模型 + 聊天窗口
+```
+
+而是更接近：
+
+```text
+Claude 模型
++ 代码库检索
++ 文件编辑
++ Shell 命令
++ Git / Diff
++ 项目规则
++ 记忆
++ Hooks
++ Skills
++ Subagents
++ MCP
++ 权限控制
++ 测试反馈
+```
+
+这就是 Harness。
+
+---
+
+## 二、为什么会出现 Agent Harness？
+
+### 1. 模型不会自己操作真实环境
+
+大模型本质上会生成文本。
 
 它不会天然拥有：
 
 ```text
 文件系统；
 终端；
+Git；
 数据库；
 浏览器；
-Git；
-测试框架；
 日志平台；
-权限系统。
+测试环境；
+工单系统；
+企业权限系统。
 ```
 
-如果没有这些外部能力，它最多只是一个 Chatbot。
+如果没有这些外部能力，模型最多是 Chatbot。
 
-所以 Agent 要真正干活，必须有工具和执行环境。
+它可以说：
+
+```text
+你可以检查这个文件。
+```
+
+但它不能真的去读这个文件。
+
+它可以说：
+
+```text
+建议你运行测试。
+```
+
+但它不能真的运行测试。
+
+因此，Agent 要进入真实工程环境，就必须有一层系统来承载工具调用、执行动作、返回结果。这一层就是 Harness 的一部分。
 
 ---
 
-### 2. 模型自己不会判断权限边界
+### 2. 模型不会自己判断权限边界
 
 用户说：
 
 ```text
-帮我清理一下无用文件。
+帮我清理一下这个目录。
 ```
 
-模型可能认为删除文件是合理动作。
-
-但在工程环境里，这个动作很危险：
+这句话可能有多种含义：
 
 ```text
-它可能删错目录；
-可能删除未提交代码；
-可能删除生成数据；
-可能影响其他服务。
+删除临时缓存；
+删除过期日志；
+删除生成文件；
+删除某天数据；
+误删整个项目目录。
 ```
 
-所以 Agent 必须有权限控制。
+模型可能误解意图。
+
+如果没有权限边界，Agent 可能执行不可逆操作。
+
+所以 Harness 需要 Permission Gate，也就是权限门：
+
+| 动作类型    | 默认策略          |
+| ------- | ------------- |
+| 只读文件    | 可以自动执行        |
+| 搜索代码    | 可以自动执行        |
+| 运行测试    | 通常允许，但限制目录    |
+| 修改文件    | 需要展示 Diff 或计划 |
+| 删除文件    | 默认阻断或必须确认     |
+| 生产库写入   | 默认禁止          |
+| 发布 / 部署 | 必须人工审批        |
+
+这里的核心不是“提醒模型小心”，而是：
+
+> 把危险动作变成系统级控制，而不是靠模型自觉。
 
 ---
 
-### 3. 模型自己不会稳定记住长期规则
+### 3. 模型不会稳定记住长期规则
 
 你告诉 Agent：
 
 ```text
-这个项目只看当前目录，不要扩展到外层微服务。
+这个项目只能看当前目录，不要扩展到外层微服务。
 ```
 
-如果没有 Memory 或项目规则文件，它下一轮可能又忘了。
+如果这句话只存在当前对话中，一旦上下文被压缩、新会话开始，模型可能就忘了。
 
-所以 Agent 必须有状态、记忆和规则注入。
+所以项目规则需要被写入更稳定的位置，例如：
+
+```text
+AGENTS.md；
+CLAUDE.md；
+项目规则文件；
+Skill 文件；
+长期 Memory；
+平台配置。
+```
+
+Claude Code 文档提到，`CLAUDE.md` 是项目根目录中的 Markdown 文件，Claude Code 会在每次 session 开始时读取；它可用于保存 coding standards、architecture decisions、preferred libraries 和 review checklists。([Claude API Docs][1])
+
+这说明：长期规则不能只靠 prompt 临时传递，应该进入工程底座。
 
 ---
 
-### 4. 模型自己不会自动验证结果
+### 4. 模型不会自动验证结果
 
 模型可以说：
 
@@ -155,570 +280,537 @@ Git；
 我已经修复了。
 ```
 
-但它说修复了，不代表真的修复了。
+但这句话本身没有工程意义。
 
-真实工程里，必须看：
+工程上真正有意义的是：
 
 ```text
-测试是否通过；
-lint 是否通过；
-diff 是否合理；
-功能是否符合需求；
-有没有引入新风险。
+测试通过了吗？
+构建通过了吗？
+Lint 通过了吗？
+类型检查通过了吗？
+Diff 合理吗？
+有没有改到无关文件？
+有没有引入新风险？
 ```
 
-所以 Agent 必须有反馈机制和评测机制。
+所以 Harness 必须把验证流程接进来。
+
+Claude Code 文档明确举例，它可以写测试、修 lint、解决 merge conflict、更新依赖和写 release notes；在 bug 场景下，它会追踪代码库、识别根因并实现修复。([Claude API Docs][1])
+
+这类能力背后，不只是模型生成代码，还包括：
+
+```text
+读代码；
+改文件；
+跑命令；
+看测试；
+根据反馈继续改。
+```
 
 ---
 
-### 5. 复杂任务不能只靠 prompt
+### 5. Prompt 只能提醒，Harness 才能约束
 
-很多人一开始以为，只要写一个很强的系统提示词，就能让 Agent 稳定工作。
-
-但真实情况是：
+很多人会先尝试写更强的提示词：
 
 ```text
-提示词只能告诉模型应该怎么做；
-Harness 才能限制它能做什么、看到什么、如何验证、何时停止。
+你是高级工程师。
+你要谨慎。
+你不要乱改。
+你要先计划。
+你要跑测试。
+你要遵守规范。
 ```
 
-Anthropic 在《Building effective agents》里也强调，成功的 agentic system 往往不是一上来堆复杂框架，而是从简单、可组合模式开始；他们同时区分了 workflow 和 agent，并指出 agent 在执行时需要从环境中获得 ground truth，例如工具结果或代码执行结果，再根据这些反馈推进任务。([Anthropic](https://www.anthropic.com/engineering/building-effective-agents "Building Effective AI Agents \ Anthropic"))
+这些提示有用，但它们只是软约束。
 
-这就是 Harness 出现的根本原因：
+更可靠的做法是把规则变成系统行为：
 
-> Agent 开始进入真实环境后，仅有模型和 prompt 不够，必须有一套工作台来管理工具、上下文、权限、状态、反馈和评测。
+| 只靠 Prompt  | Harness 做法              |
+| ---------- | ----------------------- |
+| “不要删除文件”   | 删除工具默认禁用                |
+| “记得跑测试”    | 文件修改后自动触发测试 Hook        |
+| “不要越界访问目录” | 文件工具限制根目录               |
+| “回答要有证据”   | Trace 记录工具结果和引用         |
+| “先计划再执行”   | Plan 阶段和 Execute 阶段分离   |
+| “危险操作要确认”  | Permission Gate 阻断并请求确认 |
+
+Anthropic 在《Building effective agents》中也强调，最成功的实现通常不是复杂框架堆叠，而是简单、可组合的模式；同时建议在构建 LLM 应用时先找最简单方案，只有需要时再提高复杂度。([Anthropic][2])
+
+这也适用于 Harness：不要一上来造大平台，而是先把真实失败点变成工程约束。
 
 ---
 
-## 三、Harness 到底是什么？
+## 三、Agent Harness 到底是什么？
 
-**Harness** 直译是“ harness / 牵引装置 / 安全带 / 控制架”。在 Agent 语境里，可以理解为：
+### 1. Harness 的中文理解：工程底座
 
-> **模型之外，所有让 Agent 能够安全、稳定、可验证地工作的工程系统。**
+**Agent Harness** 可以理解为：
 
-可以用一句话记：
+> 模型之外，所有让 Agent 能安全、稳定、可验证地工作的工程支撑系统。
+
+它不是一个单独工具，也不一定是一个完整平台。
+
+它包括：
+
+```text
+运行时；
+工具系统；
+上下文管理；
+记忆；
+状态存储；
+权限控制；
+沙箱；
+Hooks；
+Skills；
+Subagents；
+Trace；
+Evaluation；
+人工确认。
+```
+
+当这些能力被公司统一建设成一套平台时，我们可以叫它 **Agent 工程化平台**。
+
+但在概念上，Harness 更准确的叫法是：
+
+> **Agent 的工程底座。**
+
+---
+
+### 2. Agent = Model + Harness
+
+可以用一个公式理解：
 
 ```text
 Agent = Model + Harness
 ```
 
-也就是说：
+其中 Model 负责：
 
 ```text
-模型负责推理和决策；
-Harness 负责提供工作环境、工具、规则、权限、状态、反馈和评测。
+理解任务；
+生成计划；
+判断下一步；
+选择工具；
+总结结果。
 ```
 
-如果把模型比作一个开发者，那么 Harness 就是它的：
+Harness 负责：
 
 ```text
-电脑；
-IDE；
-终端；
-Git；
-项目文档；
-测试环境；
-权限系统；
-代码规范；
-CI；
-日志平台；
-review 流程。
-```
-
-没有 Harness 的模型，就像一个聪明但没有电脑、没有权限、没有项目资料、没有测试环境的开发者。
-
----
-
-## 四、Harness 的核心组成
-
-先用一张表建立整体认知。
-
-|组件|可以理解成|主要解决什么问题|
-|---|---|---|
-|Runtime|Agent 的运行时|控制 Agent Loop 如何执行|
-|Tool Registry|工具清单|告诉模型有哪些工具、怎么用|
-|Context Manager|上下文管理器|控制模型看到什么、不看到什么|
-|Memory / State Store|状态与记忆|支持跨轮次、跨会话继续工作|
-|Permission Gate|权限门|防止危险工具被随意调用|
-|Sandbox|沙箱|限制执行环境的破坏范围|
-|Hooks / Middleware|钩子和中间件|在关键动作前后插入校验或自动化|
-|Skills / Instructions|可复用流程知识|沉淀团队经验和任务流程|
-|Subagents|专用子代理|隔离上下文、分工处理复杂任务|
-|Trace / Observability|可观测性|记录 Agent 为什么这么做|
-|Evaluation|评测体系|判断 Agent 是否真的变好|
-
-下面逐个讲。
-
----
-
-## 五、Runtime：Agent 的运行时
-
-**Runtime** 是什么？
-
-> Runtime 是真正执行 Agent Loop 的环境。
-
-它负责：
-
-```text
-把用户输入交给模型；
-把工具列表交给模型；
-解析模型的工具调用；
+提供工具；
 执行工具；
-把工具结果放回上下文；
-控制最大轮数；
-处理中断、错误、重试和结束条件。
+管理上下文；
+保存状态；
+限制权限；
+隔离环境；
+记录过程；
+验证结果；
+支持恢复；
+反馈评测。
 ```
 
-如果没有 Runtime，模型只能“说我要调用工具”，但没人真正执行。
+只有 Model，没有 Harness，它更像 Chatbot。
+只有 Harness，没有 Model，它更像自动化脚本或 Workflow。
+两者结合，才是能处理不确定任务的 Agent。
 
-Runtime 类似后端服务里的主流程控制器：
+---
+
+### 3. Harness 和 Prompt / Context / Runtime 的区别
+
+| 概念                  | 中文理解  | 关注点             | 典型问题                   |
+| ------------------- | ----- | --------------- | ---------------------- |
+| Prompt Engineering  | 提示词工程 | 怎么写指令           | 模型这一轮怎么回答              |
+| Context Engineering | 上下文工程 | 给模型看什么          | 当前任务需要哪些信息             |
+| Runtime             | 运行时   | Agent Loop 怎么执行 | 模型、工具、状态如何流转           |
+| Harness             | 工程底座  | 整个 Agent 如何可靠落地 | 工具、权限、上下文、状态、验证、评测如何协作 |
+
+举个例子：
+
+```text
+Prompt Engineering：告诉模型“先分析再修改”。
+Context Engineering：把相关代码、日志、规则放进上下文。
+Runtime：驱动模型调用工具并回填结果。
+Harness：限制只能改当前目录，修改后自动跑测试，记录 trace，失败后可回滚。
+```
+
+所以 Harness 更接近软件工程系统，而不是提示词技巧。
+
+---
+
+### 4. 不做 Harness 会出现什么问题？
+
+没有 Harness 的 Agent 常见问题是：
+
+```text
+工具乱用；
+权限越界；
+上下文污染；
+重复搜索；
+忘记项目规则；
+长任务中断后无法恢复；
+改了代码不跑测试；
+结果无法复盘；
+失败无法评测；
+每次都靠用户手工纠正。
+```
+
+这也是为什么很多 Agent Demo 看起来惊艳，真正用到工程里就变得不稳定。
+
+---
+
+## 四、Harness 的核心组件
+
+先用表格建立整体认知：
+
+| 组件                    | 中文理解      | 主要解决什么问题           |
+| --------------------- | --------- | ------------------ |
+| Runtime               | 运行时       | 控制 Agent Loop 如何执行 |
+| Tool Registry         | 工具注册表     | 管理 Agent 能用哪些工具    |
+| Context Manager       | 上下文管理器    | 决定模型当前应该看到什么       |
+| Memory / State Store  | 记忆与状态存储   | 保存长期经验和当前任务状态      |
+| Permission Gate       | 权限门       | 控制危险动作             |
+| Sandbox               | 沙箱环境      | 限制执行环境的破坏范围        |
+| Hooks / Middleware    | 钩子 / 中间件  | 在关键节点自动执行校验        |
+| Skills / Instructions | 技能 / 指令包  | 沉淀可复用任务流程          |
+| Subagents             | 子代理       | 隔离上下文和职责           |
+| Trace / Observability | 轨迹 / 可观测性 | 记录 Agent 每一步为什么这么做 |
+| Evaluation            | 评测体系      | 判断 Agent 是否真的可靠    |
+
+---
+
+### 1. Runtime：运行 Agent Loop 的环境
+
+**Runtime**，中文可以理解为“运行时”。
+
+它不是模型本身，而是负责驱动 Agent Loop 的外部执行环境。
+
+Runtime 负责：
+
+```text
+接收用户输入；
+调用模型；
+解析模型输出；
+执行工具调用；
+把工具结果回填给模型；
+控制最大轮数；
+处理错误、超时、重试；
+判断任务是否结束。
+```
+
+可以画成：
 
 ```mermaid
 flowchart LR
     A[用户输入] --> B[Runtime]
     B --> C[LLM]
-    C --> D{回答还是工具调用?}
-    D -- 回答 --> E[返回用户]
-    D -- 工具调用 --> F[Runtime 执行工具]
+    C --> D{直接回答还是调用工具?}
+    D -- 直接回答 --> E[返回用户]
+    D -- 调用工具 --> F[Runtime 执行工具]
     F --> G[工具结果]
     G --> B
 ```
 
-这张图里：
+图里每个节点的作用：
 
-`Runtime` 是中枢。  
-`LLM` 只负责判断下一步。  
-`工具调用` 必须回到 Runtime 执行。  
-`工具结果` 再由 Runtime 注入下一轮模型输入。
+| 节点           | 作用                |
+| ------------ | ----------------- |
+| 用户输入         | 提供任务目标            |
+| Runtime      | 控制整个 Agent Loop   |
+| LLM          | 判断下一步             |
+| 工具调用         | 模型提出要执行某个动作       |
+| Runtime 执行工具 | 真正调用文件、Shell、数据库等 |
+| 工具结果         | 环境反馈              |
+| 回到 Runtime   | 将反馈放入下一轮上下文       |
 
-Claude Code 这类工具的公开分析也指出，其核心是一个简单 while-loop：调用模型、运行工具、重复；但大部分系统复杂度都在这个 loop 周围，包括权限系统、上下文压缩、MCP、skills、hooks、subagent 和 session storage。([arXiv](https://arxiv.org/abs/2604.14228?utm_source=chatgpt.com "Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems"))
+没有 Runtime，模型只能“说想做什么”，但不能真正做。
 
 ---
 
-## 六、Tool Registry：工具不是越多越好，而是要清楚可控
+### 2. Tool Registry：工具注册表
 
-**Tool Registry** 是工具注册表。
+**Tool Registry**，中文叫“工具注册表”。
 
-它是什么？
-
-> Tool Registry 记录 Agent 能用哪些工具、每个工具做什么、参数是什么、风险是什么。
-
-比如：
-
-|工具|作用|风险|
-|---|---|---|
-|`read_file`|读取文件|低|
-|`grep`|搜索代码|低|
-|`run_test`|运行测试|中|
-|`edit_file`|修改文件|中|
-|`delete_file`|删除文件|高|
-|`deploy`|发布服务|高|
-
-为什么需要 Tool Registry？
-
-因为模型需要知道：
+它记录：
 
 ```text
 有哪些工具；
-什么时候用；
+每个工具做什么；
 参数怎么填；
-工具边界是什么；
-哪些工具危险。
+返回什么格式；
+风险等级；
+是否需要权限确认。
 ```
 
-不用 Tool Registry 会怎样？
+示例：
 
-模型可能：
+| 工具               | 作用   | 风险等级 |
+| ---------------- | ---- | ---- |
+| `read_file`      | 读取文件 | 低    |
+| `grep_code`      | 搜索代码 | 低    |
+| `run_tests`      | 运行测试 | 中    |
+| `edit_file`      | 修改文件 | 中    |
+| `delete_file`    | 删除文件 | 高    |
+| `deploy_service` | 发布服务 | 高    |
 
-```text
-调用不存在的工具；
-用错参数；
-把搜索工具当执行工具；
-把危险工具当普通工具；
-重复调用无效工具。
-```
+Anthropic 在 Agent Patterns 中强调，工具定义需要像给初级开发者写优秀 docstring 一样清楚，包括示例、边界和输入格式要求；他们还提到，在 SWE-bench Agent 中，优化工具花的时间甚至多于优化整体 prompt。([Anthropic][2])
 
-Anthropic 在 agent patterns 文章里特别强调，工具定义和说明应该像给初级开发者写 docstring 一样清楚，包括示例、边界、输入格式要求和易错点；他们甚至提到，在 SWE-bench agent 中花在优化工具上的时间超过了优化整体 prompt 的时间。([Anthropic](https://www.anthropic.com/engineering/building-effective-agents "Building Effective AI Agents \ Anthropic"))
+所以 Tool Registry 的重点不是“工具越多越好”，而是：
 
-所以 Harness 里的工具设计，不是简单暴露 API，而是：
-
-> 为模型设计一套容易理解、难以误用、可审计的操作界面。
+> 工具语义清楚、参数明确、边界可控、风险可审计。
 
 ---
 
-## 七、Context Manager：不是把所有东西都塞给模型
+### 3. Context Manager：上下文管理器
 
-**Context Manager** 是上下文管理器。
+**Context Manager**，中文叫“上下文管理器”。
 
-它是什么？
-
-> 它决定模型当前这一轮应该看到哪些信息。
+它决定模型当前这一轮应该看到什么。
 
 包括：
 
 ```text
-用户任务；
+用户目标；
 系统规则；
 项目规则；
 最近对话；
-工具结果；
 相关代码；
-相关文档；
+工具结果；
+错误日志；
 记忆摘要；
-错误日志。
+检索资料。
 ```
 
-为什么需要 Context Manager？
-
-因为上下文窗口有限，资料太多会产生三个问题：
-
-|问题|表现|
-|---|---|
-|成本高|每次调用都更贵|
-|噪声大|模型抓不到重点|
-|容易混淆|旧信息和新信息冲突|
-
-一个好的 Harness 不会把所有东西都塞进去，而是做选择：
+如果没有 Context Manager，系统可能把所有内容都塞给模型，导致：
 
 ```text
-当前任务需要什么？
-哪些历史规则必须保留？
-哪些日志只需要摘要？
-哪些文件应该由 subagent 单独阅读？
-哪些内容已经过期？
+成本高；
+噪声大；
+模型抓不到重点；
+旧信息和新信息冲突；
+上下文被无关日志淹没。
 ```
 
-Claude Code 文档里也明确提到，`CLAUDE.md` 可以作为项目根目录下的持久说明文件，用来保存编码标准、架构决策、偏好库和 review checklist；同时 Claude Code 会在工作过程中建立 auto memory，保存 build commands 和 debugging insights 等跨会话知识。([Claude API Docs](https://docs.claude.com/en/docs/claude-code/overview "Overview - Claude Code Docs"))
+Context Manager 的目标是：
 
-这说明先进 Agent 的上下文不是靠用户反复粘贴，而是由 Harness 主动组织。
+> 让模型看到“当前任务真正需要的信息”，而不是看到“所有能看到的信息”。
 
 ---
 
-## 八、Memory / State Store：让任务可以继续，而不是每次重来
+### 4. Memory / State Store：记忆和状态存储
 
-前一篇已经讲过 Memory。
+**Memory** 是长期记忆，保存用户偏好、项目规则、失败经验等。
+**State Store** 是状态存储，保存当前任务的进度、计划、工具结果和测试状态。
 
-在 Harness 里，Memory 和 State Store 主要解决两个问题：
+二者区别如下：
 
-```text
-跨会话记住规则；
-长任务保存状态。
-```
+| 类型          | 保存内容    | 典型例子              |
+| ----------- | ------- | ----------------- |
+| Memory      | 长期经验和规则 | “这个项目只看当前目录”      |
+| State Store | 当前任务状态  | “TODO 3 已完成，测试未跑” |
 
-比如一个 Agent 跑 ETL 修复任务时，State Store 应该保存：
+OpenAI API 文档的 Agents SDK 导航中包含 Agent definitions、running agents、sandbox agents、orchestration、guardrails、results and state、integrations and observability、evaluate agent workflows 等能力入口，说明状态、沙箱、编排、护栏、可观测性和评测都是 Agent 开发工具链中的核心模块。([OpenAI Platform][3])
 
-```text
-当前 TODO；
-已经修改的文件；
-已经跑过的测试；
-失败的测试原因；
-用户确认过的约束；
-下一步计划。
-```
-
-如果没有 State Store，Agent 一旦中断，就只能从头开始。
-
-OpenAI Agents SDK 文档中也明确提到，SDK 路线适合“你的服务器拥有 orchestration、tool execution、state 和 approvals”的场景，并支持自定义存储或服务端管理的会话策略。([OpenAI平台](https://platform.openai.com/docs/guides/agents-sdk "Agents SDK | OpenAI API"))
-
-这说明在生产系统里，状态不应该完全托管给模型上下文，而要由应用服务器管理。
+第一次提到 OpenAI Agents SDK 时也要说明一下：**SDK 是 Software Development Kit，也就是开发工具包。OpenAI Agents SDK 不是一个具体 Agent 产品，而是 OpenAI 提供给开发者构建 Agent 的一组组件，包含 Agent 定义、运行、编排、Guardrails、状态结果、可观测性和评测等能力。**
 
 ---
 
-## 九、Permission Gate：危险动作不能只靠模型自觉
+### 5. Permission Gate：权限门
 
-**Permission Gate** 是权限门。
+**Permission Gate**，中文叫“权限门”。
 
-它是什么？
-
-> 在 Agent 调用高风险工具前，先判断是否允许执行。
-
-例如这些动作必须拦截：
-
-```text
-删除文件；
-修改大量代码；
-执行 shell 命令；
-连接生产库；
-写入数据库；
-发送邮件；
-创建工单；
-触发部署。
-```
-
-为什么需要 Permission Gate？
-
-因为模型会犯错，而且自然语言指令可能模糊。
-
-用户说：
-
-```text
-清理一下这个目录。
-```
-
-到底是删除缓存文件，还是删除整个目录？
-
-如果没有权限门，Agent 可能做出不可逆操作。
-
-Permission Gate 的常见策略：
-
-|风险等级|处理方式|
-|---|---|
-|只读操作|自动执行|
-|小范围写操作|展示 diff 后确认|
-|执行命令|根据命令白名单判断|
-|删除 / 发布 / 发消息|必须人工确认|
-|生产库写入|默认禁止|
-
-OpenAI Agents SDK 文档也把 Guardrails 和 human review 作为 workflow 可能需要 block 或 pause 的机制；文档建议在 risky work 继续之前加入验证或人工 review。([OpenAI平台](https://platform.openai.com/docs/guides/agents-sdk "Agents SDK | OpenAI API"))
-
-这就是 Harness 可靠性的关键：
-
-> 不要相信模型永远自觉，要用系统边界限制它。
-
----
-
-## 十、Sandbox：让错误有边界
-
-**Sandbox** 是沙箱。
-
-它是什么？
-
-> 一个受限制的执行环境，用来运行 Agent 的命令、代码和工具。
-
-为什么需要 Sandbox？
-
-因为 Agent 可能执行错误命令。
+它负责判断某个动作能不能执行、是否需要人工确认。
 
 比如：
 
-```bash
-rm -rf ./data
-```
+| 动作   | 处理策略           |
+| ---- | -------------- |
+| 读取文件 | 通常允许           |
+| 搜索代码 | 通常允许           |
+| 运行测试 | 限制目录后允许        |
+| 编辑文件 | 展示计划或 Diff 后允许 |
+| 删除文件 | 默认阻断或人工确认      |
+| 写生产库 | 默认禁止           |
+| 发布服务 | 必须审批           |
 
-如果在真实工作目录执行，可能造成严重损失。  
-如果在沙箱执行，损失范围被限制。
+Permission Gate 解决的是：
 
-Sandbox 常见能力：
-
-```text
-限制文件访问范围；
-限制网络访问；
-限制系统命令；
-限制环境变量；
-隔离依赖安装；
-保存执行快照；
-支持回滚。
-```
-
-OpenAI Agents SDK 文档中也把 Sandbox agents 单独列为能力入口，说明当 Agent 需要文件、命令、包、快照、挂载或 provider links 时，应使用容器化环境。([OpenAI平台](https://platform.openai.com/docs/guides/agents-sdk "Agents SDK | OpenAI API"))
-
-对企业来说，Sandbox 是 Agent 从 demo 走向生产的关键。
+> 模型可能误解任务或被注入指令诱导，所以危险操作不能只靠模型自觉。
 
 ---
 
-## 十一、Hooks：把确定性校验塞进 Agent 工作流
+### 6. Sandbox：沙箱环境
 
-**Hook** 是钩子。
+**Sandbox**，中文叫“沙箱环境”。
 
-它是什么？
+它不是普通测试环境，而是一个受限制、可隔离、可回滚的执行空间。
 
-> Hook 是在 Agent 生命周期的特定时机自动触发的命令、HTTP 请求或提示。
-
-比如：
+Sandbox 限制：
 
 ```text
-Agent 编辑文件后，自动运行 formatter；
-Agent 提交前，自动跑 lint；
-Agent 调用 Bash 前，检查是否包含危险命令；
-Agent 结束任务时，自动生成报告。
+文件访问范围；
+网络访问范围；
+系统命令；
+环境变量；
+密钥访问；
+执行时间；
+资源消耗。
 ```
 
-为什么需要 Hook？
+为什么需要它？
 
-因为有些事情不应该交给模型“记得去做”，而应该由系统自动执行。
+因为 Agent 可能运行命令、安装依赖、生成文件、修改目录。没有沙箱，错误可能直接污染真实环境。
 
-Claude Code 文档对 hooks 的定义是：用户定义的 shell commands、HTTP endpoints 或 LLM prompts，会在 Claude Code 生命周期的特定点自动执行；Hook 事件包括每个 session、每个 turn，以及 agent loop 内每个 tool call 的 PreToolUse、PostToolUse 等。([Claude API Docs](https://docs.claude.com/en/docs/claude-code/hooks "Hooks reference - Claude Code Docs"))
-
-这对工程师非常重要。
-
-例如你不应该只写提示：
-
-```text
-记得修改代码后跑 lint。
-```
-
-更好的 Harness 是：
-
-```text
-PostToolUse(edit_file) → 自动运行 lint
-```
-
-这样模型忘了也没关系。
-
-Hook 的价值是：
-
-> 把“希望模型遵守的规则”，变成“系统自动执行的规则”。
+OpenAI Agents SDK 文档也把 Sandbox agents 单独列为 Agents SDK 的能力入口，说明当 Agent 需要安全地执行文件、命令或工具时，沙箱是重要运行形态。([OpenAI Platform][3])
 
 ---
 
-## 十二、Skills：把重复流程变成能力包
+### 7. Hooks / Middleware：流程钩子
 
-**Skill** 是可复用能力包。
+**Hook**，中文叫“钩子”。
 
-它是什么？
+它是在 Agent 生命周期的某个时间点自动触发的脚本、HTTP 请求或提示。
 
-> Skill 把一类任务的说明、脚本、参考文件和执行流程打包，Agent 在需要时加载使用。
+Claude Code Hooks 文档列出了大量事件点，包括 UserPromptSubmit、PreToolUse、PermissionRequest、PostToolUse、PostToolUseFailure、SubagentStart、TaskCreated、Stop、PreCompact、PostCompact 等。([Claude API Docs][4])
 
-比如：
+可以这样理解：
 
-```text
-代码 review skill；
-SQL 口径验证 skill；
-配置排查 skill；
-发布检查 skill；
-PR 描述生成 skill。
-```
+| Hook 触发点           | 可以做什么          |
+| ------------------ | -------------- |
+| PreToolUse         | 调用工具前检查权限或危险命令 |
+| PostToolUse        | 工具执行后记录结果或自动测试 |
+| PostToolUseFailure | 工具失败后自动收集错误信息  |
+| Stop               | 任务结束时生成报告      |
+| PreCompact         | 压缩上下文前保存关键状态   |
+| PermissionRequest  | 请求人工确认         |
 
-Claude Code 文档中，Skills 可以包含 `SKILL.md`、支持文件、示例和脚本；`SKILL.md` 包含 frontmatter 和具体指令，并可以通过 description 帮助 Claude 判断何时使用。Claude Code 的 skills 还支持动态上下文注入，例如执行 `git diff HEAD` 后把当前 diff 放进 prompt。([Claude API Docs](https://docs.claude.com/en/docs/claude-code/skills "Extend Claude with skills - Claude Code Docs"))
+Hooks 的价值是：
 
-为什么 Skill 属于 Harness？
-
-因为它不是模型参数，而是外部流程知识。
-
-它让团队可以把经验沉淀成标准能力：
-
-```text
-新成员不用重新学；
-Agent 不用每次重新被提示；
-不同项目可以共享一套工作流。
-```
-
-这和前面说的 Procedural Memory 很接近：
-
-> Memory 记住“过去发生了什么”；Skill 沉淀“以后应该怎么做”。
+> 把“希望模型记得做的事”，变成“系统自动执行的事”。
 
 ---
 
-## 十三、Subagents：不是多几个模型聊天，而是隔离上下文和职责
+### 8. Skills / Instructions：可复用能力包
 
-**Subagent** 是子代理。
+**Skill**，中文可以叫“技能”或“能力包”。
 
-它是什么？
+它是把一类重复任务的说明、脚本、参考资料和流程打包，供 Agent 按需加载。
 
-> 一个专门处理某类任务的独立 Agent，拥有自己的上下文、提示词、工具权限和执行范围。
+Claude Code Skills 文档说明，Skill 通过创建 `SKILL.md` 文件为 Claude 扩展能力；当你反复把相同说明、检查清单、多步骤流程贴进聊天，或者某段 `CLAUDE.md` 逐渐变成流程而不是事实时，就适合创建 Skill。([Claude API Docs][5])
 
-Claude Code 文档对 subagent 的说明很清楚：当一个 side task 会把主对话淹没在搜索结果、日志或文件内容中时，可以让 subagent 在自己的上下文里完成工作，只把摘要返回主对话；每个 subagent 有自己的上下文窗口、系统提示词、工具访问和独立权限。([Claude API Docs](https://docs.claude.com/en/docs/claude-code/sub-agents "Create custom subagents - Claude Code Docs"))
-
-为什么需要 Subagent？
-
-因为主 Agent 的上下文很宝贵。
-
-比如让 Agent 查日志：
+例如：
 
 ```text
-日志可能有 5 万行；
-主 Agent 不应该读完整日志；
-应该让日志分析 subagent 读取、筛选、总结；
-主 Agent 只接收关键结论。
+代码 Review Skill；
+SQL 口径验证 Skill；
+配置排查 Skill；
+发布检查 Skill；
+PR 描述生成 Skill。
 ```
 
-Subagent 的价值：
+Skill 解决的问题是：
 
-|价值|说明|
-|---|---|
-|上下文隔离|大量搜索结果不污染主对话|
-|职责专用|不同子代理使用不同 prompt|
-|权限控制|子代理只能用部分工具|
-|成本控制|简单子任务可用更便宜模型|
-|并行执行|多个子任务同时做|
-
-这也是为什么 Multi-Agent 不应该理解成“几个 AI 聊天群”，而应该理解成：
-
-> 上下文隔离 + 任务分工 + 权限隔离 + 结果汇总。
+> 不要让用户每次重复讲流程，把流程沉淀成可复用能力。
 
 ---
 
-## 十四、Trace / Observability：没有可观测性，就无法改进 Agent
+### 9. Subagents：子代理
 
-**Trace** 是轨迹记录。
+**Subagent**，中文叫“子代理”。
 
-它是什么？
+它是一个专门处理某类任务的独立 Agent，有自己的上下文、提示词、工具权限和执行范围。
 
-> Trace 记录 Agent 每一步做了什么：模型输入、工具调用、工具结果、权限判断、错误、耗时、成本。
+Claude Code Subagents 文档说明，Subagents 用于 task-specific workflows 和更好的上下文管理；文档还列出工具控制、MCP Server 作用域、权限模式、预加载 Skills、持久记忆、自动压缩、并行研究等配置项。([Claude API Docs][6])
 
-为什么需要 Trace？
+Subagent 不等于“多个模型聊天”。
 
-因为 Agent 的错误往往不是最终答案错这么简单，而是路径错。
+它的核心价值是：
 
-比如：
+| 价值    | 说明              |
+| ----- | --------------- |
+| 上下文隔离 | 大量日志、搜索结果不污染主对话 |
+| 职责隔离  | 不同子代理负责不同任务     |
+| 工具隔离  | 子代理只拿必要工具       |
+| 权限隔离  | 子代理能力范围更小       |
+| 并行执行  | 多个子任务可同时推进      |
 
-```text
-它为什么查了这个文件？
-为什么没查另一个文件？
-为什么调用了危险命令？
-为什么重复搜索同一个关键词？
-为什么没有跑测试？
-```
-
-没有 trace，只能猜。
-
-有 trace，就能复盘：
+例如：
 
 ```text
-用户输入是什么；
-模型看到了什么；
-它选择了哪个工具；
-工具返回什么；
-它为什么继续或停止；
-最后答案基于哪些证据。
+日志分析 Subagent：读取大量日志，只返回关键错误。
+代码 Review Subagent：只看 diff，输出风险。
+SQL Validator Subagent：只验证 SQL，不改代码。
 ```
-
-OpenAI Agents SDK 文档也建议先用 traces 调试，再进入 evaluation loops；同时 SDK 路线适合需要直接控制工具、MCP servers、runtime behavior、自定义存储和应用逻辑集成的场景。([OpenAI平台](https://platform.openai.com/docs/guides/agents-sdk "Agents SDK | OpenAI API"))
-
-这就是生产 Agent 和玩具 demo 的区别：
-
-> Demo 看结果；生产系统看过程。
 
 ---
 
-## 十五、Evaluation：不能靠感觉判断 Agent 好不好
+### 10. Trace / Observability：轨迹和可观测性
 
-**Evaluation** 是评测。
+**Trace**，中文叫“轨迹记录”。
 
-它是什么？
+**Observability**，中文叫“可观测性”。
 
-> 用固定任务集和指标判断 Agent 是否达标、是否退化、是否真的变好。
-
-为什么需要 Evaluation？
-
-因为 Agent 是非确定性的。同一个任务，它可能这次成功，下次失败。
-
-没有评测，你只能凭感觉说：
+它们记录 Agent 每一步做了什么：
 
 ```text
-好像变强了。
+用户输入；
+系统指令；
+模型输出；
+工具调用；
+工具结果；
+权限判断；
+错误信息；
+测试结果；
+耗时；
+token 成本；
+最终答案。
 ```
 
-但工程上需要回答：
+没有 Trace，Agent 出错后只能猜原因。
+
+有 Trace 才能知道：
 
 ```text
-成功率提升了吗？
-工具调用次数变多了吗？
-延迟变高了吗？
-成本变贵了吗？
-失败类型有没有减少？
-有没有引入新的安全风险？
+它为什么查这个文件；
+为什么没查另一个文件；
+为什么调用危险命令；
+为什么没有跑测试；
+为什么最终给出这个结论。
 ```
 
-Anthropic 也强调，成功不是构建最复杂的系统，而是为需求构建正确的系统；应该从简单 prompt 开始，通过 comprehensive evaluation 优化，只有当简单方案不够时才增加多步骤 agentic system。([Anthropic](https://www.anthropic.com/engineering/building-effective-agents "Building Effective AI Agents \ Anthropic"))
-
-所以 Harness 需要评测集，就像后端需要单测、集成测试和压测。
+OpenAI 文档的 Agents SDK 导航把 integrations and observability、evaluate agent workflows、tracing 相关能力列入 Agent 开发路径，说明可观测性与评测已经是 Agent 工程中的核心环节。([OpenAI Platform][3])
 
 ---
 
-## 十六、一个完整 Agent Harness 长什么样？
+### 11. Evaluation：评测体系
 
-可以用这张图总结：
+**Evaluation**，中文叫“评测”。
+
+它不是简单看最终答案对不对，而是系统性评估：
+
+```text
+任务是否完成；
+工具是否选对；
+路径是否合理；
+是否遵守权限；
+测试是否通过；
+引用是否正确；
+成本是否可接受；
+失败是否可复现。
+```
+
+Anthropic 建议开发者从简单方案开始，并通过 comprehensive evaluation 优化；只有当简单方案不够时，再增加复杂 agentic system。([Anthropic][2])
+
+所以 Harness 的评测原则是：
+
+> 不要因为系统复杂就假设它更强，必须用评测证明复杂度带来了收益。
+
+---
+
+## 五、Agent Harness 的底层工作流程
+
+### 1. 总流程图
 
 ```mermaid
 flowchart TD
@@ -746,251 +838,338 @@ flowchart TD
     Q --> R[改进 Prompt / Tool / Skill / Harness]
 ```
 
-这张图里：
+### 2. 节点对齐解释
 
-`Agent Runtime` 控制整个循环。  
-`Context Manager` 决定模型看到什么。  
-`LLM` 做判断。  
-`Permission Gate` 管危险动作。  
-`Tool Registry` 提供工具定义。  
-`Sandbox / Tool Executor` 真正执行动作。  
-`Trace / Log` 记录过程。  
-`Memory / State Store` 保存状态。  
-`Hooks` 在关键节点自动执行校验。  
-`Evaluation` 判断整体是否可靠。  
-最后，评测结果反过来改进 prompt、tool、skill 和 harness。
+| 节点                           | 作用                  |
+| ---------------------------- | ------------------- |
+| 用户任务                         | 提供目标和约束             |
+| Agent Runtime                | 驱动整个 Agent Loop     |
+| Context Manager              | 组装当前模型需要看的上下文       |
+| LLM                          | 判断下一步是回答还是调用工具      |
+| Permission Gate              | 判断工具调用是否允许          |
+| Tool Registry                | 提供工具定义和风险信息         |
+| Sandbox / Tool Executor      | 在受控环境中执行工具          |
+| 工具结果                         | 给模型提供真实环境反馈         |
+| Trace / Log                  | 记录完整执行过程            |
+| Memory / State Store         | 保存长期经验和当前任务状态       |
+| Hooks                        | 在关键节点自动触发检查         |
+| Lint / Test / Security Check | 提供确定性验证             |
+| Evaluation                   | 判断本次任务和整体能力是否可靠     |
+| 改进 Harness                   | 根据失败反向优化工具、规则、技能和评测 |
 
-这才是一个完整 Agent 系统，而不是“一个模型 + 几个 API”。
+### 3. 为什么这样设计
 
----
+因为 Agent 的每一步都有可能出错：
 
-## 十七、实际案例一：Claude Code 为什么强在 Harness？
+| 风险点    | Harness 对应控制    |
+| ------ | --------------- |
+| 看错上下文  | Context Manager |
+| 调错工具   | Tool Registry   |
+| 执行危险动作 | Permission Gate |
+| 污染环境   | Sandbox         |
+| 忘记规则   | Memory / 项目规则文件 |
+| 改完不测   | Hooks           |
+| 过程不可复盘 | Trace           |
+| 能力退化   | Evaluation      |
 
-Claude Code 官方文档将其描述为一个 agentic coding tool，可以读取代码库、编辑文件、运行命令，并和开发工具集成；它可以在 terminal、IDE、desktop app 和 browser 中使用。([Claude API Docs](https://docs.claude.com/en/docs/claude-code/overview "Overview - Claude Code Docs"))
-
-它强的地方不只是模型，而是 Harness：
-
-|Harness 能力|Claude Code 中的表现|
-|---|---|
-|工具执行|读文件、改文件、运行命令|
-|项目规则|`CLAUDE.md` 保存编码标准、架构决策、review checklist|
-|Memory|auto memory 保存 build commands、debugging insights|
-|MCP|连接 Google Drive、Jira、Slack、自定义工具|
-|Skills|打包 `/review-pr`、`/deploy-staging` 等复用流程|
-|Hooks|文件编辑后自动 format、commit 前自动 lint|
-|Subagents|让不同 agent 处理不同子任务|
-|多端运行|terminal、IDE、desktop、web 共用底层能力|
-
-官方文档明确提到，Claude Code 可以通过 MCP 读取 Google Drive 设计文档、更新 Jira tickets、从 Slack 拉数据或使用自定义工具；也可以用 `CLAUDE.md`、skills、hooks 和 auto memory 来定制行为。([Claude API Docs](https://docs.claude.com/en/docs/claude-code/overview "Overview - Claude Code Docs"))
-
-所以 Claude Code 不是简单“Claude 会写代码”。
-
-更准确地说：
-
-> Claude Code = Claude 模型 + 代码库检索 + 文件编辑 + Shell + Git + MCP + Memory + Skills + Hooks + Subagents + 权限和审查界面。
-
-这就是 Harness。
+这就是 Harness 的价值：它把 Agent 的不确定性控制在可观察、可验证、可治理的范围里。
 
 ---
 
-## 十八、实际案例二：OpenAI Agents SDK / Codex 的 Harness 思路
+## 六、实际案例：Claude Code 为什么强在 Harness？
 
-OpenAI Agents SDK 的文档把 Agent 开发拆成一系列能力：agent definitions、running agents、sandbox agents、orchestration、guardrails、results and state、integrations and observability、evaluate agent workflows 等；官方还说明 SDK 路线适合当你的服务器拥有 orchestration、tool execution、state 和 approvals，并需要直接控制 tools、MCP servers、runtime behavior、自定义存储或服务端会话策略时使用。([OpenAI平台](https://platform.openai.com/docs/guides/agents-sdk "Agents SDK | OpenAI API"))
+### 1. 案例输入
 
-这说明 OpenAI 的 Agent 架构也不是只关注模型，而是关注：
+假设用户输入：
 
 ```text
-运行循环；
-沙箱环境；
-工具系统；
-状态管理；
-审批；
-可观测性；
+接口 /api/user/profile 偶发 500，日志里有 NullPointerException，帮我定位并修复。
+```
+
+### 2. Claude Code 的工程底座会怎么支撑这个任务
+
+| 步骤 | Harness 组件         | 具体动作                                         |
+| -- | ------------------ | -------------------------------------------- |
+| 1  | `CLAUDE.md` / 项目规则 | 读取项目编码规范、测试命令、禁止事项                           |
+| 2  | Tool Registry      | 确认可以使用 grep、read_file、run_tests 等工具          |
+| 3  | Context Manager    | 把用户问题、项目规则、相关文件片段组织进上下文                      |
+| 4  | RAG / 代码检索         | 搜索 `/api/user/profile`、Controller、Service、测试 |
+| 5  | Runtime            | 驱动模型判断下一步                                    |
+| 6  | Permission Gate    | 修改文件前请求确认或展示计划                               |
+| 7  | File Edit Tool     | 修改空值处理逻辑                                     |
+| 8  | Hook               | 修改后触发格式化或测试                                  |
+| 9  | Shell / Test Tool  | 运行相关单测                                       |
+| 10 | Trace              | 记录搜索、修改、测试全过程                                |
+| 11 | Completion Report  | 输出 Diff、测试结果、风险和未验证点                         |
+
+### 3. 这个案例说明什么
+
+Claude Code 强，不是因为它只“会写 Java/Python”。
+
+强在它能把模型放进完整工程流程：
+
+```text
+读规则；
+查代码；
+改文件；
+跑命令；
+看结果；
+触发检查；
+输出证据；
+保留人工 Review。
+```
+
+Claude Code 官方文档也明确展示了这些能力：自动化写测试、修 lint、解决 merge conflict、更新依赖；基于自然语言构建功能、修 bug；直接使用 Git 创建 commit 和 PR；通过 MCP 连接 Google Drive、Jira、Slack 和自定义工具；通过 `CLAUDE.md`、skills、hooks 和 auto memory 定制行为。([Claude API Docs][1])
+
+---
+
+## 七、实际案例：OpenAI Agents SDK / Codex 的 Harness 思路
+
+### 1. 先解释 OpenAI Agents SDK 是什么
+
+**OpenAI Agents SDK** 是 OpenAI 提供的一套 Agent 开发工具包。
+
+SDK 是 **Software Development Kit**，中文叫“软件开发工具包”。
+
+它不是一个具体的聊天产品，而是一组帮助开发者构建 Agent 的代码组件。
+
+从 OpenAI 文档导航可以看到，Agents SDK 覆盖 Agent definitions、running agents、sandbox agents、orchestration、guardrails、results and state、integrations and observability、evaluate agent workflows 等模块。([OpenAI Platform][3])
+
+换成工程语言，就是：
+
+```text
+定义 Agent；
+运行 Agent；
+使用沙箱；
+编排多步骤流程；
+设置护栏；
+管理结果和状态；
+接入可观测性；
+评测 Agent 工作流。
+```
+
+这正是 Harness 的核心组成。
+
+---
+
+### 2. Codex 为什么也体现 Harness 思路
+
+Codex 相关文档体系中列出了 permissions、rules、hooks、AGENTS.md、MCP、skills、subagents、agent approvals & security、governance、GitHub Action 等配置和管理入口。([OpenAI Platform][3])
+
+这说明 Codex 不是简单“模型写代码”，而是围绕代码任务提供：
+
+| 模块                         | 对应 Harness 能力 |
+| -------------------------- | ------------- |
+| Permissions                | 权限控制          |
+| Rules                      | 行为规则          |
+| Hooks                      | 生命周期自动化       |
+| AGENTS.md                  | 项目级指令         |
+| MCP                        | 工具与外部系统连接     |
+| Skills                     | 可复用能力包        |
+| Subagents                  | 子任务隔离         |
+| Agent approvals & security | 审批和安全         |
+| Governance                 | 企业治理          |
+| GitHub Action              | CI/CD 集成      |
+
+### 3. 这个案例说明什么
+
+OpenAI 体系里的 Agent 能力，同样不是“模型自己做完任务”。
+
+它依赖：
+
+```text
+运行环境；
+工具接入；
+沙箱；
+权限；
+状态；
+审计；
 评测；
-MCP 集成。
+CI/CD；
+GitHub 集成。
 ```
 
-对后端工程师来说，这更像在写一个可控的业务系统：
-
-```text
-工具调用 = 外部依赖；
-state = 会话状态；
-guardrails = 前置校验和阻断；
-tracing = 链路追踪；
-eval = 回归测试；
-sandbox = 隔离执行环境。
-```
-
-Codex 这类 coding agent 的价值也在于它把代码任务放进可执行环境中，让 agent 可以读代码、改代码、运行测试，再把结果交给人审查，而不是只给一段建议文本。OpenAI 文档导航中也把 Codex 的 sandboxing、subagents、workflows、AGENTS.md、MCP、hooks、skills、permissions 等列成产品概念和配置项。([OpenAI平台](https://platform.openai.com/docs/guides/agents-sdk "Agents SDK | OpenAI API"))
-
-这说明 Coding Agent 的竞争已经不只是模型能力竞争，而是 Harness 能力竞争。
+这就是工程底座。
 
 ---
 
-## 十九、实际案例三：企业内部 Agent 的最小 Harness
+## 八、企业内部 Agent 的最小 Harness 应该怎么做？
 
-比如你们内部的数据分析 ETL Agent。
+不要一上来做大平台。
 
-不要一上来就做复杂平台。可以先做一个最小 Harness：
+如果团队只是想让 Agent 帮忙做数据 ETL、代码排查、测试修复，可以先做最小可用工程底座。
+
+### 1. 最小 Harness 目录结构
+
+可以从这些文件开始：
+
+```text
+AGENTS.md                  # Agent 行为规则
+project_rules.md           # 项目规则
+todo.md                    # 当前任务状态
+test_commands.md           # 测试命令
+review_checklist.md        # 完成报告和 Review 清单
+skills/
+  sql_validation.md
+  config_debugging.md
+  code_review.md
+```
+
+### 2. 最小 Harness 工作流
 
 ```mermaid
 flowchart TD
     A[用户任务] --> B[读取项目规则]
     B --> C[读取 TODO 状态]
-    C --> D[Agent 生成计划]
-    D --> E{是否允许改代码?}
-    E -- 否 --> F[只做分析和建议]
-    E -- 是 --> G[修改代码]
-    G --> H[运行单测 / mock Hive 测试]
-    H --> I[生成完成报告]
-    I --> J[写回 TODO / 经验]
+    C --> D[只读分析]
+    D --> E[输出修改计划]
+    E --> F{用户是否批准修改?}
+    F -- 否 --> G[停止在分析阶段]
+    F -- 是 --> H[修改代码]
+    H --> I[运行测试]
+    I --> J{测试是否通过?}
+    J -- 否 --> K[读取失败并继续修]
+    K --> I
+    J -- 是 --> L[输出完成报告]
+    L --> M[写回 TODO 和经验]
 ```
 
-最小 Harness 包括：
+### 3. 节点对齐解释
 
-|组件|最小实现|
-|---|---|
-|项目规则|`project_rules.md`|
-|TODO 状态|`dev_data_anomaly_todolist.md`|
-|工具边界|只允许读当前项目文件夹|
-|权限控制|修改前必须输出计划|
-|测试反馈|有代码变化必须跑测试|
-|完成报告|固定格式：结论、产出、测试、风险|
-|记忆写回|更新 TODO 和经验记录|
+| 节点          | 作用            |
+| ----------- | ------------- |
+| 读取项目规则      | 让 Agent 知道边界  |
+| 读取 TODO 状态  | 让 Agent 能续接任务 |
+| 只读分析        | 避免一开始乱改       |
+| 输出修改计划      | 让人类先判断方向      |
+| 用户批准修改      | 保留关键控制权       |
+| 修改代码        | 进入执行阶段        |
+| 运行测试        | 给出客观反馈        |
+| 失败继续修       | 形成 Agent Loop |
+| 输出完成报告      | 让结果可审查        |
+| 写回 TODO 和经验 | 让下次不从零开始      |
 
-这已经比“让 Agent 自由发挥”强很多。
+### 4. 最小 Harness 的好处
+
+| 问题           | 最小 Harness 怎么解决  |
+| ------------ | ---------------- |
+| Agent 忘记项目边界 | 写入项目规则文件         |
+| Agent 直接乱改   | 要求先只读分析和计划       |
+| Agent 改完不测   | 固定测试命令或 Hook     |
+| Agent 任务断档   | 用 TODO 状态文件续接    |
+| Agent 报告混乱   | 固定完成报告模板         |
+| Agent 重复犯错   | 把失败经验写回规则或 Skill |
 
 ---
 
-## 二十、Harness 技术方案怎么选？
+## 九、Agent Harness 的技术方案怎么选？
 
-### 1. 最小 Harness
+### 1. 最小 Harness：适合个人和小项目
 
-适合个人或小项目。
-
-包括：
-
-```text
-项目说明文档；
-固定提示词模板；
-只读工具；
-手工 review；
-简单日志。
-```
-
-优点：
-
-```text
-上手快；
-成本低；
-不需要平台化。
-```
-
-缺点：
-
-```text
-自动化弱；
-状态容易丢；
-复用性有限。
-```
+| 项目  | 内容                       |
+| --- | ------------------------ |
+| 组成  | 项目规则、提示模板、只读工具、手工 Review |
+| 优点  | 上手快、成本低、无需平台化            |
+| 缺点  | 自动化弱、状态容易丢               |
+| 适合  | 个人项目、小团队 PoC、一次性任务       |
+| 不适合 | 多团队、多工具、强合规场景            |
 
 ---
 
-### 2. 工程化 Harness
+### 2. 工程化 Harness：适合团队级 Coding Agent
 
-适合团队级 coding agent。
-
-包括：
-
-```text
-AGENTS.md / CLAUDE.md；
-工具注册；
-权限规则；
-测试 hook；
-session store；
-diff review；
-trace 日志；
-eval 用例。
-```
-
-优点：
-
-```text
-稳定性明显提升；
-能沉淀团队经验；
-能减少重复犯错。
-```
-
-缺点：
-
-```text
-需要维护；
-需要团队约定；
-需要工具链支持。
-```
+| 项目  | 内容                                                   |
+| --- | ---------------------------------------------------- |
+| 组成  | AGENTS.md、工具注册、权限规则、测试 Hook、Session Store、Trace、Eval |
+| 优点  | 稳定性明显提升，可沉淀团队经验                                      |
+| 缺点  | 需要维护工具链和团队规范                                         |
+| 适合  | 后端团队、数据工程团队、日常开发                                     |
+| 不适合 | 完全不固定的探索型任务                                          |
 
 ---
 
-### 3. 平台化 Harness
+### 3. 平台化 Harness：适合企业内部多 Agent 平台
 
-适合企业内部 Agent 平台。
+| 项目  | 内容                                      |
+| --- | --------------------------------------- |
+| 组成  | 统一 MCP 工具平台、统一权限、统一审计、Sandbox、任务队列、评测平台 |
+| 优点  | 可复用、可治理、适合多团队                           |
+| 缺点  | 建设成本高，容易过度设计                            |
+| 适合  | 大型企业、多个业务系统、多个 Agent                    |
+| 不适合 | 小团队早期验证                                 |
 
-包括：
+---
+
+### 4. 什么时候不应该过早做复杂 Harness？
+
+这些场景不需要一上来平台化：
 
 ```text
-统一 MCP 工具平台；
-统一权限；
-统一审计；
-统一 sandbox；
-多 Agent 编排；
-任务队列；
-评测平台；
-可观测性面板；
-治理策略。
+单次问答；
+临时脚本生成；
+小范围代码解释；
+一次性文档总结；
+内部 PoC。
 ```
 
-优点：
+更好的路线是：
 
 ```text
-可复用；
-可治理；
-适合多团队多系统。
-```
-
-缺点：
-
-```text
-建设成本高；
-容易过度平台化；
-需要安全、运维、数据团队参与。
+先做最小 Harness；
+观察真实失败模式；
+把失败沉淀成规则、Hook、Skill、Eval；
+再逐步平台化。
 ```
 
 ---
 
-## 二十一、2025～2026 的新进展：Harness 本身也开始被优化
+## 十、2025～2026 年 Harness Engineering 的新进展
 
-2026 年的研究已经开始把 Harness Engineering 当成独立问题来研究。
+### 1. Harness Engineering 从经验技巧变成独立工程方向
 
-例如 AHE（Agentic Harness Engineering）提出用 component observability、experience observability、decision observability 三类可观测性来自动改进 coding-agent harness；论文报告在 Terminal-Bench 2 上通过 10 轮 AHE 迭代将 pass@1 从 69.7% 提升到 77.0%，并指出增益主要来自 tools、middleware 和 long-term memory，而不只是 system prompt。([arXiv](https://arxiv.org/abs/2604.25850?utm_source=chatgpt.com "Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses"))
+2026 年的 Harness-Bench 论文指出，LLM agents 正越来越像可执行系统：它们使用工具、修改 workspace、产出具体 artifact；性能不只取决于基础模型，也取决于管理上下文、工具、状态、约束、权限、追踪和恢复的 harness。论文还主张应在 model-harness configuration 层面报告 Agent 能力，而不是只归因于基础模型。([arXiv][7])
 
-这很关键。
+这说明：
 
-它说明：
+> 以后讨论 Agent 能力，不能只问“用的什么模型”，还要问“用的什么 Harness”。
 
-> Agent 变强，不一定靠换更大的模型；也可能靠改工具、改中间件、改记忆、改评测。
+---
 
-另一篇 2026 年综述则提出 “code as agent harness” 的视角，把代码从“模型输出目标”扩展为 Agent 推理、行动、环境建模和执行验证的基础设施；它强调 harness interface、planning、memory、tool use、feedback-driven control、multi-agent coordination 和 verification 是未来 agentic systems 的关键层次。([arXiv](https://arxiv.org/abs/2605.18747?utm_source=chatgpt.com "Code as Agent Harness"))
+### 2. Code as Agent Harness：代码不只是输出，也是基础设施
 
-这意味着未来的 Agent Engineering，会越来越像传统软件工程：
+2026 年的 Code as Agent Harness 综述提出，在新一代 agentic systems 中，代码不再只是模型要生成的目标，也成为 Agent 推理、行动、环境建模和执行验证的操作性基础设施。论文围绕 harness interface、planning、memory、tool use、feedback-driven control、multi-agent coordination 和 verification 组织 Agent Harness 研究。([arXiv][8])
+
+这对工程师很重要。
+
+过去我们把代码看成：
 
 ```text
-不是只调 prompt；
-而是设计运行时、工具、状态、测试、反馈和治理。
+模型生成的产物。
+```
+
+现在还要把代码看成：
+
+```text
+Agent 的工具接口；
+Agent 的执行环境；
+Agent 的验证手段；
+Agent 的状态载体；
+Agent 的协作媒介。
 ```
 
 ---
 
-## 二十二、Harness 的常见踩坑
+### 3. 未来 Agent 能力提升不只靠换模型，也靠改 Harness
+
+Anthropic 在 Agent Patterns 中强调，coding agents 特别有效，因为代码方案可以通过自动化测试验证，Agents 可以用测试结果作为反馈迭代；但自动化测试之外，人类 Review 仍然关键。([Anthropic][2])
+
+结合 2026 年 Harness-Bench 的观察，可以得出一个重要结论：
+
+> Agent 变强，不一定靠换更大的模型，也可能靠改工具、改上下文、改权限、改记忆、改测试反馈和改评测集。
+
+---
+
+## 十一、Agent Harness 的常见踩坑
 
 ### 1. 把模型问题和 Harness 问题混在一起
 
@@ -1003,28 +1182,28 @@ Agent 做不好，不一定是模型差。
 上下文太乱；
 权限太松；
 没有测试反馈；
-没有 trace；
+没有 Trace；
 没有项目规则；
 没有状态管理。
 ```
 
-先看 Harness，再骂模型。
+先检查工程底座，再急着换模型。
 
 ---
 
 ### 2. 只写提示词，不做系统约束
 
-比如：
+不推荐：
 
 ```text
 请不要删除文件。
 ```
 
-这不如：
+更推荐：
 
 ```text
 delete_file 工具默认禁用；
-rm 命令被 PreToolUse hook 拦截；
+rm 命令被 PreToolUse Hook 拦截；
 删除操作必须人工确认。
 ```
 
@@ -1032,28 +1211,26 @@ rm 命令被 PreToolUse hook 拦截；
 
 ---
 
-### 3. 工具太万能
+### 3. 工具太万能，权限太粗
 
-给 Agent 一个：
+危险工具：
 
 ```text
 run_shell(command)
 ```
 
-非常危险。
-
-更好的做法是按风险拆工具：
+更好的拆法：
 
 ```text
-read_file
-grep
-run_tests
-run_readonly_sql
-create_draft_pr
-request_deploy_approval
+read_file；
+grep_code；
+run_unit_tests；
+run_readonly_sql；
+create_ticket_draft；
+request_deploy_approval。
 ```
 
-越高风险，越需要受控接口。
+工具越接近业务语义，越容易控制风险。
 
 ---
 
@@ -1061,78 +1238,86 @@ request_deploy_approval
 
 让 Agent 改代码但不跑测试，本质上是在让它猜。
 
-Coding Agent 之所以适合落地，一个重要原因是代码可以通过测试反馈验证。Anthropic 也指出，coding agents 有价值是因为代码方案可以用自动化测试验证，Agent 可以根据测试结果迭代，但人类 review 仍然重要。([Anthropic](https://www.anthropic.com/engineering/building-effective-agents "Building Effective AI Agents \ Anthropic"))
-
----
-
-### 5. Trace 缺失
-
-没有 trace，就不知道 Agent 为什么失败。
-
-至少记录：
+正确做法是：
 
 ```text
-用户输入；
-系统规则；
-模型输出；
-工具调用；
-工具结果；
-权限判断；
-测试结果；
-最终报告。
+改文件后运行测试；
+测试失败后读取失败信息；
+再回到计划或修改阶段；
+最终报告必须附测试证据。
 ```
 
 ---
 
-### 6. 过度复杂
+### 5. 没有 Trace，无法复盘
 
-一开始就上：
+没有 Trace，就无法回答：
 
 ```text
-多 Agent；
-图编排；
-长期记忆；
-MCP 平台；
-评测平台；
+Agent 为什么查这个文件？
+为什么没有查另一个文件？
+为什么跳过测试？
+为什么调用这个工具？
+为什么最终得出这个结论？
+```
+
+Agent 没有 Trace，就像线上服务没有日志。
+
+---
+
+### 6. 一开始就过度平台化
+
+不推荐一开始就做：
+
+```text
+多 Agent 平台；
+长期记忆平台；
+统一 MCP 平台；
+复杂权限系统；
 自动回滚；
-动态路由。
+动态路由；
+大规模评测平台。
 ```
 
-可能会把简单问题复杂化。
+推荐路线是：
 
-Anthropic 的建议仍然适用：先找最简单方案，只有简单方案不够时再增加复杂度。([Anthropic](https://www.anthropic.com/engineering/building-effective-agents "Building Effective AI Agents \ Anthropic"))
+```text
+先解决真实任务；
+记录失败模式；
+把失败变成规则；
+把规则变成 Hook / Skill / Eval；
+最后再平台化。
+```
 
 ---
 
-## 二十三、这一篇的核心结论
+## 十二、这一篇的核心结论
 
-Agent Harness 可以总结成一句话：
+### 1. Harness 是 Agent 的工程底座
 
-> **Harness 是模型之外，让 Agent 能安全、稳定、可验证地工作的整套工程工作台。**
+Agent Harness 不是 UI，也不是一个具体产品。
 
-它为什么会出现？
-
-```text
-Agent 要调用真实工具；
-Agent 要操作真实环境；
-Agent 要执行长任务；
-Agent 会犯错；
-Agent 需要权限、状态、反馈、评测和审计。
-```
-
-它解决什么问题？
+它是：
 
 ```text
-让 Agent 不只是会说；
-让 Agent 能在真实环境中做事；
-让危险动作可控；
-让长任务可恢复；
-让结果可验证；
-让失败可复盘；
-让能力可以持续改进。
+模型之外，所有让 Agent 能安全、稳定、可验证地工作的工程支撑系统。
 ```
 
-最后用一张图总结：
+---
+
+### 2. 模型负责推理，Harness 负责让推理落地
+
+| 模型负责   | Harness 负责       |
+| ------ | ---------------- |
+| 理解目标   | 提供工具             |
+| 生成计划   | 执行工具             |
+| 选择下一步  | 管理权限             |
+| 总结结果   | 保存状态             |
+| 判断是否继续 | 跑测试、记录 Trace、做评测 |
+
+---
+
+### 3. 可靠 Agent = 工具 + 上下文 + 状态 + 权限 + 验证 + 评测
 
 ```mermaid
 flowchart TD
@@ -1161,16 +1346,29 @@ flowchart TD
     O --> P
 ```
 
-这张图的重点是：
+### 4. 图中节点对齐说明
 
-`裸模型` 不能直接等于生产 Agent。  
-`工具` 让它能行动。  
-`上下文` 让它看对资料。  
-`记忆和状态` 让它能延续任务。  
-`权限和沙箱` 让它有边界。  
-`Hooks 和 Skills` 让流程可复用、可自动校验。  
-`Trace 和 Eval` 让系统可复盘、可改进。
+| 节点             | 作用               |
+| -------------- | ---------------- |
+| 工具             | 让 Agent 能行动      |
+| 上下文            | 让 Agent 看对资料     |
+| 记忆和状态          | 让 Agent 能续接任务    |
+| 权限和沙箱          | 让 Agent 有安全边界    |
+| Hooks 和 Skills | 让规则可执行、流程可复用     |
+| Trace 和 Eval   | 让 Agent 可复盘、可改进  |
+| 可靠 Agent       | 模型能力和工程底座共同作用的结果 |
 
-所以：
+---
 
-> Claude Code、Codex 这类产品强，不只是因为模型强，而是因为它们把模型放进了一套成熟的 Agent Harness 里。
+### 5. 最后一句话
+
+> **Claude Code、Codex 这类产品强，不只是因为模型强，而是因为它们把模型放进了一套成熟的工程底座里。**
+
+[1]: https://docs.claude.com/en/docs/claude-code/overview "Overview - Claude Code Docs"
+[2]: https://www.anthropic.com/engineering/building-effective-agents "Building Effective AI Agents \ Anthropic"
+[3]: https://platform.openai.com/docs/guides/agents-sdk "Agents SDK | OpenAI API"
+[4]: https://docs.claude.com/en/docs/claude-code/hooks "Hooks reference - Claude Code Docs"
+[5]: https://docs.claude.com/en/docs/claude-code/skills "Extend Claude with skills - Claude Code Docs"
+[6]: https://docs.claude.com/en/docs/claude-code/sub-agents "Create custom subagents - Claude Code Docs"
+[7]: https://arxiv.org/abs/2605.27922 "Harness-Bench: Measuring Harness Effects across Models in Realistic Agent Workflows"
+[8]: https://arxiv.org/abs/2605.18747 "Code as Agent Harness"

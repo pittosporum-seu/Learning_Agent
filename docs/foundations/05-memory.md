@@ -1,4 +1,4 @@
-
+﻿
 # Agent基础知识 05| Memory：短期上下文、长期记忆和反思机制
 
 > 从短期上下文、长期记忆到自我反思，看 Agent 如何积累经验
@@ -206,7 +206,7 @@ Memory 出现的核心原因是：
 
 > Agent 从一次性问答，变成长期协作系统后，必须有状态管理。
 
-这也是 2025—2026 年 Agent 研究中 Memory 变得重要的原因。近期综述指出，Agent Memory 已经成为 foundation-model-based agents 的核心能力之一，而且传统“短期/长期记忆”的简单分类已经不足以描述当前系统，需要从形式、功能和动态过程重新理解记忆。([arXiv](https://arxiv.org/abs/2512.13564?utm_source=chatgpt.com "Memory in the Age of AI Agents"))
+这也是 2025—2026 年 Agent 研究中 Memory 变得重要的原因。近期综述指出，Agent Memory 已经成为 foundation-model-based agents 的核心能力之一，而且传统“短期/长期记忆”的简单分类已经不足以描述当前系统，需要从形式、功能和动态过程重新理解记忆。([arXiv](https://arxiv.org/abs/2512.13564 "Memory in the Age of AI Agents"))
 
 ---
 
@@ -370,7 +370,7 @@ append-only session store；
 工具 trace。
 ```
 
-Claude Code 这类 coding agent 的研究分析中，append-oriented session storage、上下文压缩和权限系统都被视为 agent runtime 的重要部分，而不只是模型能力。([arXiv](https://arxiv.org/abs/2604.14228?utm_source=chatgpt.com "Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems"))
+Claude Code 这类 coding agent 的研究分析中，append-oriented session storage、上下文压缩和权限系统都被视为 agent runtime 的重要部分，而不只是模型能力。([arXiv](https://arxiv.org/abs/2604.14228 "Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems"))
 
 ---
 
@@ -405,7 +405,7 @@ Agent 每次都要重新问你字段含义、任务范围和项目结构。
 长期记忆库。
 ```
 
-近期 Agent Memory 综述把 factual memory 作为功能维度之一，和 experiential memory、working memory 区分开来，说明“事实记忆”已经被视为 Agent Memory 的独立能力。([arXiv](https://arxiv.org/abs/2512.13564?utm_source=chatgpt.com "Memory in the Age of AI Agents"))
+近期 Agent Memory 综述把 factual memory 作为功能维度之一，和 experiential memory、working memory 区分开来，说明“事实记忆”已经被视为 Agent Memory 的独立能力。([arXiv](https://arxiv.org/abs/2512.13564 "Memory in the Age of AI Agents"))
 
 ---
 
@@ -444,7 +444,7 @@ CLAUDE.md；
 可执行脚本。
 ```
 
-2026 年关于 agentic coding tools 的研究指出，开发者已经开始通过仓库级 Markdown/JSON 配置来约束 Agent；研究覆盖 Claude Code、GitHub Copilot、Cursor、Gemini、Codex，并发现 Context Files、Skills 和 Subagents 是跨工具的重要配置机制。([arXiv](https://arxiv.org/abs/2602.14690?utm_source=chatgpt.com "Configuring Agentic AI Coding Tools: An Exploratory Study"))
+2026 年关于 agentic coding tools 的研究指出，开发者已经开始通过仓库级 Markdown/JSON 配置来约束 Agent；研究覆盖 Claude Code、GitHub Copilot、Cursor、Gemini、Codex，并发现 Context Files、Skills 和 Subagents 是跨工具的重要配置机制。([arXiv](https://arxiv.org/abs/2602.14690 "Configuring Agentic AI Coding Tools: An Exploratory Study"))
 
 ---
 
@@ -485,7 +485,7 @@ Reflective Memory 是“反思记忆”。
 规则写入 Skill 或 AGENTS.md。
 ```
 
-2026 年关于 autonomous LLM agents memory 的综述将 memory 描述为 write-manage-read loop，并把 reflective self-improvement、hierarchical virtual context、policy-learned management 等归为重要机制方向。([arXiv](https://arxiv.org/abs/2603.07670?utm_source=chatgpt.com "Memory for Autonomous LLM Agents:Mechanisms, Evaluation, and Emerging Frontiers"))
+2026 年关于 autonomous LLM agents memory 的综述将 memory 描述为 write-manage-read loop，并把 reflective self-improvement、hierarchical virtual context、policy-learned management 等归为重要机制方向。([arXiv](https://arxiv.org/abs/2603.07670 "Memory for Autonomous LLM Agents:Mechanisms, Evaluation, and Emerging Frontiers"))
 
 ---
 
@@ -568,7 +568,7 @@ Git：放长期规则和决策记录。
 
 ### 1. Cursor：用项目上下文和会话历史降低重复劳动
 
-Cursor 是 AI coding agent 和开发环境，可以根据自然语言修改代码、查询代码库，并支持代码库索引。([维基百科](https://en.wikipedia.org/wiki/Cursor_%28code_editor%29?utm_source=chatgpt.com "Cursor (code editor)"))
+Cursor 是 AI coding agent 和开发环境，可以根据自然语言修改代码、查询代码库，并支持代码库索引。([维基百科](https://en.wikipedia.org/wiki/Cursor_%28code_editor%29 "Cursor (code editor)"))
 
 从 Memory 角度看，Cursor 需要处理两类信息：
 
@@ -595,7 +595,7 @@ Cursor 是 AI coding agent 和开发环境，可以根据自然语言修改代�
 
 ### 2. Claude Code：Memory 不只是记忆，而是 Runtime 的一部分
 
-Claude Code 的公开架构分析指出，它的核心是一个 while-loop：模型调用工具，执行工具，再把结果交回模型继续循环；但大部分能力来自循环之外的系统，包括权限系统、五层上下文压缩、MCP/插件/skills/hooks、subagent 委托、session storage 等。([arXiv](https://arxiv.org/abs/2604.14228?utm_source=chatgpt.com "Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems"))
+Claude Code 的公开架构分析指出，它的核心是一个 while-loop：模型调用工具，执行工具，再把结果交回模型继续循环；但大部分能力来自循环之外的系统，包括权限系统、五层上下文压缩、MCP/插件/skills/hooks、subagent 委托、session storage 等。([arXiv](https://arxiv.org/abs/2604.14228 "Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems"))
 
 这说明：
 
@@ -671,7 +671,7 @@ flowchart TD
 
 ### 4. Manus / Skills：把流程经验变成可复用能力
 
-Agent Skills 近年来成为重要抽象。Skills 可以理解成模块化能力包，里面包含说明、脚本、资源，Agent 在需要时按需加载，而不是把所有流程知识都塞进主上下文。2026 年关于 Agent Skills 的综述指出，Skills 将指令、代码、资源打包成可组合模块，并通过 progressive disclosure 按需加载，和 MCP 一起构成可扩展 Agent 能力层。([arXiv](https://arxiv.org/abs/2602.12430?utm_source=chatgpt.com "Agent Skills for Large Language Models: Architecture, Acquisition, Security, and the Path Forward"))
+Agent Skills 近年来成为重要抽象。Skills 可以理解成模块化能力包，里面包含说明、脚本、资源，Agent 在需要时按需加载，而不是把所有流程知识都塞进主上下文。2026 年关于 Agent Skills 的综述指出，Skills 将指令、代码、资源打包成可组合模块，并通过 progressive disclosure 按需加载，和 MCP 一起构成可扩展 Agent 能力层。([arXiv](https://arxiv.org/abs/2602.12430 "Agent Skills for Large Language Models: Architecture, Acquisition, Security, and the Path Forward"))
 
 这和 Memory 有什么关系？
 
@@ -689,7 +689,7 @@ ETL 本地 mock 测试 Skill。
 
 它们不是简单记住事实，而是记住“如何完成一类任务”。
 
-不过 Skills 也带来安全风险。近期研究指出，SKILL.md 这类自然语言说明不是被动文档，而会影响 Agent 如何发现、选择和加载能力包；恶意或脆弱的技能说明可能引导 Agent 选择错误能力或绕过治理。([arXiv](https://arxiv.org/abs/2605.11418?utm_source=chatgpt.com "Under the Hood of SKILL.md: Semantic Supply-chain Attacks on AI Agent Skill Registry"))
+不过 Skills 也带来安全风险。近期研究指出，SKILL.md 这类自然语言说明不是被动文档，而会影响 Agent 如何发现、选择和加载能力包；恶意或脆弱的技能说明可能引导 Agent 选择错误能力或绕过治理。([arXiv](https://arxiv.org/abs/2605.11418 "Under the Hood of SKILL.md: Semantic Supply-chain Attacks on AI Agent Skill Registry"))
 
 所以流程记忆要变成 Skill 时，必须考虑来源、权限和审查。
 
@@ -814,7 +814,7 @@ ETL 本地 mock 测试 Skill。
 知识图谱问答。
 ```
 
-Zep 就是一个代表性方向，它用 Graphiti 构建 temporal knowledge graph，用来整合会话数据和业务数据，并维护历史关系；论文中强调其面向企业应用中的动态知识整合和时间推理。([arXiv](https://arxiv.org/abs/2501.13956?utm_source=chatgpt.com "Zep: A Temporal Knowledge Graph Architecture for Agent Memory"))
+Zep 就是一个代表性方向，它用 Graphiti 构建 temporal knowledge graph，用来整合会话数据和业务数据，并维护历史关系；论文中强调其面向企业应用中的动态知识整合和时间推理。([arXiv](https://arxiv.org/abs/2501.13956 "Zep: A Temporal Knowledge Graph Architecture for Agent Memory"))
 
 ---
 
@@ -850,7 +850,7 @@ coding agent；
 个人长期助手。
 ```
 
-Mem0 这类系统把长期记忆设计成可抽取、合并、检索的结构化机制；其论文指出，固定上下文窗口在长时间多会话对话中难以维持一致性，因此需要动态抽取、整合和检索重要信息。([arXiv](https://arxiv.org/abs/2504.19413?utm_source=chatgpt.com "Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory"))
+Mem0 这类系统把长期记忆设计成可抽取、合并、检索的结构化机制；其论文指出，固定上下文窗口在长时间多会话对话中难以维持一致性，因此需要动态抽取、整合和检索重要信息。([arXiv](https://arxiv.org/abs/2504.19413 "Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory"))
 
 ---
 
@@ -887,7 +887,7 @@ Mem0 这类系统把长期记忆设计成可抽取、合并、检索的结构化
 复杂多目标任务。
 ```
 
-例如 MEM1 研究提出让 Agent 在长程多轮任务中维护紧凑共享状态，并通过策略丢弃无关信息，以减少全历史上下文带来的成本和性能问题。([arXiv](https://arxiv.org/abs/2506.15841?utm_source=chatgpt.com "MEM1: Learning to Synergize Memory and Reasoning for Efficient Long-Horizon Agents"))
+例如 MEM1 研究提出让 Agent 在长程多轮任务中维护紧凑共享状态，并通过策略丢弃无关信息，以减少全历史上下文带来的成本和性能问题。([arXiv](https://arxiv.org/abs/2506.15841 "MEM1: Learning to Synergize Memory and Reasoning for Efficient Long-Horizon Agents"))
 
 ---
 
@@ -925,7 +925,7 @@ Memory 很容易看起来有用，但实际不可靠。
 |Privacy|是否召回了不该访问的信息？|
 |Robustness|是否容易被错误或恶意信息污染？|
 
-近期关于 Agent Memory 的综述已经把 evaluation 明确纳入核心讨论，并指出评测正从静态召回走向多会话、多任务、与决策耦合的 Agentic 测试。([arXiv](https://arxiv.org/abs/2603.07670?utm_source=chatgpt.com "Memory for Autonomous LLM Agents:Mechanisms, Evaluation, and Emerging Frontiers"))
+近期关于 Agent Memory 的综述已经把 evaluation 明确纳入核心讨论，并指出评测正从静态召回走向多会话、多任务、与决策耦合的 Agentic 测试。([arXiv](https://arxiv.org/abs/2603.07670 "Memory for Autonomous LLM Agents:Mechanisms, Evaluation, and Emerging Frontiers"))
 
 ---
 
@@ -1016,7 +1016,7 @@ Memory 里可能有：
 
 如果 Agent 会从外部加载技能、规则或记忆，就可能被恶意内容影响。
 
-例如一个恶意 Skill 的描述可能诱导模型优先选择它。2026 年关于 SKILL.md 攻击的研究显示，技能描述本身会影响 Agent 的发现、选择和治理环节，因此它不是“普通文档”，而是会改变 Agent 行为的操作性文本。([arXiv](https://arxiv.org/abs/2605.11418?utm_source=chatgpt.com "Under the Hood of SKILL.md: Semantic Supply-chain Attacks on AI Agent Skill Registry"))
+例如一个恶意 Skill 的描述可能诱导模型优先选择它。2026 年关于 SKILL.md 攻击的研究显示，技能描述本身会影响 Agent 的发现、选择和治理环节，因此它不是“普通文档”，而是会改变 Agent 行为的操作性文本。([arXiv](https://arxiv.org/abs/2605.11418 "Under the Hood of SKILL.md: Semantic Supply-chain Attacks on AI Agent Skill Registry"))
 
 治理方式：
 

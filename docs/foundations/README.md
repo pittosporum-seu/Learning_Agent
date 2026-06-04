@@ -13,6 +13,7 @@
 | 05 | Memory | [05-memory.md](05-memory.md) |
 | 06 | MCP | [06-mcp.md](06-mcp.md) |
 | 07 | Agent Harness | [07-agent-harness.md](07-agent-harness.md) |
+| 08 | Coding Agent | [08-coding-agent.md](08-coding-agent.md) |
 
 核心脉络：
 
@@ -24,5 +25,5 @@
   -> 用 Memory 管理上下文和经验
   -> 用 MCP 统一工具和数据源
   -> 用 Harness 提升可靠性
+  -> 在 Coding Agent 场景里理解真实工程闭环
 ```
-
