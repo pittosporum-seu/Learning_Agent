@@ -16,6 +16,7 @@
 | 08 | Coding Agent | [08-coding-agent.md](08-coding-agent.md) |
 | 09 | Subagent / Multi-Agent | [09-subagent-multi-agent.md](09-subagent-multi-agent.md) |
 | 10 | Skills | [10-skills.md](10-skills.md) |
+| 11 | Browser / Computer Use Agent | [11-browser-computer-use-agent.md](11-browser-computer-use-agent.md) |
 
 核心脉络：
 
@@ -30,4 +31,5 @@
   -> 在 Coding Agent 场景里理解真实工程闭环
   -> 用 Subagent / Multi-Agent 管理复杂任务的上下文和分工
   -> 用 Skills 把重复流程沉淀成可复用能力包
+  -> 理解 Browser / Computer Use Agent 的界面操作闭环和安全边界
 ```

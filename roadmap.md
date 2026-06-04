@@ -14,7 +14,7 @@
 - [x] Coding Agent
 - [x] Subagent / Multi-Agent
 - [x] Skills
-- [ ] Browser / Computer Use Agent
+- [x] Browser / Computer Use Agent
 - [ ] Evaluation / Trace / Safety
 
 ## 2. 资料精读
@@ -51,7 +51,7 @@
 - [x] 建立 12 篇文章总规划
 - [x] 明确三组写作节奏
 - [x] 固定每篇文章结构
-- [ ] 为 11-12 补充正式文章正文
+- [ ] 为第 12 篇补充正式文章正文
 
 ## 6. 维护钩子
 

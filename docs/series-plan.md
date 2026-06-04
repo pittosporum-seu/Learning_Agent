@@ -18,7 +18,7 @@
 | 08 | Coding Agent | Coding Agent 为什么最容易落地？怎么理解 Shell、文件编辑、测试反馈？ | 已完成 |
 | 09 | Subagent / Multi-Agent | 多 Agent 什么时候有用？什么时候反而添乱？ | 已完成 |
 | 10 | Skills | Skill 和 Prompt、Tool、MCP 有什么区别？ | 已完成 |
-| 11 | Browser / Computer Use Agent | Browser Agent 为什么难？视觉、点击、失败恢复怎么处理？ | 计划中 |
+| 11 | Browser / Computer Use Agent | Browser Agent 为什么难？视觉、点击、失败恢复怎么处理？ | 已完成 |
 | 12 | Evaluation / Trace / Safety | 怎么判断 Agent 真有用？怎么避免瞎跑、越权、退化？ | 计划中 |
 
 ## 写作节奏
@@ -59,15 +59,6 @@
 ```
 
 ## 剩余重点选题
-
-### 11 Browser / Computer Use Agent
-
-重点讲 Browser Agent 为什么比 API Tool 更脆弱：
-
-- DOM、截图、视觉理解和动作日志分别解决什么问题。
-- 点击、滚动、输入、等待为什么容易失败。
-- 登录、付款、删除、发布等高风险动作为什么必须限制。
-- Browser Agent 适合什么任务，不适合什么任务。
 
 ### 12 Evaluation / Trace / Safety
 
