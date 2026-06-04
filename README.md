@@ -11,6 +11,8 @@
 
 ## 学习路线
 
+整体写作规划见：[Agent 基础知识系列规划](docs/series-plan.md)。
+
 ### Stage 1: Agent 基础知识
 
 | 序号 | 主题 | 笔记 |
@@ -64,6 +66,7 @@
 ├── roadmap.md
 ├── docs/
 │   ├── README.md
+│   ├── series-plan.md
 │   └── foundations/
 │       ├── 01-workflow-vs-agent.md
 │       ├── 02-agent-loop.md
