@@ -50,6 +50,7 @@
 
 ```text
 README.md
+demo/
 src/
 tests/
 data/
@@ -62,13 +63,14 @@ outputs/
 - 输入是什么。
 - 输出是什么。
 - 如何运行 mock 版本。
+- 如何运行 demo。
 - 如何切换真实数据源。
 - 哪些操作需要人工确认。
 - 验收标准是什么。
 
 ## Lab 01: Strategy Intake
 
-状态：已实现第一版 mock 解析器，见 `labs/01-strategy-intake/`。
+状态：已实现第一版 mock 解析器和 demo，见 `labs/01-strategy-intake/`。
 
 目标：把用户自然语言策略解析成结构化 `StrategySpec`。
 
@@ -83,6 +85,7 @@ outputs/
 - 给定策略文本，可以输出稳定 JSON。
 - 缺少关键字段时能提出待确认问题。
 - 输出中不出现股票推荐结论。
+- 可以通过 `scripts/run-lab-demo.ps1` 运行 demo，通过 `scripts/run-lab-tests.ps1` 跑回归测试。
 
 ## Lab 02: Strategy Agent Loop
 

@@ -103,14 +103,17 @@ flowchart TD
     B --> I["scripts/check-content.ps1"]
     B --> R["scripts/check-secrets.ps1"]
     B --> J["scripts/audit-related-docs.ps1"]
+    B --> U["scripts/run-lab-tests.ps1"]
 
     I --> K["清理过程性内容和跟踪参数"]
     R --> S["检查真实密钥和凭据是否泄露"]
     J --> L["审核相关文档是否同步"]
+    U --> V["运行 Lab 回归测试"]
 
     K --> M["git diff review"]
     S --> M
     L --> M
+    V --> M
     M --> N["commit / push"]
 ```
 
@@ -153,3 +156,6 @@ flowchart TD
 | [../labs/README.md](../labs/README.md) | Labs 入口，说明投研主线和统一要求。 |
 | [../labs/01-strategy-intake/README.md](../labs/01-strategy-intake/README.md) | 第一个可运行 Lab，把自然语言投研策略解析成 `StrategySpec`。 |
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |
+| [../labs/shared/testing/README.md](../labs/shared/testing/README.md) | 统一 Lab 测试入口说明。 |
+| [../scripts/run-lab-demo.ps1](../scripts/run-lab-demo.ps1) | 统一 demo 运行封装。 |
+| [../scripts/run-lab-tests.ps1](../scripts/run-lab-tests.ps1) | 统一 Lab 回归测试封装。 |

@@ -64,6 +64,8 @@
 - [x] 将扩展目录接入 README、文档图和审核脚本
 - [x] 为 readings 补第一批精读模板
 - [x] 为 Lab 01 补可运行实验骨架
+- [x] 为 Lab 01 增加 demo
+- [x] 建立统一 Lab 测试入口
 - [ ] 为 skills 补第一批 `SKILL.md`
 
 ## 6. 系列规划

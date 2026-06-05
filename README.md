@@ -118,15 +118,19 @@
 │   ├── README.md
 │   ├── 01-strategy-intake/
 │   │   ├── README.md
+│   │   ├── demo/
 │   │   ├── src/
 │   │   └── tests/
 │   └── shared/
-│       └── investment_research_case/
+│       ├── investment_research_case/
+│       │   ├── README.md
+│       │   ├── risk_policy.md
+│       │   ├── strategy_policy.md
+│       │   ├── strategy_request.md
+│       │   └── user_profile.md
+│       └── testing/
 │           ├── README.md
-│           ├── risk_policy.md
-│           ├── strategy_policy.md
-│           ├── strategy_request.md
-│           └── user_profile.md
+│           └── run_lab_tests.py
 ├── resources/
 │   └── README.md
 ├── skills/
@@ -134,7 +138,9 @@
 └── scripts/
     ├── audit-related-docs.ps1
     ├── check-content.ps1
-    └── check-secrets.ps1
+    ├── check-secrets.ps1
+    ├── run-lab-demo.ps1
+    └── run-lab-tests.ps1
 ```
 
 ## 维护原则
@@ -147,6 +153,7 @@
 - 投研 Labs 可以输出候选股票和观察池，但必须给出数据来源、风险提示和人工确认边界。
 - 真实密钥只通过环境变量读取，仓库只保留 `.env.example`。
 - 新增或重写文章后按 `hooks/content-update.md` 同步导航、更新文档图，并运行内容检查、密钥检查和相关文档审核。
+- 新增可运行 Lab 时同步提供 demo 和 tests，并用 `scripts/run-lab-tests.ps1` 做统一回归。
 - 当前待办统一维护在 [TODO.md](TODO.md)，需要公开协作时再转成 GitHub Issue。
 
 ## 推荐阅读

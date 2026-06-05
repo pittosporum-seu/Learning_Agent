@@ -40,10 +40,49 @@ python labs/01-strategy-intake/src/strategy_intake.py "找最近 60 日趋势较
 python labs/01-strategy-intake/src/strategy_intake.py
 ```
 
+## Demo
+
+运行内置 demo 样例：
+
+```powershell
+python labs/01-strategy-intake/demo/run_demo.py
+```
+
+也可以通过仓库脚本运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake
+```
+
+传入自己的策略：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake -Request "找近 30 日趋势较强、成交活跃的新能源股票，生成观察池。"
+```
+
+输出完整 JSON：
+
+```powershell
+python labs/01-strategy-intake/demo/run_demo.py --json
+```
+
+把 demo 结果写到文件：
+
+```powershell
+python labs/01-strategy-intake/demo/run_demo.py --output labs/01-strategy-intake/outputs/demo_strategy_specs.json
+```
+
 ## 测试
 
 ```powershell
 python -m unittest discover -s labs/01-strategy-intake/tests
+```
+
+也可以使用统一测试入口：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 01-strategy-intake
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 ```
 
 ## 设计边界

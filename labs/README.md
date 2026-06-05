@@ -20,9 +20,11 @@
 labs/
 ├── README.md
 ├── shared/
-│   └── investment_research_case/
+│   ├── investment_research_case/
+│   └── testing/
 ├── 01-strategy-intake/
 │   ├── README.md
+│   ├── demo/
 │   ├── src/
 │   └── tests/
 ├── 02-strategy-agent-loop/
@@ -47,9 +49,36 @@ labs/
 - [ ] Lab 03: Finance Tool Use Mock
 - [ ] Lab 04-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进
 
+## Demo 与测试
+
+运行 Lab 01 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake
+```
+
+传入自定义策略：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake -Request "筛选市盈率小于20的银行股。"
+```
+
+运行全部 Lab 测试：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
+```
+
+只运行某个 Lab：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 01-strategy-intake
+```
+
 ## 统一要求
 
 - 每个 Lab 先支持 mock，真实 API 接入放到显式开关之后。
 - 所有候选股票输出都必须带风险提示。
 - 真实密钥只从环境变量读取，不写入仓库。
 - 涉及自选股、模拟组合、Skill 启用的动作必须保留人工确认。
+- 每个可运行 Lab 都应提供 demo 和 tests，并接入统一测试入口。
