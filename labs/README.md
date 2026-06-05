@@ -26,7 +26,8 @@ labs/
 │   ├── README.md
 │   ├── demo/
 │   ├── src/
-│   └── tests/
+│   ├── tests/
+│   └── web/
 ├── 02-strategy-agent-loop/
 ├── 03-finance-tool-use-mock/
 ├── 04-research-rag-basic/
@@ -50,6 +51,18 @@ labs/
 - [ ] Lab 04-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进
 
 ## Demo 与测试
+
+启动 Lab 01 网页 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-web.ps1 -Lab 01-strategy-intake -Port 8765
+```
+
+打开：
+
+```text
+http://127.0.0.1:8765/
+```
 
 运行 Lab 01 demo：
 

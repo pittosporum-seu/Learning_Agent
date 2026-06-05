@@ -42,6 +42,18 @@ python labs/01-strategy-intake/src/strategy_intake.py
 
 ## Demo
 
+启动本地网页 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-web.ps1 -Lab 01-strategy-intake -Port 8765
+```
+
+然后打开：
+
+```text
+http://127.0.0.1:8765/
+```
+
 运行内置 demo 样例：
 
 ```powershell

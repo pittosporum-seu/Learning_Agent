@@ -57,6 +57,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 - 是否误提交真实 API Key、Token、Cookie、Session、Password 或真实环境文件。
 - 财经相关输出是否包含来源、检索时间、风险提示和人工确认边界。
 - 新增或修改 Lab 时，是否提供 demo、tests，并接入统一测试入口。
+- 提供 web demo 时，是否能在本地 `127.0.0.1` 启动，且不依赖真实 API Key。
 
 ## 维护原则
 
@@ -65,4 +66,5 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 - 每次新增或重写文章都要同步导航、文档图、资源索引和待办状态，不让 README、TODO、roadmap、series plan 和 document graph 脱节。
 - 每次涉及 Product、Labs、Skills 或脚本变更，都要同步审核相关文档，并运行密钥检查。
 - 每个 Lab 的 demo 用于人工试跑，tests 用于自动回归；两者都应该能在无真实 API Key 的环境下运行。
+- Web demo 只作为本地实验入口，默认绑定 `127.0.0.1`。
 - 自动检查只负责发现明显问题，最终仍要看一眼 diff。

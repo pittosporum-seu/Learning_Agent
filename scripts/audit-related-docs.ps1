@@ -54,6 +54,8 @@ $lab01Source = Read-RepoFile "labs/01-strategy-intake/src/strategy_intake.py"
 $lab01Tests = Read-RepoFile "labs/01-strategy-intake/tests/test_strategy_intake.py"
 $lab01Demo = Read-RepoFile "labs/01-strategy-intake/demo/run_demo.py"
 $lab01DemoRequests = Read-RepoFile "labs/01-strategy-intake/demo/requests.txt"
+$lab01WebServer = Read-RepoFile "labs/01-strategy-intake/web/server.py"
+$lab01WebIndex = Read-RepoFile "labs/01-strategy-intake/web/index.html"
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
 $sharedStrategyPolicy = Read-RepoFile "labs/shared/investment_research_case/strategy_policy.md"
@@ -66,6 +68,7 @@ $gitignore = Read-RepoFile ".gitignore"
 $secretCheck = Read-RepoFile "scripts/check-secrets.ps1"
 $runLabTests = Read-RepoFile "scripts/run-lab-tests.ps1"
 $runLabDemo = Read-RepoFile "scripts/run-lab-demo.ps1"
+$runLabWeb = Read-RepoFile "scripts/run-lab-web.ps1"
 
 $requiredDirectoryReadmes = @(
     "docs/readings/README.md",
@@ -180,6 +183,7 @@ if ($documentGraph -notlike "*product/personalized-investment-research-agent.md*
     Add-Failure "docs/document-graph.md does not map product docs"
 }
 if ($documentGraph -notlike "*run-lab-demo.ps1*" -or
+    $documentGraph -notlike "*run-lab-web.ps1*" -or
     $documentGraph -notlike "*run-lab-tests.ps1*" -or
     $documentGraph -notlike "*labs/shared/testing/README.md*") {
     Add-Failure "docs/document-graph.md does not map demo and lab testing framework"
@@ -187,6 +191,7 @@ if ($documentGraph -notlike "*run-lab-demo.ps1*" -or
 if ($labsReadme -notlike "*lab-plan.md*" -or
     $labsReadme -notlike "*01-strategy-intake/README.md*" -or
     $labsReadme -notlike "*run-lab-demo.ps1*" -or
+    $labsReadme -notlike "*run-lab-web.ps1*" -or
     $labsReadme -notlike "*run-lab-tests.ps1*" -or
     $labsReadme -notlike "*01-strategy-intake*" -or
     $labsReadme -notlike "*12-evaluation-safety*") {
@@ -228,6 +233,7 @@ if ($roadmap -notlike "*x] Lab 01: Strategy Intake*" -or
 }
 if ($readme -notlike "*01-strategy-intake*" -or
     $readme -notlike "*run-lab-demo.ps1*" -or
+    $readme -notlike "*run-lab-web.ps1*" -or
     $readme -notlike "*run-lab-tests.ps1*" -or
     $documentGraph -notlike "*01-strategy-intake/README.md*" -or
     $labPlan -notlike "*labs/01-strategy-intake/*") {
@@ -236,6 +242,8 @@ if ($readme -notlike "*01-strategy-intake*" -or
 if ($lab01Readme -notlike "*strategy_intake.py*" -or
     $lab01Readme -notlike "*demo/run_demo.py*" -or
     $lab01Readme -notlike "*run-lab-demo.ps1*" -or
+    $lab01Readme -notlike "*run-lab-web.ps1*" -or
+    $lab01Readme -notlike "*127.0.0.1:8765*" -or
     $lab01Readme -notlike "*run-lab-tests.ps1*" -or
     $lab01Readme -notlike "*unittest discover*" -or
     $lab01Readme -notlike "*StrategySpec*") {
@@ -256,6 +264,15 @@ if ($lab01Demo -notlike "*build_demo_results*" -or
     $lab01Demo -notlike "*--output*" -or
     $lab01DemoRequests -notlike "*Lines starting with #*") {
     Add-Failure "Lab 01 demo runner or requests file is incomplete"
+}
+if ($lab01WebServer -notlike "*ThreadingHTTPServer*" -or
+    $lab01WebServer -notlike "*/api/parse*" -or
+    $lab01WebIndex -notlike "*StrategySpec*" -or
+    $lab01WebIndex -notlike '*fetch("/api/parse"*' -or
+    $runLabWeb -notlike "*server.py*" -or
+    $runLabWeb -notlike "*HostName*" -or
+    $runLabWeb -notlike "*server.py*") {
+    Add-Failure "Lab 01 web demo or wrapper script is incomplete"
 }
 if ($sharedTestingReadme -notlike "*run_lab_tests.py*" -or
     $sharedTestingRunner -notlike "*unittest*" -or

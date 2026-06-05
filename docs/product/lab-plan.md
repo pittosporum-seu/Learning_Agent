@@ -53,6 +53,7 @@ README.md
 demo/
 src/
 tests/
+web/
 data/
 outputs/
 ```
@@ -64,6 +65,7 @@ outputs/
 - 输出是什么。
 - 如何运行 mock 版本。
 - 如何运行 demo。
+- 是否提供本地 web demo。
 - 如何切换真实数据源。
 - 哪些操作需要人工确认。
 - 验收标准是什么。

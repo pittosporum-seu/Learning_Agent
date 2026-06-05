@@ -120,7 +120,8 @@
 │   │   ├── README.md
 │   │   ├── demo/
 │   │   ├── src/
-│   │   └── tests/
+│   │   ├── tests/
+│   │   └── web/
 │   └── shared/
 │       ├── investment_research_case/
 │       │   ├── README.md
@@ -140,6 +141,7 @@
     ├── check-content.ps1
     ├── check-secrets.ps1
     ├── run-lab-demo.ps1
+    ├── run-lab-web.ps1
     └── run-lab-tests.ps1
 ```
 
@@ -154,6 +156,7 @@
 - 真实密钥只通过环境变量读取，仓库只保留 `.env.example`。
 - 新增或重写文章后按 `hooks/content-update.md` 同步导航、更新文档图，并运行内容检查、密钥检查和相关文档审核。
 - 新增可运行 Lab 时同步提供 demo 和 tests，并用 `scripts/run-lab-tests.ps1` 做统一回归。
+- 需要交互试验时优先提供本地 web demo，并保持无真实 API Key 也能启动。
 - 当前待办统一维护在 [TODO.md](TODO.md)，需要公开协作时再转成 GitHub Issue。
 
 ## 推荐阅读

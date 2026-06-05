@@ -158,4 +158,5 @@ flowchart TD
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |
 | [../labs/shared/testing/README.md](../labs/shared/testing/README.md) | 统一 Lab 测试入口说明。 |
 | [../scripts/run-lab-demo.ps1](../scripts/run-lab-demo.ps1) | 统一 demo 运行封装。 |
+| [../scripts/run-lab-web.ps1](../scripts/run-lab-web.ps1) | 统一本地 web demo 运行封装。 |
 | [../scripts/run-lab-tests.ps1](../scripts/run-lab-tests.ps1) | 统一 Lab 回归测试封装。 |

@@ -65,6 +65,7 @@
 - [x] 为 readings 补第一批精读模板
 - [x] 为 Lab 01 补可运行实验骨架
 - [x] 为 Lab 01 增加 demo
+- [x] 为 Lab 01 增加本地 web demo
 - [x] 建立统一 Lab 测试入口
 - [ ] 为 skills 补第一批 `SKILL.md`
 
