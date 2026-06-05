@@ -103,6 +103,10 @@
         min-width: 0;
       }
 
+      .intro-panel {
+        grid-column: 1 / -1;
+      }
+
       .panel-header {
         padding: 16px 18px 0;
       }
@@ -190,6 +194,39 @@
         color: var(--muted);
         font-size: 12px;
         min-height: 18px;
+      }
+
+      .explain-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .explain-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        background: #fbfcfe;
+        min-height: 126px;
+      }
+
+      .explain-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 7px;
+      }
+
+      .explain-text {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .support-line {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
       }
 
       .summary-grid {
@@ -311,6 +348,10 @@
         .summary-grid {
           grid-template-columns: 1fr;
         }
+
+        .explain-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -327,6 +368,43 @@
       </header>
 
       <main>
+        <section class="panel intro-panel">
+          <div class="panel-header">
+            <h2>这个 Demo 的意义</h2>
+          </div>
+          <div class="panel-body">
+            <div class="explain-grid">
+              <div class="explain-item">
+                <div class="explain-title">入口建模</div>
+                <div class="explain-text">
+                  把一句自然语言投研想法翻译成 StrategySpec，让后面的 Planner 和工具知道要做什么。
+                </div>
+              </div>
+              <div class="explain-item">
+                <div class="explain-title">规则基线</div>
+                <div class="explain-text">
+                  当前先用规则解析，方便观察、测试和回归；后续再接大模型做补全、归一化和追问。
+                </div>
+              </div>
+              <div class="explain-item">
+                <div class="explain-title">测试重点</div>
+                <div class="explain-text">
+                  看市场、主题、时间窗口、候选规则、风险过滤、执行模式和待确认问题是否随输入变化。
+                </div>
+              </div>
+              <div class="explain-item">
+                <div class="explain-title">当前边界</div>
+                <div class="explain-text">
+                  不调用 API Key，不查行情，不选股，不推荐标的；只演示策略入口和安全闸门。
+                </div>
+              </div>
+            </div>
+            <div class="support-line">
+              可测试方向：人工智能、半导体、新能源、银行、医药、电网设备、特高压；可测试规则：趋势、回撤、成交、市盈率、市净率、ROE、负面新闻、自动买入等。
+            </div>
+          </div>
+        </section>
+
         <section class="panel">
           <div class="panel-header">
             <h2>策略输入</h2>
