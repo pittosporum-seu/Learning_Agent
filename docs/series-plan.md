@@ -2,6 +2,8 @@
 
 这个文件用于维护 `Agent基础知识` 系列文章的整体规划。
 
+系列最初围绕 [datawhalechina/Agent-Learning-Hub](https://github.com/datawhalechina/Agent-Learning-Hub) 的学习路线展开，再结合 Anthropic、OpenAI、Claude Code、MCP、SWE-bench、WebArena 等资料补充扩展。
+
 系列先按 12 篇推进：前 6 篇讲基础概念，后 6 篇讲工程化和真实 Agent 系统。写作主线从 Workflow / Agent 区分开始，逐步推进到 Agent Loop、Tool Use、RAG、Memory、MCP、Harness、Coding Agent、Subagent、Skills、Browser Agent、Evaluation 和 Safety。
 
 ## 系列总规划
@@ -65,4 +67,4 @@
 - 给重点文章补充最小可运行实验。
 - 按论文、官方文档和工程博客补充 `resources/` 阅读索引。
 - 将文章中的流程沉淀成 `labs/` 示例或 `hooks/` 维护流程。
-- 定期检查引用链接、术语表和系列目录是否需要更新。
+- 定期检查引用链接、术语表、文档图和系列目录是否需要更新。

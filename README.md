@@ -11,7 +11,9 @@
 
 ## 学习路线
 
-整体写作规划见：[Agent 基础知识系列规划](docs/series-plan.md)。
+这套 `Agent基础知识` 系列最初围绕 [datawhalechina/Agent-Learning-Hub](https://github.com/datawhalechina/Agent-Learning-Hub) 的学习路线展开，再结合 Anthropic、OpenAI、Claude Code、MCP、SWE-bench、WebArena 等资料补充扩展。
+
+整体写作规划见：[Agent 基础知识系列规划](docs/series-plan.md)。文档之间的结构关系见：[Document Graph](docs/document-graph.md)。
 
 ### Stage 1: Agent 基础知识
 
@@ -70,6 +72,7 @@
 ├── roadmap.md
 ├── docs/
 │   ├── README.md
+│   ├── document-graph.md
 │   ├── series-plan.md
 │   └── foundations/
 │       ├── 01-workflow-vs-agent.md
@@ -91,6 +94,7 @@
 ├── resources/
 │   └── README.md
 └── scripts/
+    ├── audit-related-docs.ps1
     └── check-content.ps1
 ```
 
@@ -101,10 +105,11 @@
 - 先用最小例子讲清楚，再扩展复杂系统。
 - 所有实验尽量可运行、可复现、可测试。
 - 避免把 Agent 神秘化，优先讨论边界、成本和可靠性。
-- 新增文章后按 `hooks/content-update.md` 同步导航并运行内容检查。
+- 新增或重写文章后按 `hooks/content-update.md` 同步导航、更新文档图，并运行内容检查和相关文档审核。
 
 ## 推荐阅读
 
+- [datawhalechina/Agent-Learning-Hub](https://github.com/datawhalechina/Agent-Learning-Hub)
 - Anthropic: Building Effective Agents
 - Model Context Protocol documentation
 - OpenAI Agents SDK documentation

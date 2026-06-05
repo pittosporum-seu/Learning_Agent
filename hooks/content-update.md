@@ -22,15 +22,18 @@
    - `README.md`
    - `docs/foundations/README.md`
    - `docs/series-plan.md`
+   - `docs/document-graph.md`
+   - `resources/README.md`
    - `roadmap.md`
 6. 如果新增了维护流程、脚本或目录，同步更新根 README 的仓库结构。
-7. 运行内容检查脚本：
+7. 运行内容检查和相关文档审核脚本：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/check-content.ps1
+powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 ```
 
-8. 检查 Git diff，确认没有无关内容。
+8. 根据审核结果回看相关文档，修正遗漏的导航、文档图、资源索引或路线状态。
 9. 提交并推送到 GitHub。
 
 ## 检查重点
@@ -38,6 +41,8 @@ powershell -ExecutionPolicy Bypass -File scripts/check-content.ps1
 - 文章是否出现在根 README 的学习路线中。
 - 文章是否出现在 `docs/foundations/README.md` 的阅读顺序中。
 - `docs/series-plan.md` 中对应文章状态是否更新。
+- `docs/document-graph.md` 中是否同步文章节点和维护关系。
+- `resources/README.md` 中是否补充重要来源。
 - `roadmap.md` 中对应任务是否勾选。
 - 是否误把写作提示、自检表、聊天痕迹放进正式文章。
 - 参考链接是否去掉跟踪参数。
@@ -46,6 +51,5 @@ powershell -ExecutionPolicy Bypass -File scripts/check-content.ps1
 
 - 正式仓库只保留可长期阅读和复用的内容。
 - 草稿生成过程可以在本地存在，但不进入正式文章。
-- 每次新增文章都要同步导航，不让 README、roadmap 和 series plan 脱节。
+- 每次新增或重写文章都要同步导航、文档图和资源索引，不让 README、roadmap、series plan 和 document graph 脱节。
 - 自动检查只负责发现明显问题，最终仍要看一眼 diff。
-

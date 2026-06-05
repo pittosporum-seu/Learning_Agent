@@ -58,5 +58,8 @@
 - [x] 新增内容更新钩子
 - [x] 新增内容检查脚本
 - [x] 新增文章时复用 `hooks/content-update.md`
+- [x] 新增文档图
+- [x] 新增相关文档审核脚本
+- [ ] 后续重写文章时同步审核文档图、资源索引和所有导航文件
 
 详见：[docs/series-plan.md](docs/series-plan.md)

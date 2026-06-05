@@ -4,6 +4,7 @@
 
 当前内容从基础概念开始，后续可以继续扩展为：
 
+- [`document-graph.md`](document-graph.md): 用 Mermaid 图整理来源路线、文章依赖和维护关系。
 - [`series-plan.md`](series-plan.md): Agent 基础知识系列的 12 篇写作规划。
 - `foundations/`: Agent 基础知识。
 - `papers/`: 论文和经典文章精读。
