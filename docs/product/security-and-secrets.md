@@ -10,6 +10,8 @@
 | --- | --- | --- |
 | `MIMO_API_KEY` | 调用小米 MiMo 模型 | Hermes |
 | `XIAOMI_API_KEY` | `MIMO_API_KEY` 的兼容别名 | Hermes |
+| `XIAOMI_BASE_URL` | 小米 MiMo OpenAI-compatible 基础地址，Hermes canonical 变量 | Hermes |
+| `XIAOMI_MODEL` | 小米 MiMo 模型名，Hermes canonical 变量 | Hermes |
 | `MIMO_CHAT_COMPLETIONS_URL` | 可选，MiMo OpenAI-compatible chat completions 端点 | Hermes 或本地环境 |
 | `MIMO_BASE_URL` | 可选，自定义兼容网关基础地址 | Hermes 或本地环境 |
 | `MIMO_MODEL` | 可选，默认 `mimo-v2.5-pro` | Hermes 或本地环境 |
@@ -19,8 +21,10 @@
 Lab 01 默认使用：
 
 ```text
-https://api.xiaomimimo.com/v1/chat/completions
+https://token-plan-sgp.xiaomimimo.com/v1
 ```
+
+解析优先级是 `XIAOMI_*` 高于 `MIMO_*`，与 Hermes 的 `provider: xiaomi` 配置保持一致。
 
 仓库只保留 `.env.example`。本地可以使用 `.env` 或系统环境变量，但 `.env` 和 `.env.*` 不能进入仓库。
 

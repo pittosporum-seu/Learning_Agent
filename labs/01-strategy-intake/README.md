@@ -51,21 +51,27 @@ python labs/01-strategy-intake/src/strategy_intake.py
 MiMo 模式从本地环境变量读取 key，仓库只保留 `.env.example` 占位，不提交真实密钥。
 
 ```powershell
-$env:MIMO_API_KEY="<read-from-hermes>"
-$env:MIMO_MODEL="mimo-v2.5-pro"
+$env:XIAOMI_API_KEY="<read-from-hermes>"
+$env:XIAOMI_BASE_URL="https://token-plan-sgp.xiaomimimo.com/v1"
+$env:XIAOMI_MODEL="mimo-v2.5-pro"
 ```
 
-默认端点：
+Hermes 对应配置：
 
 ```text
-https://api.xiaomimimo.com/v1/chat/completions
+provider: xiaomi
+base_url: https://token-plan-sgp.xiaomimimo.com/v1
+model: mimo-v2.5-pro
+key_env: XIAOMI_API_KEY
 ```
 
 如需走自定义网关，可以设置：
 
 ```powershell
-$env:MIMO_CHAT_COMPLETIONS_URL="https://your-gateway.example/v1/chat/completions"
+$env:XIAOMI_CHAT_COMPLETIONS_URL="https://your-gateway.example/v1/chat/completions"
 ```
+
+兼容变量 `MIMO_API_KEY`、`MIMO_BASE_URL`、`MIMO_MODEL` 仍可使用，但优先级低于 `XIAOMI_*`。
 
 测试默认 mock MiMo 响应，不依赖真实 key。
 
@@ -84,6 +90,8 @@ http://127.0.0.1:8765/
 ```
 
 网页会先做健康检查：如果检测到 `MIMO_API_KEY` 或 `XIAOMI_API_KEY`，默认切到 MiMo 解析；否则使用规则基线。MiMo 模式需要点击“解析”触发，避免输入时反复消耗 token。
+
+在本机 Windows 环境下，`scripts/run-lab-web.ps1` 会尝试从 WSL Hermes 的 `.env` 中加载 `XIAOMI_API_KEY`、`XIAOMI_BASE_URL` 和 `XIAOMI_MODEL` 到当前 server 进程环境；不会打印或提交真实 key。
 
 ## Demo 脚本
 

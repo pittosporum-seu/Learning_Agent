@@ -2,15 +2,20 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
+import subprocess
+import tempfile
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable, Mapping
 
 from strategy_intake import RISK_DISCLOSURE, parse_strategy_request
 
 
-DEFAULT_MIMO_CHAT_URL = "https://api.xiaomimimo.com/v1/chat/completions"
+DEFAULT_MIMO_BASE_URL = "https://token-plan-sgp.xiaomimimo.com/v1"
+DEFAULT_MIMO_CHAT_URL = f"{DEFAULT_MIMO_BASE_URL}/chat/completions"
 DEFAULT_MIMO_MODEL = "mimo-v2.5-pro"
 
 STRATEGY_FIELDS = (
@@ -60,16 +65,16 @@ class MimoConfig:
     @classmethod
     def from_env(cls, environ: Mapping[str, str] | None = None) -> "MimoConfig":
         env = os.environ if environ is None else environ
-        api_key = (env.get("MIMO_API_KEY") or env.get("XIAOMI_API_KEY") or "").strip()
+        api_key = (env.get("XIAOMI_API_KEY") or env.get("MIMO_API_KEY") or "").strip()
         if not api_key:
-            raise MimoConfigError("Missing MIMO_API_KEY or XIAOMI_API_KEY in the local environment.")
+            raise MimoConfigError("Missing XIAOMI_API_KEY or MIMO_API_KEY in the local environment.")
 
-        chat_url = (env.get("MIMO_CHAT_COMPLETIONS_URL") or "").strip()
+        chat_url = (env.get("XIAOMI_CHAT_COMPLETIONS_URL") or env.get("MIMO_CHAT_COMPLETIONS_URL") or "").strip()
         if not chat_url:
-            base_url = (env.get("MIMO_BASE_URL") or "").strip().rstrip("/")
-            chat_url = f"{base_url}/chat/completions" if base_url else DEFAULT_MIMO_CHAT_URL
+            base_url = (env.get("XIAOMI_BASE_URL") or env.get("MIMO_BASE_URL") or DEFAULT_MIMO_BASE_URL).strip()
+            chat_url = build_chat_url(base_url)
 
-        model = (env.get("MIMO_MODEL") or DEFAULT_MIMO_MODEL).strip()
+        model = (env.get("XIAOMI_MODEL") or env.get("MIMO_MODEL") or DEFAULT_MIMO_MODEL).strip()
         return cls(api_key=api_key, chat_url=chat_url, model=model)
 
 
@@ -78,11 +83,12 @@ def get_mimo_status(environ: Mapping[str, str] | None = None) -> dict[str, Any]:
     try:
         config = MimoConfig.from_env(env)
     except MimoConfigError as exc:
+        base_url = (env.get("XIAOMI_BASE_URL") or env.get("MIMO_BASE_URL") or DEFAULT_MIMO_BASE_URL).strip()
         return {
             "configured": False,
             "api_key": "missing",
-            "model": (env.get("MIMO_MODEL") or DEFAULT_MIMO_MODEL).strip(),
-            "chat_url": (env.get("MIMO_CHAT_COMPLETIONS_URL") or DEFAULT_MIMO_CHAT_URL).strip(),
+            "model": (env.get("XIAOMI_MODEL") or env.get("MIMO_MODEL") or DEFAULT_MIMO_MODEL).strip(),
+            "chat_url": (env.get("XIAOMI_CHAT_COMPLETIONS_URL") or env.get("MIMO_CHAT_COMPLETIONS_URL") or build_chat_url(base_url)).strip(),
             "error": str(exc),
         }
 
@@ -163,6 +169,88 @@ def build_mimo_payload(request: str, baseline_spec: dict[str, Any], model: str) 
 
 
 def post_json(url: str, headers: dict[str, str], payload: dict[str, Any], timeout_seconds: float) -> dict[str, Any]:
+    try:
+        return post_json_requests(url, headers, payload, timeout_seconds)
+    except ImportError:
+        return post_json_urllib(url, headers, payload, timeout_seconds)
+    except MimoResponseError as exc:
+        if "MiMo request failed:" not in str(exc):
+            raise
+        try:
+            return post_json_curl(url, headers, payload, timeout_seconds)
+        except MimoResponseError:
+            raise
+
+
+def post_json_requests(url: str, headers: dict[str, str], payload: dict[str, Any], timeout_seconds: float) -> dict[str, Any]:
+    import requests
+
+    api_key = headers.get("api-key", "")
+    try:
+        response = requests.post(url, headers=headers, json=payload, timeout=timeout_seconds)
+    except requests.RequestException as exc:
+        raise MimoResponseError(f"MiMo request failed: {exc}") from exc
+
+    if response.status_code >= 400:
+        raise MimoResponseError(f"MiMo HTTP {response.status_code}: {redact_secret(response.text, api_key)}")
+
+    try:
+        return response.json()
+    except ValueError as exc:
+        raise MimoResponseError("MiMo returned non-JSON HTTP response.") from exc
+
+
+def post_json_curl(url: str, headers: dict[str, str], payload: dict[str, Any], timeout_seconds: float) -> dict[str, Any]:
+    curl = shutil.which("curl.exe") or shutil.which("curl")
+    if not curl:
+        raise MimoResponseError("MiMo request failed and curl fallback is unavailable.")
+
+    api_key = headers.get("api-key", "")
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".json", delete=False) as body_file:
+        json.dump(payload, body_file, ensure_ascii=False)
+        body_path = Path(body_file.name)
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".json", delete=False) as response_file:
+        response_path = Path(response_file.name)
+
+    try:
+        config = build_curl_config(url, headers, body_path, response_path)
+        completed = subprocess.run(
+            [curl, "--config", "-"],
+            input=config,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=timeout_seconds,
+            check=False,
+        )
+    finally:
+        try:
+            body_path.unlink()
+        except OSError:
+            pass
+
+    try:
+        response_text = response_path.read_text(encoding="utf-8")
+    finally:
+        try:
+            response_path.unlink()
+        except OSError:
+            pass
+
+    if completed.returncode != 0:
+        message = response_text.strip() or (completed.stderr or "").strip() or (completed.stdout or "").strip()
+        raise MimoResponseError(f"MiMo curl fallback failed: {redact_secret(message, api_key)}")
+
+    try:
+        data = json.loads(response_text)
+    except json.JSONDecodeError as exc:
+        raise MimoResponseError("MiMo returned non-JSON HTTP response.") from exc
+    if isinstance(data, dict) and "error" in data:
+        raise MimoResponseError(f"MiMo error: {redact_secret(response_text, api_key)}")
+    return data
+
+
+def post_json_urllib(url: str, headers: dict[str, str], payload: dict[str, Any], timeout_seconds: float) -> dict[str, Any]:
     api_key = headers.get("api-key", "")
     request = urllib.request.Request(
         url=url,
@@ -239,14 +327,15 @@ def merge_strategy_spec(baseline_spec: dict[str, Any], model_spec: dict[str, Any
 def normalize_field_value(field: str, value: Any, fallback: Any) -> Any:
     if field in LIST_FIELDS:
         if isinstance(value, list):
-            return [str(item).strip() for item in value if str(item).strip()]
+            items = [str(item).strip() for item in value if str(item).strip()]
+            return items if items else fallback
         if isinstance(value, str) and value.strip():
             return [value.strip()]
         return fallback
 
     if field == "horizon_days":
         if value is None:
-            return None
+            return fallback
         try:
             number = int(value)
         except (TypeError, ValueError):
@@ -268,6 +357,34 @@ def normalize_execution_mode(value: str) -> str:
     if value in {"workflow", "agent", "needs_clarification"}:
         return value
     return "needs_clarification"
+
+
+def build_chat_url(base_url: str) -> str:
+    url = base_url.strip().rstrip("/")
+    if not url:
+        return DEFAULT_MIMO_CHAT_URL
+    if url.endswith("/chat/completions"):
+        return url
+    return f"{url}/chat/completions"
+
+
+def build_curl_config(url: str, headers: dict[str, str], body_path: Path, response_path: Path) -> str:
+    lines = [
+        "silent",
+        "show-error",
+        "fail-with-body",
+        'request = "POST"',
+        f'url = "{escape_curl_config(url)}"',
+        f'data-binary = "@{escape_curl_config(body_path.as_posix())}"',
+        f'output = "{escape_curl_config(response_path.as_posix())}"',
+    ]
+    for name, value in headers.items():
+        lines.append(f'header = "{escape_curl_config(f"{name}: {value}")}"')
+    return "\n".join(lines) + "\n"
+
+
+def escape_curl_config(value: str) -> str:
+    return value.replace("\\", "\\\\").replace('"', '\\"')
 
 
 def redact_secret(message: str, secret: str) -> str:

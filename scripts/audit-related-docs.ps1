@@ -176,6 +176,8 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
 Require-Contains "docs/product/security-and-secrets.md" $securityPlan @(
     "MIMO_API_KEY",
     "XIAOMI_API_KEY",
+    "XIAOMI_BASE_URL",
+    "XIAOMI_MODEL",
     "MIMO_CHAT_COMPLETIONS_URL",
     "MX_APIKEY",
     "check-secrets.ps1",
@@ -185,7 +187,8 @@ Require-Contains "docs/product/security-and-secrets.md" $securityPlan @(
 Require-Contains ".env.example" $envExample @(
     "MIMO_API_KEY=your_mimo_api_key_from_hermes",
     "XIAOMI_API_KEY=your_mimo_api_key_from_hermes",
-    "MIMO_CHAT_COMPLETIONS_URL=https://api.xiaomimimo.com/v1/chat/completions",
+    "XIAOMI_BASE_URL=https://token-plan-sgp.xiaomimimo.com/v1",
+    "XIAOMI_MODEL=mimo-v2.5-pro",
     "MX_APIKEY=your_mx_apikey_from_hermes"
 )
 Require-Contains ".gitignore" $gitignore @("!.env.example")
