@@ -41,6 +41,7 @@ $seriesPlan = Read-RepoFile "docs/series-plan.md"
 $documentGraph = Read-RepoFile "docs/document-graph.md"
 $resources = Read-RepoFile "resources/README.md"
 $hook = Read-RepoFile "hooks/content-update.md"
+$todo = Read-RepoFile "TODO.md"
 
 $requiredDirectoryReadmes = @(
     "docs/readings/README.md",
@@ -77,6 +78,9 @@ foreach ($index in 1..12) {
 if ($readme -notlike "*docs/document-graph.md*") {
     Add-Failure "README.md does not link docs/document-graph.md"
 }
+if ($readme -notlike "*TODO.md*") {
+    Add-Failure "README.md does not link TODO.md"
+}
 if ($resources -notlike "*datawhalechina/Agent-Learning-Hub*") {
     Add-Failure "resources/README.md does not record Agent-Learning-Hub"
 }
@@ -85,6 +89,15 @@ if ($seriesPlan -notlike "*Agent-Learning-Hub*") {
 }
 if ($hook -notlike "*audit-related-docs.ps1*") {
     Add-Failure "hooks/content-update.md does not require audit-related-docs.ps1"
+}
+if ($hook -notlike "*TODO.md*") {
+    Add-Failure "hooks/content-update.md does not mention TODO.md"
+}
+if ($documentGraph -notlike "*TODO.md*") {
+    Add-Failure "docs/document-graph.md does not mention TODO.md"
+}
+if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
+    Add-Failure "TODO.md is missing one of the required board sections"
 }
 
 foreach ($doc in $requiredDirectoryReadmes) {

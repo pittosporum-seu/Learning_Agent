@@ -19,6 +19,14 @@ docs/readings/
 └── 08-agentbench-evals-safety.md
 ```
 
+## 当前进度
+
+| 序号 | 资料 | 状态 |
+| --- | --- | --- |
+| 01 | [Anthropic: Building Effective Agents](01-anthropic-building-effective-agents.md) | 模板已建立 |
+| 02 | [OpenAI: A Practical Guide to Building Agents](02-openai-practical-guide-to-agents.md) | 模板已建立 |
+| 03 | [OpenAI Agents SDK](03-openai-agents-sdk.md) | 模板已建立 |
+
 ## 笔记模板
 
 ```text
@@ -37,4 +45,3 @@ docs/readings/
 - 优先读官方文档、经典论文和高质量工程文章。
 - 不追求全文翻译，重点记录可复用观点。
 - 每篇精读都要能反向连接到 `Agent基础知识` 系列中的一个或多个主题。
-

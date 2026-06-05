@@ -69,7 +69,12 @@
 ```text
 .
 ├── README.md
+├── TODO.md
 ├── roadmap.md
+├── .github/
+│   └── ISSUE_TEMPLATE/
+│       ├── config.yml
+│       └── task.md
 ├── docs/
 │   ├── README.md
 │   ├── document-graph.md
@@ -114,6 +119,7 @@
 - 所有实验尽量可运行、可复现、可测试。
 - 避免把 Agent 神秘化，优先讨论边界、成本和可靠性。
 - 新增或重写文章后按 `hooks/content-update.md` 同步导航、更新文档图，并运行内容检查和相关文档审核。
+- 当前待办统一维护在 [TODO.md](TODO.md)，需要公开协作时再转成 GitHub Issue。
 
 ## 推荐阅读
 

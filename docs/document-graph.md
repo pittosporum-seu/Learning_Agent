@@ -24,6 +24,7 @@ flowchart TD
     B --> X3["工程清单 engineering"]
     B --> X4["Skills 示例"]
     B --> X5["Labs 实验"]
+    B --> X6["TODO.md 待办板"]
 
     S1 --> D01["01 Workflow vs Agent"]
     S1 --> D02["02 Agent Loop"]
@@ -72,6 +73,7 @@ flowchart LR
 ```mermaid
 flowchart TD
     A["新增或重写文章"] --> B["hooks/content-update.md"]
+    T["新增或完成待办"] --> B
     B --> C["同步 README.md"]
     B --> D["同步 docs/foundations/README.md"]
     B --> E["同步 docs/series-plan.md"]
@@ -79,6 +81,7 @@ flowchart TD
     B --> G["同步 docs/document-graph.md"]
     B --> H["同步 resources/README.md"]
     B --> O["同步 docs/readings / patterns / engineering / skills"]
+    B --> P["同步 TODO.md"]
 
     B --> I["scripts/check-content.ps1"]
     B --> J["scripts/audit-related-docs.ps1"]
@@ -117,3 +120,4 @@ flowchart TD
 | 工程清单 | [engineering/](engineering/) | 管理权限、Trace、Eval、安全、成本等上线检查项。 |
 | 实践实验 | [../labs/](../labs/) | 承接基础文章，补最小可运行实验。 |
 | Skill 示例 | [../skills/](../skills/) | 把重复流程沉淀成 `SKILL.md` 示例。 |
+| 待办机制 | [../TODO.md](../TODO.md) | 维护当前阶段任务、优先级、产出和验收标准。 |

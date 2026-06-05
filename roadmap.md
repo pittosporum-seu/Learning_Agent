@@ -25,6 +25,7 @@
 - [ ] LangGraph
 - [ ] LlamaIndex
 - [ ] AutoGen
+- [x] 建立第一批 readings 精读模板
 
 ## 3. 实践实验
 
@@ -54,7 +55,7 @@
 - [x] 建立 patterns 设计模式目录
 - [x] 建立 skills 示例目录
 - [x] 将扩展目录接入 README、文档图和审核脚本
-- [ ] 为 readings 补第一批精读模板
+- [x] 为 readings 补第一批精读模板
 - [ ] 为 labs 补最小实验骨架
 - [ ] 为 skills 补第一批 `SKILL.md`
 
@@ -72,6 +73,8 @@
 - [x] 新增文章时复用 `hooks/content-update.md`
 - [x] 新增文档图
 - [x] 新增相关文档审核脚本
+- [x] 建立仓库待办机制
+- [x] 新增 GitHub Issue 任务模板
 - [ ] 后续重写文章时同步审核文档图、资源索引和所有导航文件
 
 详见：[docs/series-plan.md](docs/series-plan.md)
