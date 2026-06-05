@@ -139,6 +139,7 @@
         gap: 10px;
         flex-wrap: wrap;
         margin-top: 12px;
+        align-items: center;
       }
 
       .button {
@@ -183,6 +184,12 @@
 
       .sample:hover {
         border-color: var(--accent);
+      }
+
+      .parse-status {
+        color: var(--muted);
+        font-size: 12px;
+        min-height: 18px;
       }
 
       .summary-grid {
@@ -330,6 +337,7 @@
               <button class="button primary" id="parseButton">解析</button>
               <button class="button" id="resetButton">恢复默认</button>
               <button class="button" id="copyJsonButton">复制 JSON</button>
+              <span class="parse-status" id="parseStatus">输入后会自动解析</span>
             </div>
             <div class="samples" id="samples"></div>
           </div>
@@ -357,6 +365,11 @@
                 <div class="metric-label">输出</div>
                 <div class="metric-value" id="outputValue">待解析</div>
               </div>
+            </div>
+
+            <div class="section">
+              <div class="section-title">当前已解析输入</div>
+              <div class="risk-note" id="parsedRequest">待解析</div>
             </div>
 
             <div class="section">
@@ -405,6 +418,9 @@
       const copyJsonButton = document.getElementById("copyJsonButton");
       const samplesNode = document.getElementById("samples");
       const jsonOutput = document.getElementById("jsonOutput");
+      const parseStatus = document.getElementById("parseStatus");
+      let parseTimer = null;
+      let parseSerial = 0;
 
       function renderSamples() {
         samplesNode.innerHTML = "";
@@ -464,6 +480,7 @@
         document.getElementById("themesValue").textContent =
           spec.themes.length ? spec.themes.join(", ") : "未确认";
         document.getElementById("outputValue").textContent = spec.output;
+        document.getElementById("parsedRequest").textContent = spec.original_request;
         document.getElementById("riskDisclosure").textContent = spec.risk_disclosure;
 
         renderPills("candidateRules", spec.candidate_rules, "agent");
@@ -473,25 +490,46 @@
       }
 
       async function parseRequest() {
+        const requestText = input.value.trim();
+        if (!requestText) {
+          parseStatus.textContent = "请输入策略";
+          return;
+        }
+
+        const currentSerial = ++parseSerial;
         parseButton.disabled = true;
         parseButton.textContent = "解析中";
+        parseStatus.textContent = "解析中";
         try {
           const response = await fetch("/api/parse", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ request: input.value }),
+            body: JSON.stringify({ request: requestText }),
           });
           const payload = await response.json();
           if (!response.ok || payload.error) {
             throw new Error(payload.error || "请求失败");
           }
+          if (currentSerial !== parseSerial) {
+            return;
+          }
           renderSpec(payload.strategy_spec);
+          parseStatus.textContent = "已解析当前输入";
         } catch (error) {
           jsonOutput.textContent = String(error);
+          parseStatus.textContent = "解析失败";
         } finally {
-          parseButton.disabled = false;
-          parseButton.textContent = "解析";
+          if (currentSerial === parseSerial) {
+            parseButton.disabled = false;
+            parseButton.textContent = "解析";
+          }
         }
+      }
+
+      function scheduleParse() {
+        parseStatus.textContent = "等待输入停止";
+        window.clearTimeout(parseTimer);
+        parseTimer = window.setTimeout(parseRequest, 450);
       }
 
       resetButton.addEventListener("click", () => {
@@ -500,6 +538,13 @@
       });
 
       parseButton.addEventListener("click", parseRequest);
+      input.addEventListener("input", scheduleParse);
+      input.addEventListener("keydown", (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+          event.preventDefault();
+          parseRequest();
+        }
+      });
       copyJsonButton.addEventListener("click", async () => {
         await navigator.clipboard.writeText(jsonOutput.textContent);
         copyJsonButton.textContent = "已复制";
