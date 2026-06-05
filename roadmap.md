@@ -15,7 +15,7 @@
 - [x] Subagent / Multi-Agent
 - [x] Skills
 - [x] Browser / Computer Use Agent
-- [ ] Evaluation / Trace / Safety
+- [x] Evaluation / Trace / Safety
 
 ## 2. 资料精读
 
@@ -51,12 +51,12 @@
 - [x] 建立 12 篇文章总规划
 - [x] 明确三组写作节奏
 - [x] 固定每篇文章结构
-- [ ] 为第 12 篇补充正式文章正文
+- [x] 完成 12 篇基础文章正文
 
 ## 6. 维护钩子
 
 - [x] 新增内容更新钩子
 - [x] 新增内容检查脚本
-- [ ] 后续新增文章时复用 `hooks/content-update.md`
+- [x] 新增文章时复用 `hooks/content-update.md`
 
 详见：[docs/series-plan.md](docs/series-plan.md)

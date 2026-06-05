@@ -5,7 +5,7 @@
 目标不是一上来堆框架，而是把 Agent 学习拆成几件能长期沉淀的事：
 
 - 分清什么时候该用 Workflow，什么时候才需要 Agent。
-- 理解 Agent Loop、Tool Use、RAG、Memory、MCP、Harness、Coding Agent、Subagent、Skills、Browser / Computer Use Agent 这些基础模块。
+- 理解 Agent Loop、Tool Use、RAG、Memory、MCP、Harness、Coding Agent、Subagent、Skills、Browser / Computer Use Agent、Evaluation / Trace / Safety 这些基础模块。
 - 逐步补充可运行实验，而不是只停留在概念解释。
 - 沉淀可复用的阅读笔记、案例分析和工程清单。
 
@@ -28,6 +28,7 @@
 | 09 | Subagent / Multi-Agent | [多 Agent 不是聊天群，而是上下文隔离和任务分工](docs/foundations/09-subagent-multi-agent.md) |
 | 10 | Skills | [把提示词升级成可复用能力包](docs/foundations/10-skills.md) |
 | 11 | Browser / Computer Use Agent | [当 Agent 开始操作网页和电脑](docs/foundations/11-browser-computer-use-agent.md) |
+| 12 | Evaluation / Trace / Safety | [没有评测和权限边界的 Agent 只是 Demo](docs/foundations/12-evaluation-trace-safety.md) |
 
 ### Stage 2: 经典资料精读
 
@@ -81,7 +82,8 @@
 │       ├── 08-coding-agent.md
 │       ├── 09-subagent-multi-agent.md
 │       ├── 10-skills.md
-│       └── 11-browser-computer-use-agent.md
+│       ├── 11-browser-computer-use-agent.md
+│       └── 12-evaluation-trace-safety.md
 ├── hooks/
 │   └── content-update.md
 ├── labs/
