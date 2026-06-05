@@ -11,7 +11,7 @@
 默认示例策略：
 
 ```text
-找最近 60 日趋势较强、回撤较低、没有明显负面新闻的半导体和人工智能方向股票，生成候选观察池。
+找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。
 ```
 
 ## 规划目录
@@ -23,11 +23,6 @@ labs/
 │   ├── investment_research_case/
 │   └── testing/
 ├── 01-strategy-intake/
-│   ├── README.md
-│   ├── demo/
-│   ├── src/
-│   ├── tests/
-│   └── web/
 ├── 02-strategy-agent-loop/
 ├── 03-finance-tool-use-mock/
 ├── 04-research-rag-basic/
@@ -41,12 +36,16 @@ labs/
 └── 12-evaluation-safety/
 ```
 
-当前已实现 Lab 01，后续按 Lab 02、Lab 03 继续推进。
-
 ## 当前状态
 
 - [x] [Lab 01: Strategy Intake](01-strategy-intake/README.md)
-- [ ] Lab 02: Strategy Agent Loop
+  - 规则基线解析。
+  - MiMo 真实模型解析模式。
+  - 本地 Web demo 和测试。
+- [x] [Lab 02: Strategy Agent Loop](02-strategy-agent-loop/README.md)
+  - 最小 Observe-Decide-Act Loop。
+  - 根据 `StrategySpec` 生成 mock 投研计划。
+  - 保留 trace、阻断和 max-turn 保护。
 - [ ] Lab 03: Finance Tool Use Mock
 - [ ] Lab 04-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进
 
@@ -70,10 +69,10 @@ http://127.0.0.1:8765/
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake
 ```
 
-传入自定义策略：
+运行 Lab 02 demo：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake -Request "筛选市盈率小于20的银行股。"
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 02-strategy-agent-loop
 ```
 
 运行全部 Lab 测试：
@@ -90,8 +89,10 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 01-strat
 
 ## 统一要求
 
-- 每个 Lab 先支持 mock，真实 API 接入放到显式开关之后。
+- 每个 Lab 先支持 mock，真实 API 接入必须放在显式开关之后。
+- 真实模型解析可以用于语义补全，但测试必须能在无 key 情况下通过。
 - 所有候选股票输出都必须带风险提示。
 - 真实密钥只从环境变量读取，不写入仓库。
 - 涉及自选股、模拟组合、Skill 启用的动作必须保留人工确认。
 - 每个可运行 Lab 都应提供 demo 和 tests，并接入统一测试入口。
+- 每次新增 Lab 后，同步更新 README、文档图、TODO 和相关产品文档。

@@ -1,27 +1,26 @@
 # 个性化投研 Agent Lab 总计划
 
-这组 Lab 用一个连续场景贯穿 12 篇 `Agent基础知识`：构建一个个性化投资调研系统。每个 Lab 都应该能独立运行，但它们共同拼成一个从自然语言策略到证据化报告、Skill 固化和模拟验证的系统。
+这组 Lab 用一个连续场景贯穿 12 篇 `Agent基础知识`：构建一个个性化投资调研系统。
 
-## 共享案例
-
-所有 Lab 统一围绕这个案例展开：
-
-```text
-用户希望根据自己的自然语言策略，生成投研流程规划，筛出候选股票，补充行情、财务、资讯证据，形成观察池；当流程稳定后，沉淀成可复用 Skill。
-```
+愿景是：用户用自然语言描述策略，系统生成投研流程规划，逐步调用 Skills 执行；当某个流程稳定后，再固化为可复用 Skill。模型侧采用小米 MiMo，财经信息源逐步接入东方财富妙想 Skills。测试默认使用 mock，真实 key 只从 Hermes 注入到环境变量。
 
 默认示例策略：
 
 ```text
-找最近 60 日趋势较强、回撤较低、没有明显负面新闻的半导体和人工智能方向股票，生成候选观察池。
+找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。
 ```
 
-共享材料规划放在 `labs/shared/investment_research_case/`：
+## 共享案例材料
+
+共享材料放在 `labs/shared/investment_research_case/`：
 
 - `strategy_request.md`: 用户策略样例。
 - `strategy_policy.md`: 策略解析和风险边界。
 - `risk_policy.md`: 输出风险提示和禁用场景。
 - `user_profile.md`: 用户偏好、风险承受能力、排除条件。
+
+后续 Lab 会补充：
+
 - `mock_universe.csv`: mock 股票池。
 - `mock_prices.csv`: mock 行情数据。
 - `mock_news.md`: mock 新闻、公告、研报摘要。
@@ -29,22 +28,22 @@
 
 ## Lab 路线
 
-| Lab | 名称 | 对应文章 | 目标产出 |
-| --- | --- | --- | --- |
-| 01 | Strategy Intake | 01 Workflow vs Agent | 自然语言策略转 `StrategySpec` |
-| 02 | Strategy Agent Loop | 02 Agent Loop | 用循环执行策略理解、计划和下一步选择 |
-| 03 | Finance Tool Use Mock | 03 Tool Use | 用 mock 工具模拟 `mx-xuangu`、`mx-data`、`mx-search` |
-| 04 | Research RAG Basic | 04 RAG | 检索策略规则、风险规则和投研模板 |
-| 05 | User Preference Memory | 05 Memory | 记住用户风险偏好、排除行业、候选数量 |
-| 06 | Skill Registry | 06 MCP / 10 Skills | 建立 Skill 注册表和能力选择机制 |
-| 07 | Skill Generation | 10 Skills | 把稳定投研流程生成 `SKILL.md` 草稿 |
-| 08 | MX Skills Adapter | 03 Tool Use / 06 MCP | 默认 mock，有 `MX_APIKEY` 时接真实妙想 Skills |
-| 09 | Research Planner | 07 Agent Harness | 生成投研 DAG 并管理步骤状态 |
-| 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成带来源、时间、证据和风险提示的报告 |
-| 11 | Simulation Portfolio | 11 Browser / Computer Use Agent / Safety | 用 mock 或 `mx-moni` 风格接口做模拟组合验证 |
-| 12 | Evaluation & Safety | 12 Evaluation / Trace / Safety | 检查密钥泄露、无证据推荐、风险提示缺失等问题 |
+| Lab | 名称 | 对应文章 | 目标产出 | 状态 |
+| --- | --- | --- | --- | --- |
+| 01 | Strategy Intake | 01 Workflow vs Agent | 自然语言策略转 `StrategySpec`，支持规则基线和 MiMo 解析 | 已实现 |
+| 02 | Strategy Agent Loop | 02 Agent Loop | Observe-Decide-Act 循环、trace、阻断、投研计划生成 | 已实现 |
+| 03 | Finance Tool Use Mock | 03 Tool Use | mock `mx-xuangu`、`mx-data`、`mx-search` 的工具调用 | 下一步 |
+| 04 | Research RAG Basic | 04 RAG | 检索策略规则、风险规则和报告模板 | 计划中 |
+| 05 | User Preference Memory | 05 Memory | 记住用户风险偏好、排除行业、候选数量 | 计划中 |
+| 06 | Skill Registry | 06 MCP / 10 Skills | 建立 Skill 注册表和能力选择机制 | 计划中 |
+| 07 | Skill Generation | 10 Skills | 把稳定投研流程生成 `SKILL.md` 草稿 | 计划中 |
+| 08 | MX Skills Adapter | 03 Tool Use / 06 MCP | mock 与真实东方财富妙想 Skills 适配 | 计划中 |
+| 09 | Research Planner | 07 Agent Harness | 生成投研 DAG 并管理步骤状态 | 计划中 |
+| 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成带来源、时间、证据和风险提示的报告 | 计划中 |
+| 11 | Simulation Portfolio | 11 Browser / Computer Use Agent / Safety | 用 mock 或 `mx-moni` 风格接口做模拟组合验证 | 计划中 |
+| 12 | Evaluation & Safety | 12 Evaluation / Trace / Safety | 检查密钥泄露、无证据推荐、风险提示缺失 | 计划中 |
 
-## 每个 Lab 的统一结构
+## 统一结构
 
 每个 Lab 目录建议包含：
 
@@ -64,30 +63,28 @@ outputs/
 - 输入是什么。
 - 输出是什么。
 - 如何运行 mock 版本。
-- 如何运行 demo。
-- 是否提供本地 web demo。
-- 如何切换真实数据源。
+- 是否有本地 web demo。
+- 如何切换真实数据源或真实模型。
 - 哪些操作需要人工确认。
 - 验收标准是什么。
 
 ## Lab 01: Strategy Intake
 
-状态：已实现第一版 mock 解析器和 demo，见 `labs/01-strategy-intake/`。
-
 目标：把用户自然语言策略解析成结构化 `StrategySpec`。
 
 关键点：
 
-- 先判断这是固定 Workflow 还是需要 Agent。
-- 把模糊条件拆成市场、主题、时间窗口、候选规则、风险过滤、输出要求。
-- 不在这一层调用真实财经数据。
+- 规则基线用于稳定字段、回归测试和边界拦截。
+- MiMo 模式读取 `MIMO_API_KEY` 或 `XIAOMI_API_KEY`，真实调用模型做语义补全。
+- 不在这一层调用真实财经数据，也不生成个股名单。
 
 验收标准：
 
 - 给定策略文本，可以输出稳定 JSON。
 - 缺少关键字段时能提出待确认问题。
-- 输出中不出现股票推荐结论。
-- 可以通过 `scripts/run-lab-demo.ps1` 运行 demo，通过 `scripts/run-lab-tests.ps1` 跑回归测试。
+- 高风险请求能转为风险边界提示。
+- Web demo 能在 `http://127.0.0.1:8765/` 展示规则基线和 MiMo 两种模式。
+- 测试不依赖真实 API key。
 
 ## Lab 02: Strategy Agent Loop
 
@@ -96,13 +93,16 @@ outputs/
 关键点：
 
 - 每一轮只做一个清晰动作。
-- 状态里保留 `StrategySpec`、待办步骤、已完成步骤和错误。
-- 失败时能回退到人工确认或重新规划。
+- 状态里保留 `StrategySpec`、研究计划、trace、最终输出和错误。
+- 不完整或不安全请求会阻断并返回追问。
+- 有 max-turn 保护，避免循环失控。
 
 验收标准：
 
 - mock 运行能完成一条策略的计划生成。
 - 日志可追踪每一步为什么发生。
+- workflow 请求和 agent 请求会生成不同计划。
+- 风险请求不会进入投研执行计划。
 
 ## Lab 03: Finance Tool Use Mock
 
@@ -119,7 +119,7 @@ outputs/
 
 - 工具入参、出参稳定。
 - 工具失败能被 Agent 捕获。
-- 测试不依赖真实 API Key。
+- 测试不依赖真实 API key。
 
 ## Lab 04: Research RAG Basic
 
@@ -127,9 +127,9 @@ outputs/
 
 关键点：
 
-- 先用本地文本和简单检索实现，不急着引入复杂向量库。
+- 先用本地文本和简单检索实现。
 - 报告必须引用检索到的规则。
-- 当资料不足时输出“证据不足”，而不是补脑。
+- 资料不足时输出“证据不足”，不补脑。
 
 验收标准：
 
@@ -159,7 +159,7 @@ outputs/
 
 - Skill 元数据包含名称、触发条件、输入、输出、禁用场景。
 - 投研系统先注册 mock Skill，再映射到东方财富妙想 Skills。
-- 不把所有事情都塞进一个大 Prompt。
+- 不把所有事情都塞进一个大 prompt。
 
 验收标准：
 
@@ -183,7 +183,7 @@ outputs/
 
 ## Lab 08: MX Skills Adapter
 
-目标：把 mock 工具和真实东方财富妙想 Skills 放到同一个适配层下。
+目标：把 mock 工具和真实东方财富妙想 Skills 放到同一适配层下。
 
 关键点：
 

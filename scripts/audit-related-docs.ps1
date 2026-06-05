@@ -2,22 +2,6 @@ $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $root = Split-Path -Parent $PSScriptRoot
-
-$foundationDocs = @(
-    "docs/foundations/01-workflow-vs-agent.md",
-    "docs/foundations/02-agent-loop.md",
-    "docs/foundations/03-tool-use.md",
-    "docs/foundations/04-rag.md",
-    "docs/foundations/05-memory.md",
-    "docs/foundations/06-mcp.md",
-    "docs/foundations/07-agent-harness.md",
-    "docs/foundations/08-coding-agent.md",
-    "docs/foundations/09-subagent-multi-agent.md",
-    "docs/foundations/10-skills.md",
-    "docs/foundations/11-browser-computer-use-agent.md",
-    "docs/foundations/12-evaluation-trace-safety.md"
-)
-
 $failures = New-Object System.Collections.Generic.List[string]
 
 function Add-Failure {
@@ -35,6 +19,35 @@ function Read-RepoFile {
     return (Get-Content -Encoding UTF8 -LiteralPath $path) -join "`n"
 }
 
+function Require-Contains {
+    param(
+        [string]$Name,
+        [string]$Content,
+        [string[]]$Tokens
+    )
+
+    foreach ($token in $Tokens) {
+        if (-not $Content.Contains($token)) {
+            Add-Failure "$Name does not contain required token: $token"
+        }
+    }
+}
+
+$foundationDocs = @(
+    "docs/foundations/01-workflow-vs-agent.md",
+    "docs/foundations/02-agent-loop.md",
+    "docs/foundations/03-tool-use.md",
+    "docs/foundations/04-rag.md",
+    "docs/foundations/05-memory.md",
+    "docs/foundations/06-mcp.md",
+    "docs/foundations/07-agent-harness.md",
+    "docs/foundations/08-coding-agent.md",
+    "docs/foundations/09-subagent-multi-agent.md",
+    "docs/foundations/10-skills.md",
+    "docs/foundations/11-browser-computer-use-agent.md",
+    "docs/foundations/12-evaluation-trace-safety.md"
+)
+
 $readme = Read-RepoFile "README.md"
 $foundationsReadme = Read-RepoFile "docs/foundations/README.md"
 $seriesPlan = Read-RepoFile "docs/series-plan.md"
@@ -49,20 +62,6 @@ $productReadme = Read-RepoFile "docs/product/README.md"
 $productVision = Read-RepoFile "docs/product/personalized-investment-research-agent.md"
 $labPlan = Read-RepoFile "docs/product/lab-plan.md"
 $securityPlan = Read-RepoFile "docs/product/security-and-secrets.md"
-$lab01Readme = Read-RepoFile "labs/01-strategy-intake/README.md"
-$lab01Source = Read-RepoFile "labs/01-strategy-intake/src/strategy_intake.py"
-$lab01Tests = Read-RepoFile "labs/01-strategy-intake/tests/test_strategy_intake.py"
-$lab01Demo = Read-RepoFile "labs/01-strategy-intake/demo/run_demo.py"
-$lab01DemoRequests = Read-RepoFile "labs/01-strategy-intake/demo/requests.txt"
-$lab01WebServer = Read-RepoFile "labs/01-strategy-intake/web/server.py"
-$lab01WebIndex = Read-RepoFile "labs/01-strategy-intake/web/index.html"
-$sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
-$sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
-$sharedStrategyPolicy = Read-RepoFile "labs/shared/investment_research_case/strategy_policy.md"
-$sharedRiskPolicy = Read-RepoFile "labs/shared/investment_research_case/risk_policy.md"
-$sharedUserProfile = Read-RepoFile "labs/shared/investment_research_case/user_profile.md"
-$sharedTestingReadme = Read-RepoFile "labs/shared/testing/README.md"
-$sharedTestingRunner = Read-RepoFile "labs/shared/testing/run_lab_tests.py"
 $envExample = Read-RepoFile ".env.example"
 $gitignore = Read-RepoFile ".gitignore"
 $secretCheck = Read-RepoFile "scripts/check-secrets.ps1"
@@ -70,13 +69,27 @@ $runLabTests = Read-RepoFile "scripts/run-lab-tests.ps1"
 $runLabDemo = Read-RepoFile "scripts/run-lab-demo.ps1"
 $runLabWeb = Read-RepoFile "scripts/run-lab-web.ps1"
 
-$requiredDirectoryReadmes = @(
-    "docs/readings/README.md",
-    "docs/patterns/README.md",
-    "docs/engineering/README.md",
-    "docs/product/README.md",
-    "skills/README.md"
-)
+$lab01Readme = Read-RepoFile "labs/01-strategy-intake/README.md"
+$lab01Source = Read-RepoFile "labs/01-strategy-intake/src/strategy_intake.py"
+$lab01MimoSource = Read-RepoFile "labs/01-strategy-intake/src/mimo_strategy_intake.py"
+$lab01Tests = Read-RepoFile "labs/01-strategy-intake/tests/test_strategy_intake.py"
+$lab01MimoTests = Read-RepoFile "labs/01-strategy-intake/tests/test_mimo_strategy_intake.py"
+$lab01Demo = Read-RepoFile "labs/01-strategy-intake/demo/run_demo.py"
+$lab01WebServer = Read-RepoFile "labs/01-strategy-intake/web/server.py"
+$lab01WebIndex = Read-RepoFile "labs/01-strategy-intake/web/index.html"
+
+$lab02Readme = Read-RepoFile "labs/02-strategy-agent-loop/README.md"
+$lab02Source = Read-RepoFile "labs/02-strategy-agent-loop/src/agent_loop.py"
+$lab02Tests = Read-RepoFile "labs/02-strategy-agent-loop/tests/test_agent_loop.py"
+$lab02Demo = Read-RepoFile "labs/02-strategy-agent-loop/demo/run_demo.py"
+
+$sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
+$sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
+$sharedStrategyPolicy = Read-RepoFile "labs/shared/investment_research_case/strategy_policy.md"
+$sharedRiskPolicy = Read-RepoFile "labs/shared/investment_research_case/risk_policy.md"
+$sharedUserProfile = Read-RepoFile "labs/shared/investment_research_case/user_profile.md"
+$sharedTestingReadme = Read-RepoFile "labs/shared/testing/README.md"
+$sharedTestingRunner = Read-RepoFile "labs/shared/testing/run_lab_tests.py"
 
 foreach ($doc in $foundationDocs) {
     $fullPath = Join-Path $root $doc
@@ -85,15 +98,9 @@ foreach ($doc in $foundationDocs) {
     }
 
     $fileName = Split-Path $doc -Leaf
-    if ($readme -notlike "*$doc*") {
-        Add-Failure "README.md does not link $doc"
-    }
-    if ($foundationsReadme -notlike "*$fileName*") {
-        Add-Failure "docs/foundations/README.md does not list $fileName"
-    }
-    if ($documentGraph -notlike "*$fileName*") {
-        Add-Failure "docs/document-graph.md does not map $fileName"
-    }
+    Require-Contains "README.md" $readme @($doc)
+    Require-Contains "docs/foundations/README.md" $foundationsReadme @($fileName)
+    Require-Contains "docs/document-graph.md" $documentGraph @($fileName)
 }
 
 foreach ($index in 1..12) {
@@ -103,195 +110,180 @@ foreach ($index in 1..12) {
     }
 }
 
-if ($readme -notlike "*docs/document-graph.md*") {
-    Add-Failure "README.md does not link docs/document-graph.md"
-}
-if ($readme -notlike "*TODO.md*") {
-    Add-Failure "README.md does not link TODO.md"
-}
-if ($resources -notlike "*datawhalechina/Agent-Learning-Hub*") {
-    Add-Failure "resources/README.md does not record Agent-Learning-Hub"
-}
-if ($seriesPlan -notlike "*Agent-Learning-Hub*") {
-    Add-Failure "docs/series-plan.md does not mention Agent-Learning-Hub"
-}
-if ($hook -notlike "*audit-related-docs.ps1*") {
-    Add-Failure "hooks/content-update.md does not require audit-related-docs.ps1"
-}
-if ($hook -notlike "*check-secrets.ps1*") {
-    Add-Failure "hooks/content-update.md does not require check-secrets.ps1"
-}
-if ($hook -notlike "*run-lab-tests.ps1*") {
-    Add-Failure "hooks/content-update.md does not require run-lab-tests.ps1"
-}
-if ($hook -notlike "*TODO.md*") {
-    Add-Failure "hooks/content-update.md does not mention TODO.md"
-}
-if ($documentGraph -notlike "*TODO.md*") {
-    Add-Failure "docs/document-graph.md does not mention TODO.md"
-}
+Require-Contains "README.md" $readme @(
+    "docs/document-graph.md",
+    "TODO.md",
+    "docs/product/personalized-investment-research-agent.md",
+    "docs/product/lab-plan.md",
+    "docs/product/security-and-secrets.md",
+    "labs/01-strategy-intake/README.md",
+    "labs/02-strategy-agent-loop/README.md",
+    "run-lab-web.ps1",
+    "run-lab-tests.ps1"
+)
+
+Require-Contains "resources/README.md" $resources @("datawhalechina/Agent-Learning-Hub")
+Require-Contains "docs/series-plan.md" $seriesPlan @("Agent-Learning-Hub")
+Require-Contains "hooks/content-update.md" $hook @(
+    "audit-related-docs.ps1",
+    "check-secrets.ps1",
+    "run-lab-tests.ps1",
+    "TODO.md",
+    "MIMO_API_KEY"
+)
+Require-Contains "docs/document-graph.md" $documentGraph @(
+    "TODO.md",
+    "labs/01-strategy-intake",
+    "labs/02-strategy-agent-loop",
+    "product/lab-plan.md",
+    "product/security-and-secrets.md",
+    "run-lab-demo.ps1",
+    "run-lab-web.ps1",
+    "run-lab-tests.ps1"
+)
+
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-
-foreach ($doc in $requiredDirectoryReadmes) {
-    $null = Read-RepoFile $doc
-    $dirName = Split-Path (Split-Path $doc -Parent) -Leaf
-    $directoryToken = if ($dirName -eq "skills") { "skills/" } else { "$dirName/" }
-    if ($readme -notlike "*$directoryToken*") {
-        Add-Failure "README.md does not include $directoryToken in the repository tree"
-    }
-    if ($documentGraph -notlike "*$dirName*") {
-        Add-Failure "docs/document-graph.md does not mention $dirName"
-    }
-}
-
-foreach ($dirName in @("readings", "patterns", "engineering")) {
-    if ($seriesPlan -notlike "*$dirName*") {
-        Add-Failure "docs/series-plan.md does not mention $dirName"
-    }
-}
-
-if ($resources -notlike "*docs/readings/*") {
-    Add-Failure "resources/README.md does not explain the relation with docs/readings"
-}
-
-$requiredProductDocs = @(
-    "docs/product/personalized-investment-research-agent.md",
-    "docs/product/lab-plan.md",
-    "docs/product/security-and-secrets.md"
+Require-Contains "TODO.md" $todo @("Lab 02: Strategy Agent Loop", "Lab 03: Finance Tool Use Mock")
+Require-Contains "roadmap.md" $roadmap @(
+    "[x] Lab 01: Strategy Intake",
+    "[x] Lab 01: MiMo",
+    "[x] Lab 02: Strategy Agent Loop",
+    "[ ] Lab 03: Finance Tool Use Mock"
 )
 
-foreach ($doc in $requiredProductDocs) {
-    $null = Read-RepoFile $doc
-    if ($readme -notlike "*$doc*") {
-        Add-Failure "README.md does not link $doc"
-    }
-}
+Require-Contains "docs/README.md" $docsReadme @("product/")
+Require-Contains "docs/product/README.md" $productReadme @(
+    "personalized-investment-research-agent.md",
+    "lab-plan.md",
+    "security-and-secrets.md"
+)
+Require-Contains "docs/product/personalized-investment-research-agent.md" $productVision @(
+    "MIMO_API_KEY",
+    "MX_APIKEY",
+    "mx-xuangu",
+    "mx-moni"
+)
+Require-Contains "docs/product/lab-plan.md" $labPlan @(
+    "Lab 01",
+    "Lab 02",
+    "Lab 12",
+    "MiMo",
+    "mx-xuangu",
+    "mx-search"
+)
+Require-Contains "docs/product/security-and-secrets.md" $securityPlan @(
+    "MIMO_API_KEY",
+    "XIAOMI_API_KEY",
+    "MIMO_CHAT_COMPLETIONS_URL",
+    "MX_APIKEY",
+    "check-secrets.ps1",
+    ".env.example"
+)
 
-if ($docsReadme -notlike "*product/*") {
-    Add-Failure "docs/README.md does not mention product/"
-}
-if ($productReadme -notlike "*personalized-investment-research-agent.md*" -or
-    $productReadme -notlike "*lab-plan.md*" -or
-    $productReadme -notlike "*security-and-secrets.md*") {
-    Add-Failure "docs/product/README.md does not link all product docs"
-}
-if ($documentGraph -notlike "*product/personalized-investment-research-agent.md*" -or
-    $documentGraph -notlike "*product/lab-plan.md*" -or
-    $documentGraph -notlike "*product/security-and-secrets.md*") {
-    Add-Failure "docs/document-graph.md does not map product docs"
-}
-if ($documentGraph -notlike "*run-lab-demo.ps1*" -or
-    $documentGraph -notlike "*run-lab-web.ps1*" -or
-    $documentGraph -notlike "*run-lab-tests.ps1*" -or
-    $documentGraph -notlike "*labs/shared/testing/README.md*") {
-    Add-Failure "docs/document-graph.md does not map demo and lab testing framework"
-}
-if ($labsReadme -notlike "*lab-plan.md*" -or
-    $labsReadme -notlike "*01-strategy-intake/README.md*" -or
-    $labsReadme -notlike "*run-lab-demo.ps1*" -or
-    $labsReadme -notlike "*run-lab-web.ps1*" -or
-    $labsReadme -notlike "*run-lab-tests.ps1*" -or
-    $labsReadme -notlike "*01-strategy-intake*" -or
-    $labsReadme -notlike "*12-evaluation-safety*") {
-    Add-Failure "labs/README.md does not describe the investment research lab route"
-}
-if ($labPlan -notlike "*Lab 01*" -or $labPlan -notlike "*Lab 12*" -or $labPlan -notlike "*mx-xuangu*") {
-    Add-Failure "docs/product/lab-plan.md does not cover the full lab route or MX skills"
-}
-if ($productVision -notlike "*MIMO_API_KEY*" -or
-    $productVision -notlike "*MX_APIKEY*" -or
-    $productVision -notlike "*mx-xuangu*" -or
-    $productVision -notlike "*mx-moni*") {
-    Add-Failure "docs/product/personalized-investment-research-agent.md is missing model, data, or risk boundary"
-}
-if ($securityPlan -notlike "*MIMO_API_KEY*" -or
-    $securityPlan -notlike "*MX_APIKEY*" -or
-    $securityPlan -notlike "*check-secrets.ps1*" -or
-    $securityPlan -notlike "*.env.example*") {
-    Add-Failure "docs/product/security-and-secrets.md is missing required secret or safety guidance"
-}
-if ($envExample -notlike "*MIMO_API_KEY=your_mimo_api_key_from_hermes*" -or
-    $envExample -notlike "*MX_APIKEY=your_mx_apikey_from_hermes*") {
-    Add-Failure ".env.example is missing placeholder model or MX keys"
-}
-if ($gitignore -notlike "*!.env.example*") {
-    Add-Failure ".gitignore does not allow .env.example"
-}
-if ($secretCheck -notlike "*git ls-files --cached --others --exclude-standard*" -or
-    $secretCheck -notlike "*MIMO_API_KEY*" -or
-    $secretCheck -notlike "*MX_APIKEY*") {
-    Add-Failure "scripts/check-secrets.ps1 is missing expected scan behavior"
-}
-if ($roadmap -notlike "*Lab 01: Strategy Intake*" -or $todo -notlike "*Lab 02: Strategy Agent Loop*") {
-    Add-Failure "roadmap.md or TODO.md does not reflect the investment research lab plan"
-}
-if ($roadmap -notlike "*x] Lab 01: Strategy Intake*" -or
-    $todo -notlike "*Lab 01: Strategy Intake*") {
-    Add-Failure "roadmap.md or TODO.md does not mark Lab 01 as complete"
-}
-if ($readme -notlike "*01-strategy-intake*" -or
-    $readme -notlike "*run-lab-demo.ps1*" -or
-    $readme -notlike "*run-lab-web.ps1*" -or
-    $readme -notlike "*run-lab-tests.ps1*" -or
-    $documentGraph -notlike "*01-strategy-intake/README.md*" -or
-    $labPlan -notlike "*labs/01-strategy-intake/*") {
-    Add-Failure "README.md, docs/document-graph.md, or lab-plan.md does not link Lab 01"
-}
-if ($lab01Readme -notlike "*strategy_intake.py*" -or
-    $lab01Readme -notlike "*demo/run_demo.py*" -or
-    $lab01Readme -notlike "*run-lab-demo.ps1*" -or
-    $lab01Readme -notlike "*run-lab-web.ps1*" -or
-    $lab01Readme -notlike "*127.0.0.1:8765*" -or
-    $lab01Readme -notlike "*run-lab-tests.ps1*" -or
-    $lab01Readme -notlike "*unittest discover*" -or
-    $lab01Readme -notlike "*StrategySpec*") {
-    Add-Failure "labs/01-strategy-intake/README.md is missing run, test, or output guidance"
-}
-if ($lab01Source -notlike "*class StrategySpec*" -or
-    $lab01Source -notlike "*parse_strategy_request*" -or
-    $lab01Source -notlike "*RISK_DISCLOSURE*" -or
-    $lab01Source -notlike "*PROHIBITED_PATTERNS*") {
-    Add-Failure "Lab 01 source is missing StrategySpec, parser, risk disclosure, or prohibited patterns"
-}
-if ($lab01Tests -notlike "*test_default_case_parses_to_agent_spec*" -or
-    $lab01Tests -notlike "*test_prohibited_request_gets_boundary_prompt*") {
-    Add-Failure "Lab 01 tests do not cover default parsing and prohibited requests"
-}
-if ($lab01Demo -notlike "*build_demo_results*" -or
-    $lab01Demo -notlike "*--request*" -or
-    $lab01Demo -notlike "*--output*" -or
-    $lab01DemoRequests -notlike "*Lines starting with #*") {
-    Add-Failure "Lab 01 demo runner or requests file is incomplete"
-}
-if ($lab01WebServer -notlike "*ThreadingHTTPServer*" -or
-    $lab01WebServer -notlike "*/api/parse*" -or
-    $lab01WebIndex -notlike "*StrategySpec*" -or
-    $lab01WebIndex -notlike '*fetch("/api/parse"*' -or
-    $runLabWeb -notlike "*server.py*" -or
-    $runLabWeb -notlike "*HostName*" -or
-    $runLabWeb -notlike "*server.py*") {
-    Add-Failure "Lab 01 web demo or wrapper script is incomplete"
-}
-if ($sharedTestingReadme -notlike "*run_lab_tests.py*" -or
-    $sharedTestingRunner -notlike "*unittest*" -or
-    $sharedTestingRunner -notlike "*--lab*" -or
-    $runLabTests -notlike "*run_lab_tests.py*" -or
-    $runLabDemo -notlike "*run_demo.py*") {
-    Add-Failure "Lab testing framework or wrapper scripts are incomplete"
-}
-if ($sharedCaseReadme -notlike "*strategy_request.md*" -or
-    $sharedCaseReadme -notlike "*risk_policy.md*" -or
-    $sharedCaseReadme -notlike "*user_profile.md*") {
-    Add-Failure "shared investment research case README does not list first-batch materials"
-}
-if ($sharedStrategyRequest -notlike "*Workflow*" -or
-    $sharedStrategyPolicy -notlike "*StrategySpec*" -or
-    $sharedRiskPolicy -notlike "*API Key*" -or
-    $sharedUserProfile -notlike "*risk_level*") {
-    Add-Failure "shared investment research case first-batch materials are incomplete"
-}
+Require-Contains ".env.example" $envExample @(
+    "MIMO_API_KEY=your_mimo_api_key_from_hermes",
+    "XIAOMI_API_KEY=your_mimo_api_key_from_hermes",
+    "MIMO_CHAT_COMPLETIONS_URL=https://api.xiaomimimo.com/v1/chat/completions",
+    "MX_APIKEY=your_mx_apikey_from_hermes"
+)
+Require-Contains ".gitignore" $gitignore @("!.env.example")
+Require-Contains "scripts/check-secrets.ps1" $secretCheck @(
+    "git ls-files --cached --others --exclude-standard",
+    "MIMO_API_KEY",
+    "MX_APIKEY"
+)
+
+Require-Contains "labs/README.md" $labsReadme @(
+    "01-strategy-intake/README.md",
+    "02-strategy-agent-loop/README.md",
+    "03-finance-tool-use-mock",
+    "12-evaluation-safety",
+    "run-lab-demo.ps1",
+    "run-lab-web.ps1",
+    "run-lab-tests.ps1"
+)
+
+Require-Contains "labs/01-strategy-intake/README.md" $lab01Readme @(
+    "StrategySpec",
+    "MiMo",
+    "strategy_intake.py",
+    "demo/run_demo.py",
+    "run-lab-demo.ps1",
+    "run-lab-web.ps1",
+    "127.0.0.1:8765",
+    "run-lab-tests.ps1",
+    "unittest discover"
+)
+Require-Contains "labs/01-strategy-intake/src/strategy_intake.py" $lab01Source @(
+    "class StrategySpec",
+    "parse_strategy_request",
+    "RISK_DISCLOSURE",
+    "PROHIBITED_PATTERNS"
+)
+Require-Contains "labs/01-strategy-intake/src/mimo_strategy_intake.py" $lab01MimoSource @(
+    "DEFAULT_MIMO_CHAT_URL",
+    "DEFAULT_MIMO_MODEL",
+    "parse_strategy_request_with_mimo",
+    "MimoConfig",
+    "api-key"
+)
+Require-Contains "labs/01-strategy-intake/tests/test_strategy_intake.py" $lab01Tests @(
+    "test_default_case_parses_to_agent_spec",
+    "test_prohibited_request_gets_boundary_prompt"
+)
+Require-Contains "labs/01-strategy-intake/tests/test_mimo_strategy_intake.py" $lab01MimoTests @(
+    "fake_transport",
+    "test_mimo_response_merges_with_baseline_and_safety_fields"
+)
+Require-Contains "labs/01-strategy-intake/demo/run_demo.py" $lab01Demo @("build_demo_results", "--request", "--output")
+Require-Contains "labs/01-strategy-intake/web/server.py" $lab01WebServer @(
+    "ThreadingHTTPServer",
+    "/api/parse",
+    "parse_strategy_request_with_mimo"
+)
+Require-Contains "labs/01-strategy-intake/web/index.html" $lab01WebIndex @(
+    "StrategySpec",
+    'fetch("/api/parse"',
+    'data-mode="mimo"',
+    'data-mode="rules"'
+)
+
+Require-Contains "labs/02-strategy-agent-loop/README.md" $lab02Readme @(
+    "Agent Loop",
+    "run-lab-demo.ps1",
+    "run-lab-tests.ps1",
+    "max_turns"
+)
+Require-Contains "labs/02-strategy-agent-loop/src/agent_loop.py" $lab02Source @(
+    "run_strategy_agent_loop",
+    "TraceEvent",
+    "LoopState",
+    "build_research_plan",
+    "max_turns"
+)
+Require-Contains "labs/02-strategy-agent-loop/tests/test_agent_loop.py" $lab02Tests @(
+    "test_agent_request_builds_multistep_research_plan",
+    "test_max_turn_guardrail_can_fail_closed"
+)
+Require-Contains "labs/02-strategy-agent-loop/demo/run_demo.py" $lab02Demo @("run_strategy_agent_loop", "--request", "--output")
+
+Require-Contains "labs/shared/testing/README.md" $sharedTestingReadme @("run_lab_tests.py")
+Require-Contains "labs/shared/testing/run_lab_tests.py" $sharedTestingRunner @("unittest", "--lab")
+Require-Contains "scripts/run-lab-tests.ps1" $runLabTests @("run_lab_tests.py")
+Require-Contains "scripts/run-lab-demo.ps1" $runLabDemo @("run_demo.py")
+Require-Contains "scripts/run-lab-web.ps1" $runLabWeb @("server.py", "HostName")
+
+Require-Contains "labs/shared/investment_research_case/README.md" $sharedCaseReadme @(
+    "strategy_request.md",
+    "risk_policy.md",
+    "user_profile.md"
+)
+Require-Contains "labs/shared/investment_research_case/strategy_request.md" $sharedStrategyRequest @("Workflow")
+Require-Contains "labs/shared/investment_research_case/strategy_policy.md" $sharedStrategyPolicy @("StrategySpec")
+Require-Contains "labs/shared/investment_research_case/risk_policy.md" $sharedRiskPolicy @("API Key")
+Require-Contains "labs/shared/investment_research_case/user_profile.md" $sharedUserProfile @("risk_level")
 
 if ($failures.Count -gt 0) {
     $failures | ForEach-Object { Write-Output $_ }

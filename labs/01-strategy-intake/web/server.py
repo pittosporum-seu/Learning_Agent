@@ -13,6 +13,12 @@ LAB_ROOT = WEB_DIR.parent
 SRC_DIR = LAB_ROOT / "src"
 sys.path.insert(0, str(SRC_DIR))
 
+from mimo_strategy_intake import (  # noqa: E402
+    MimoConfigError,
+    MimoResponseError,
+    get_mimo_status,
+    parse_strategy_request_with_mimo,
+)
 from strategy_intake import DEFAULT_REQUEST, parse_strategy_request  # noqa: E402
 
 
@@ -23,7 +29,14 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
             self.send_file(WEB_DIR / "index.html", "text/html; charset=utf-8")
             return
         if parsed.path == "/api/health":
-            self.send_json({"status": "ok", "lab": "01-strategy-intake"})
+            self.send_json(
+                {
+                    "status": "ok",
+                    "lab": "01-strategy-intake",
+                    "mimo": get_mimo_status(),
+                    "modes": ["rules", "mimo"],
+                }
+            )
             return
         self.send_error(404, "Not found")
 
@@ -36,8 +49,17 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
         try:
             payload = self.read_json_body()
             request = str(payload.get("request") or DEFAULT_REQUEST)
+            mode = str(payload.get("mode") or "rules").strip().lower()
+            if mode == "mimo":
+                self.send_json(parse_strategy_request_with_mimo(request))
+                return
+
             spec = parse_strategy_request(request).to_dict()
-            self.send_json({"strategy_spec": spec})
+            self.send_json({"provider": "rules", "strategy_spec": spec})
+        except MimoConfigError as exc:
+            self.send_json({"error": str(exc), "provider": "mimo"}, status=400)
+        except MimoResponseError as exc:
+            self.send_json({"error": str(exc), "provider": "mimo"}, status=502)
         except Exception as exc:  # pragma: no cover - demo server guardrail
             self.send_json({"error": str(exc)}, status=500)
 

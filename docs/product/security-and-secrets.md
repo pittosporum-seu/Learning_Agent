@@ -1,20 +1,28 @@
 # 密钥、安全与合规边界
 
-个性化投研 Agent 系统会接触模型 API、财经数据 API、模拟组合和用户偏好，因此安全边界必须从第一天就进入设计。
+个性化投研 Agent 系统会接触模型 API、财经数据 API、模拟组合和用户偏好，因此安全边界必须从第一天进入设计。
 
 ## 密钥来源
 
-真实密钥不写进仓库。运行时由 Hermes 提供或注入，再暴露为环境变量：
+真实密钥不写进仓库。运行时由 Hermes 或受信任的本地环境提供，再暴露为环境变量。
 
 | 环境变量 | 用途 | 来源 |
 | --- | --- | --- |
 | `MIMO_API_KEY` | 调用小米 MiMo 模型 | Hermes |
-| `MIMO_BASE_URL` | 可选，MiMo 服务地址或兼容网关 | Hermes 或本地环境 |
-| `MIMO_MODEL` | 可选，默认模型名 | Hermes 或本地环境 |
+| `XIAOMI_API_KEY` | `MIMO_API_KEY` 的兼容别名 | Hermes |
+| `MIMO_CHAT_COMPLETIONS_URL` | 可选，MiMo OpenAI-compatible chat completions 端点 | Hermes 或本地环境 |
+| `MIMO_BASE_URL` | 可选，自定义兼容网关基础地址 | Hermes 或本地环境 |
+| `MIMO_MODEL` | 可选，默认 `mimo-v2.5-pro` | Hermes 或本地环境 |
 | `MX_APIKEY` | 调用东方财富妙想 Skills | Hermes |
-| `MX_API_URL` | 可选，模拟组合 API 基础地址 | Hermes 或本地环境 |
+| `MX_API_URL` | 可选，妙想 API 基础地址 | Hermes 或本地环境 |
 
-仓库只保留 `.env.example`。本地可以使用 `.env` 或系统环境变量，但 `.env` 和 `.env.*` 默认被 `.gitignore` 忽略。
+Lab 01 默认使用：
+
+```text
+https://api.xiaomimimo.com/v1/chat/completions
+```
+
+仓库只保留 `.env.example`。本地可以使用 `.env` 或系统环境变量，但 `.env` 和 `.env.*` 不能进入仓库。
 
 ## 提交前检查
 
@@ -26,14 +34,14 @@ powershell -ExecutionPolicy Bypass -File scripts/check-secrets.ps1
 powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 ```
 
-`scripts/check-secrets.ps1` 负责扫描非忽略文件，阻止明显的密钥、Token、Bearer 凭据和真实环境变量值进入仓库。
+`scripts/check-secrets.ps1` 负责扫描非忽略文件，阻止明显的密钥、token、Bearer 凭据和真实环境变量值进入仓库。
 
 ## 不能提交的内容
 
-- 真实 API Key、Token、Cookie、Session、Password。
+- 真实 API key、token、cookie、session、password。
 - 真实账户信息、手机号、身份证、银行卡、资金账户信息。
 - 带认证头的请求日志。
-- 可能包含敏感 Header 的原始响应文件。
+- 可能包含敏感 header 的原始响应文件。
 - `.env`、`.env.local`、`.env.production` 等真实环境文件。
 
 允许提交：
@@ -69,6 +77,7 @@ powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 - 模拟买入、卖出、撤单。
 - 将某个流程固化为正式 Skill。
 - 切换到真实财经数据源。
+- 对外发布包含候选股票的报告。
 
 ## 测试策略
 
@@ -79,4 +88,4 @@ powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 - mock 用户偏好。
 - mock 新闻、公告、行情和财务数据。
 
-真实 API 只在手动集成测试中使用，并且不把真实响应中的敏感信息写入仓库。
+真实 API 只在手动集成测试或本地 Web demo 中使用，并且不把真实响应中的敏感信息写入仓库。

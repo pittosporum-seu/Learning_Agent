@@ -11,27 +11,29 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 - `P2`: 有价值，但不阻塞当前学习路线。
 - 每个任务尽量写清楚产出文件和验收标准。
 - 完成任务后同步更新 `roadmap.md`、`docs/document-graph.md` 和相关 README。
+- 每次提交前运行内容检查、密钥检查和相关文档审核。
 
 ## Doing
 
-当前没有进行中的任务。下一步从 `Next` 中选择 P0 任务推进。
+| 优先级 | 任务 | 产出 | 验收标准 |
+| --- | --- | --- | --- |
+| P0 | 准备 Lab 03 mock 财经数据 | `mock_universe.csv`、`mock_prices.csv`、`mock_news.md` | Lab 03 能用同一套 mock 数据模拟候选筛选、行情和资讯查询 |
 
 ## Next
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 实现 Lab 02: Strategy Agent Loop | `labs/02-strategy-agent-loop/README.md`、`src/`、`tests/` | 能把 Lab 01 的 `StrategySpec` 放进循环状态，逐步生成投研计划 |
-| P0 | 为 Lab 03 准备 mock 数据 | `mock_universe.csv`、`mock_prices.csv`、`mock_news.md` | Lab 03 能用同一套 mock 数据模拟候选筛选、行情和资讯查询 |
-| P1 | 实现 Lab 03: Finance Tool Use Mock | `labs/03-finance-tool-use-mock/` | 能用 mock 工具完成候选筛选、行情/资讯查询 |
+| P0 | 实现 Lab 03: Finance Tool Use Mock | `labs/03-finance-tool-use-mock/` | 能用 mock 工具完成候选筛选、行情和资讯查询 |
 | P1 | 设计投研 Skill 示例 | `skills/investment-research-workflow/SKILL.md` | 包含触发场景、禁用场景、步骤、输出格式、风险提示和测试样例 |
 | P1 | 补工程化清单第一批 | `docs/engineering/permission-boundary.md`、`trace-and-logging.md`、`evaluation-checklist.md` | 每篇是短清单，包含上线前检查项，并覆盖财经输出边界 |
+| P1 | 给 Lab 01 增加可选手动集成测试 | `labs/01-strategy-intake/tests/` 或 `demo/` | 有真实 MiMo key 时可手动验证，但默认测试仍不消耗 token |
 
 ## Backlog
 
 | 优先级 | 任务 | 产出 | 说明 |
 | --- | --- | --- | --- |
 | P1 | 建立术语表 | `docs/glossary.md` | 汇总 Agent、Workflow、Harness、Skill、Trace 等术语 |
-| P1 | 建立引用检查机制 | `scripts/check-links.ps1` | 先检查 Markdown 中的明显坏链接和跟踪参数 |
+| P1 | 建立链接检查机制 | `scripts/check-links.ps1` | 先检查 Markdown 中的明显坏链接和路径参数 |
 | P2 | 做 GitHub Issues 迁移 | GitHub Issues | 将 `TODO.md` 中长期任务迁到 Issues |
 | P2 | 补更多 benchmark 阅读笔记 | `docs/readings/` | SWE-bench、WebArena、AgentBench、OSWorld 等 |
 | P2 | 接入真实 MiMo 和东方财富妙想集成测试 | `labs/08-mx-skills-adapter/`、集成测试说明 | 默认 mock 仍可运行，有环境变量时才切换真实数据源 |
@@ -49,3 +51,5 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-05 | 完成 Lab 01: Strategy Intake 和共享策略材料第一版 | 本轮提交 |
 | 2026-06-05 | 为 Lab 01 增加 demo 和统一 Lab 测试框架 | 本轮提交 |
 | 2026-06-05 | 为 Lab 01 增加本地 web demo | 本轮提交 |
+| 2026-06-05 | 为 Lab 01 增加 MiMo 真实解析模式和网页说明 | 本轮提交 |
+| 2026-06-05 | 完成 Lab 02: Strategy Agent Loop 初版 | 本轮提交 |

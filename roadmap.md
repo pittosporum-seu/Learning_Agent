@@ -32,7 +32,8 @@
 - [x] 将 Labs 主线调整为个性化投资调研 Agent 系统
 - [x] 固化 12 个投研 Labs 总计划
 - [x] Lab 01: Strategy Intake
-- [ ] Lab 02: Strategy Agent Loop
+- [x] Lab 01: MiMo 真实解析模式
+- [x] Lab 02: Strategy Agent Loop
 - [ ] Lab 03: Finance Tool Use Mock
 - [ ] Lab 04: Research RAG Basic
 - [ ] Lab 05: User Preference Memory
@@ -87,7 +88,7 @@
 - [x] 新增 GitHub Issue 任务模板
 - [x] 新增密钥检查脚本
 - [x] 将密钥检查接入内容更新 hook
-- [ ] 后续重写文章或 Product / Labs 文档时同步审核文档图、资源索引和所有导航文件
+- [x] 后续重写文章或 Product / Labs 文档时同步审核文档图、资源索引和所有导航文档
 
 ## 8. 产品主线：个性化投研 Agent
 
@@ -97,6 +98,7 @@
 - [x] 建立共享案例目录
 - [x] 补齐共享案例第一批策略材料
 - [x] 完成第一个可运行 Strategy Intake Lab
+- [x] 完成第二个可运行 Strategy Agent Loop Lab
 - [ ] 补齐共享行情、股票池和资讯 mock 数据
 
 详见：[docs/series-plan.md](docs/series-plan.md)

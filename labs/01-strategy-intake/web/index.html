@@ -53,7 +53,7 @@
       .topbar {
         width: min(1180px, calc(100vw - 32px));
         margin: 0 auto;
-        min-height: 72px;
+        min-height: 74px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -90,7 +90,7 @@
 
       main {
         width: min(1180px, calc(100vw - 32px));
-        margin: 24px auto;
+        margin: 22px auto;
         display: grid;
         grid-template-columns: minmax(320px, 0.88fr) minmax(360px, 1.12fr);
         gap: 18px;
@@ -121,6 +121,39 @@
         padding: 16px 18px 18px;
       }
 
+      .explain-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .explain-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        background: #fbfcfe;
+        min-height: 130px;
+      }
+
+      .explain-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 7px;
+      }
+
+      .explain-text {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .support-line {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
       textarea {
         width: 100%;
         min-height: 190px;
@@ -138,12 +171,56 @@
         border-color: var(--accent);
       }
 
+      .mode-row,
       .actions {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
-        margin-top: 12px;
         align-items: center;
+      }
+
+      .mode-row {
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .segmented {
+        display: inline-grid;
+        grid-template-columns: repeat(2, minmax(88px, 1fr));
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      .segmented button {
+        border: 0;
+        border-right: 1px solid var(--line);
+        background: transparent;
+        color: var(--muted);
+        min-height: 34px;
+        padding: 0 11px;
+        cursor: pointer;
+      }
+
+      .segmented button:last-child {
+        border-right: 0;
+      }
+
+      .segmented button[aria-pressed="true"] {
+        background: #e9f7f4;
+        color: var(--accent-dark);
+        font-weight: 700;
+      }
+
+      .runtime-note {
+        color: var(--muted);
+        font-size: 12px;
+        overflow-wrap: anywhere;
+      }
+
+      .actions {
+        margin-top: 12px;
       }
 
       .button {
@@ -167,6 +244,11 @@
 
       .button.primary:hover {
         background: var(--accent-dark);
+      }
+
+      .button:disabled {
+        cursor: wait;
+        opacity: 0.72;
       }
 
       .samples {
@@ -194,39 +276,6 @@
         color: var(--muted);
         font-size: 12px;
         min-height: 18px;
-      }
-
-      .explain-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .explain-item {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 12px;
-        background: #fbfcfe;
-        min-height: 126px;
-      }
-
-      .explain-title {
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 7px;
-      }
-
-      .explain-text {
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.55;
-      }
-
-      .support-line {
-        margin-top: 12px;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.55;
       }
 
       .summary-grid {
@@ -332,6 +381,12 @@
         font-size: 13px;
       }
 
+      .error-note {
+        border-left-color: var(--red);
+        background: #fff3f2;
+        color: var(--red);
+      }
+
       @media (max-width: 860px) {
         .topbar {
           align-items: flex-start;
@@ -345,10 +400,7 @@
           margin-top: 16px;
         }
 
-        .summary-grid {
-          grid-template-columns: 1fr;
-        }
-
+        .summary-grid,
         .explain-grid {
           grid-template-columns: 1fr;
         }
@@ -361,9 +413,9 @@
         <div class="topbar">
           <div>
             <h1>Lab 01 Strategy Intake</h1>
-            <div class="subtitle">自然语言投研策略解析为 StrategySpec</div>
+            <div class="subtitle">把自然语言投研想法解析成可执行的 StrategySpec</div>
           </div>
-          <div class="status"><span class="dot"></span><span>本地 mock，无真实 API</span></div>
+          <div class="status"><span class="dot"></span><span id="apiStatus">检查 MiMo 配置中</span></div>
         </div>
       </header>
 
@@ -377,30 +429,30 @@
               <div class="explain-item">
                 <div class="explain-title">入口建模</div>
                 <div class="explain-text">
-                  把一句自然语言投研想法翻译成 StrategySpec，让后面的 Planner 和工具知道要做什么。
+                  把一句自然语言策略变成 StrategySpec，让后面的 Planner、Skill 和工具知道市场、主题、时间窗、筛选规则和风险边界。
                 </div>
               </div>
               <div class="explain-item">
                 <div class="explain-title">规则基线</div>
                 <div class="explain-text">
-                  当前先用规则解析，方便观察、测试和回归；后续再接大模型做补全、归一化和追问。
+                  规则解析是可回归的基线，用来保证字段稳定、边界清楚，也方便测试错误请求、缺信息请求和安全拦截。
                 </div>
               </div>
               <div class="explain-item">
-                <div class="explain-title">测试重点</div>
+                <div class="explain-title">MiMo 解析</div>
                 <div class="explain-text">
-                  看市场、主题、时间窗口、候选规则、风险过滤、执行模式和待确认问题是否随输入变化。
+                  MiMo 模式会读取本地环境变量里的 key，真实调用模型，让模型在规则基线上做语义补全、归一化和追问判断。
                 </div>
               </div>
               <div class="explain-item">
                 <div class="explain-title">当前边界</div>
                 <div class="explain-text">
-                  不调用 API Key，不查行情，不选股，不推荐标的；只演示策略入口和安全闸门。
+                  本 Lab 只做策略入口解析，不查行情、不生成真实候选股票、不下单。推荐和数据验证会放到后续 Lab。
                 </div>
               </div>
             </div>
             <div class="support-line">
-              可测试方向：人工智能、半导体、新能源、银行、医药、电网设备、特高压；可测试规则：趋势、回撤、成交、市盈率、市净率、ROE、负面新闻、自动买入等。
+              可测试方向：电网设备、特高压、半导体、人工智能、新能源、银行、医药。可测试规则：趋势、回撤、成交、市盈率、市净率、ROE、负面新闻、自动买入等。
             </div>
           </div>
         </section>
@@ -410,12 +462,20 @@
             <h2>策略输入</h2>
           </div>
           <div class="panel-body">
+            <div class="mode-row">
+              <div class="segmented" aria-label="解析模式">
+                <button type="button" data-mode="rules" aria-pressed="true">规则基线</button>
+                <button type="button" data-mode="mimo" aria-pressed="false">MiMo 解析</button>
+              </div>
+              <div class="runtime-note" id="runtimeNote">规则基线不会调用外部 API</div>
+            </div>
+
             <textarea id="requestInput"></textarea>
             <div class="actions">
               <button class="button primary" id="parseButton">解析</button>
               <button class="button" id="resetButton">恢复默认</button>
               <button class="button" id="copyJsonButton">复制 JSON</button>
-              <span class="parse-status" id="parseStatus">输入后会自动解析</span>
+              <span class="parse-status" id="parseStatus">准备解析</span>
             </div>
             <div class="samples" id="samples"></div>
           </div>
@@ -428,6 +488,10 @@
           <div class="panel-body">
             <div class="summary-grid">
               <div class="metric">
+                <div class="metric-label">解析来源</div>
+                <div class="metric-value" id="providerValue">待解析</div>
+              </div>
+              <div class="metric">
                 <div class="metric-label">执行模式</div>
                 <div class="metric-value" id="modeValue">待解析</div>
               </div>
@@ -439,10 +503,11 @@
                 <div class="metric-label">主题</div>
                 <div class="metric-value" id="themesValue">待解析</div>
               </div>
-              <div class="metric">
-                <div class="metric-label">输出</div>
-                <div class="metric-value" id="outputValue">待解析</div>
-              </div>
+            </div>
+
+            <div class="section">
+              <div class="section-title">输出目标</div>
+              <div class="risk-note" id="outputValue">待解析</div>
             </div>
 
             <div class="section">
@@ -481,11 +546,12 @@
 
     <script>
       const defaultRequest =
-        "找最近 60 日趋势较强、回撤较低、没有明显负面新闻的半导体和人工智能方向股票，生成候选观察池。";
+        "找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。";
 
       const samples = [
         defaultRequest,
-        "筛选市盈率小于20的银行股。",
+        "筛选市盈率小于 20、ROE 高于 12%、分红稳定的银行股，生成一个观察逻辑。",
+        "找最近 30 日趋势较强、成交活跃的特高压方向股票，先做投研流程规划。",
         "帮我找一些适合观察的股票。",
         "直接告诉我明天必涨的股票并自动买入。",
       ];
@@ -497,8 +563,12 @@
       const samplesNode = document.getElementById("samples");
       const jsonOutput = document.getElementById("jsonOutput");
       const parseStatus = document.getElementById("parseStatus");
+      const runtimeNote = document.getElementById("runtimeNote");
+      const modeButtons = [...document.querySelectorAll("[data-mode]")];
+      let currentMode = "rules";
       let parseTimer = null;
       let parseSerial = 0;
+      let health = null;
 
       function renderSamples() {
         samplesNode.innerHTML = "";
@@ -513,6 +583,25 @@
           });
           samplesNode.appendChild(button);
         }
+      }
+
+      function setMode(mode) {
+        currentMode = mode;
+        for (const button of modeButtons) {
+          button.setAttribute("aria-pressed", button.dataset.mode === mode ? "true" : "false");
+        }
+
+        const mimo = health?.mimo;
+        if (mode === "mimo") {
+          runtimeNote.textContent = mimo?.configured
+            ? `MiMo 会调用 ${mimo.model}，端点 ${mimo.chat_url}`
+            : "MiMo 未配置 key，当前无法调用模型";
+          parseStatus.textContent = "点击解析会调用 MiMo";
+          return;
+        }
+
+        runtimeNote.textContent = "规则基线不会调用外部 API，可用于快速回归测试";
+        parseStatus.textContent = "输入停止后会自动解析";
       }
 
       function renderPills(nodeId, values, className = "") {
@@ -543,14 +632,18 @@
         }
       }
 
-      function renderSpec(spec) {
+      function renderSpec(payload) {
+        const spec = payload.strategy_spec;
         const modeClass =
           spec.execution_mode === "agent"
             ? "agent"
             : spec.execution_mode === "needs_clarification"
               ? "blocked"
               : "";
+        const providerLabel =
+          payload.provider === "mimo" ? `MiMo · ${payload.model || "unknown model"}` : "规则基线";
 
+        document.getElementById("providerValue").textContent = providerLabel;
         document.getElementById("modeValue").innerHTML =
           `<span class="pill ${modeClass}">${spec.execution_mode}</span>`;
         document.getElementById("marketValue").textContent =
@@ -559,12 +652,21 @@
           spec.themes.length ? spec.themes.join(", ") : "未确认";
         document.getElementById("outputValue").textContent = spec.output;
         document.getElementById("parsedRequest").textContent = spec.original_request;
+        document.getElementById("parsedRequest").className = "risk-note";
         document.getElementById("riskDisclosure").textContent = spec.risk_disclosure;
 
         renderPills("candidateRules", spec.candidate_rules, "agent");
         renderPills("riskFilters", spec.risk_filters, "risk");
         renderQuestions(spec.clarification_questions);
         jsonOutput.textContent = JSON.stringify(spec, null, 2);
+      }
+
+      function renderError(message) {
+        document.getElementById("providerValue").textContent =
+          currentMode === "mimo" ? "MiMo 调用失败" : "规则解析失败";
+        document.getElementById("parsedRequest").textContent = message;
+        document.getElementById("parsedRequest").className = "risk-note error-note";
+        jsonOutput.textContent = message;
       }
 
       async function parseRequest() {
@@ -576,13 +678,13 @@
 
         const currentSerial = ++parseSerial;
         parseButton.disabled = true;
-        parseButton.textContent = "解析中";
-        parseStatus.textContent = "解析中";
+        parseButton.textContent = currentMode === "mimo" ? "调用 MiMo 中" : "解析中";
+        parseStatus.textContent = currentMode === "mimo" ? "正在调用 MiMo" : "解析中";
         try {
           const response = await fetch("/api/parse", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ request: requestText }),
+            body: JSON.stringify({ request: requestText, mode: currentMode }),
           });
           const payload = await response.json();
           if (!response.ok || payload.error) {
@@ -591,10 +693,11 @@
           if (currentSerial !== parseSerial) {
             return;
           }
-          renderSpec(payload.strategy_spec);
-          parseStatus.textContent = "已解析当前输入";
+          renderSpec(payload);
+          parseStatus.textContent =
+            payload.provider === "mimo" ? "MiMo 已解析当前输入" : "规则基线已解析当前输入";
         } catch (error) {
-          jsonOutput.textContent = String(error);
+          renderError(String(error.message || error));
           parseStatus.textContent = "解析失败";
         } finally {
           if (currentSerial === parseSerial) {
@@ -605,15 +708,41 @@
       }
 
       function scheduleParse() {
-        parseStatus.textContent = "等待输入停止";
         window.clearTimeout(parseTimer);
+        if (currentMode === "mimo") {
+          parseStatus.textContent = "MiMo 模式下点击解析，避免输入时反复消耗 token";
+          return;
+        }
+        parseStatus.textContent = "等待输入停止";
         parseTimer = window.setTimeout(parseRequest, 450);
+      }
+
+      async function loadHealth() {
+        try {
+          const response = await fetch("/api/health");
+          health = await response.json();
+          const mimo = health.mimo || {};
+          document.getElementById("apiStatus").textContent = mimo.configured
+            ? `MiMo 已就绪 · ${mimo.model}`
+            : "MiMo 未配置 · 使用规则基线";
+          setMode(mimo.configured ? "mimo" : "rules");
+        } catch (error) {
+          document.getElementById("apiStatus").textContent = "健康检查失败 · 使用规则基线";
+          setMode("rules");
+        }
       }
 
       resetButton.addEventListener("click", () => {
         input.value = defaultRequest;
         parseRequest();
       });
+
+      for (const button of modeButtons) {
+        button.addEventListener("click", () => {
+          setMode(button.dataset.mode);
+          parseRequest();
+        });
+      }
 
       parseButton.addEventListener("click", parseRequest);
       input.addEventListener("input", scheduleParse);
@@ -633,7 +762,7 @@
 
       renderSamples();
       input.value = defaultRequest;
-      parseRequest();
+      loadHealth().then(parseRequest);
     </script>
   </body>
 </html>
