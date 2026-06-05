@@ -19,6 +19,11 @@ flowchart TD
     B --> S1["第一组：基础概念"]
     B --> S2["第二组：知识与能力扩展"]
     B --> S3["第三组：工程落地"]
+    B --> X1["资料精读 readings"]
+    B --> X2["设计模式 patterns"]
+    B --> X3["工程清单 engineering"]
+    B --> X4["Skills 示例"]
+    B --> X5["Labs 实验"]
 
     S1 --> D01["01 Workflow vs Agent"]
     S1 --> D02["02 Agent Loop"]
@@ -54,6 +59,12 @@ flowchart LR
     D09 --> D12
     D10 --> D12
     D11 --> D12
+
+    D01 --> P1["patterns/workflow-vs-agent"]
+    D07 --> E1["engineering/permission-boundary"]
+    D08 --> L1["labs/coding-agent"]
+    D10 --> S1["skills/agent-article-writing"]
+    D12 --> E2["engineering/evaluation-checklist"]
 ```
 
 ## 仓库维护关系
@@ -67,6 +78,7 @@ flowchart TD
     B --> F["同步 roadmap.md"]
     B --> G["同步 docs/document-graph.md"]
     B --> H["同步 resources/README.md"]
+    B --> O["同步 docs/readings / patterns / engineering / skills"]
 
     B --> I["scripts/check-content.ps1"]
     B --> J["scripts/audit-related-docs.ps1"]
@@ -96,3 +108,12 @@ flowchart TD
 | 11 | Browser / Computer Use Agent | [11-browser-computer-use-agent.md](foundations/11-browser-computer-use-agent.md) |
 | 12 | Evaluation / Trace / Safety | [12-evaluation-trace-safety.md](foundations/12-evaluation-trace-safety.md) |
 
+## 扩展层映射
+
+| 层级 | 目录 | 作用 |
+| --- | --- | --- |
+| 资料精读 | [readings/](readings/) | 拆解官方文档、论文、工程博客和开源项目。 |
+| 设计模式 | [patterns/](patterns/) | 沉淀可复用 Agent 模式和适用边界。 |
+| 工程清单 | [engineering/](engineering/) | 管理权限、Trace、Eval、安全、成本等上线检查项。 |
+| 实践实验 | [../labs/](../labs/) | 承接基础文章，补最小可运行实验。 |
+| Skill 示例 | [../skills/](../skills/) | 把重复流程沉淀成 `SKILL.md` 示例。 |

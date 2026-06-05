@@ -42,6 +42,13 @@ $documentGraph = Read-RepoFile "docs/document-graph.md"
 $resources = Read-RepoFile "resources/README.md"
 $hook = Read-RepoFile "hooks/content-update.md"
 
+$requiredDirectoryReadmes = @(
+    "docs/readings/README.md",
+    "docs/patterns/README.md",
+    "docs/engineering/README.md",
+    "skills/README.md"
+)
+
 foreach ($doc in $foundationDocs) {
     $fullPath = Join-Path $root $doc
     if (-not (Test-Path -LiteralPath $fullPath)) {
@@ -80,10 +87,31 @@ if ($hook -notlike "*audit-related-docs.ps1*") {
     Add-Failure "hooks/content-update.md does not require audit-related-docs.ps1"
 }
 
+foreach ($doc in $requiredDirectoryReadmes) {
+    $null = Read-RepoFile $doc
+    $dirName = Split-Path (Split-Path $doc -Parent) -Leaf
+    $directoryToken = if ($dirName -eq "skills") { "skills/" } else { "$dirName/" }
+    if ($readme -notlike "*$directoryToken*") {
+        Add-Failure "README.md does not include $directoryToken in the repository tree"
+    }
+    if ($documentGraph -notlike "*$dirName*") {
+        Add-Failure "docs/document-graph.md does not mention $dirName"
+    }
+}
+
+foreach ($dirName in @("readings", "patterns", "engineering")) {
+    if ($seriesPlan -notlike "*$dirName*") {
+        Add-Failure "docs/series-plan.md does not mention $dirName"
+    }
+}
+
+if ($resources -notlike "*docs/readings/*") {
+    Add-Failure "resources/README.md does not explain the relation with docs/readings"
+}
+
 if ($failures.Count -gt 0) {
     $failures | ForEach-Object { Write-Output $_ }
     throw "Related docs audit failed."
 }
 
 Write-Output "Related docs audit passed."
-

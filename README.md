@@ -74,24 +74,32 @@
 │   ├── README.md
 │   ├── document-graph.md
 │   ├── series-plan.md
-│   └── foundations/
-│       ├── 01-workflow-vs-agent.md
-│       ├── 02-agent-loop.md
-│       ├── 03-tool-use.md
-│       ├── 04-rag.md
-│       ├── 05-memory.md
-│       ├── 06-mcp.md
-│       ├── 07-agent-harness.md
-│       ├── 08-coding-agent.md
-│       ├── 09-subagent-multi-agent.md
-│       ├── 10-skills.md
-│       ├── 11-browser-computer-use-agent.md
-│       └── 12-evaluation-trace-safety.md
+│   ├── engineering/
+│   │   └── README.md
+│   ├── foundations/
+│   │   ├── 01-workflow-vs-agent.md
+│   │   ├── 02-agent-loop.md
+│   │   ├── 03-tool-use.md
+│   │   ├── 04-rag.md
+│   │   ├── 05-memory.md
+│   │   ├── 06-mcp.md
+│   │   ├── 07-agent-harness.md
+│   │   ├── 08-coding-agent.md
+│   │   ├── 09-subagent-multi-agent.md
+│   │   ├── 10-skills.md
+│   │   ├── 11-browser-computer-use-agent.md
+│   │   └── 12-evaluation-trace-safety.md
+│   ├── patterns/
+│   │   └── README.md
+│   └── readings/
+│       └── README.md
 ├── hooks/
 │   └── content-update.md
 ├── labs/
 │   └── README.md
 ├── resources/
+│   └── README.md
+├── skills/
 │   └── README.md
 └── scripts/
     ├── audit-related-docs.ps1
