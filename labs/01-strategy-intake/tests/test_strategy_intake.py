@@ -61,6 +61,19 @@ class StrategyIntakeTests(unittest.TestCase):
         self.assertEqual(spec["user_preferences"]["max_candidates"], 5)
         self.assertIn("排除 ST / *ST", spec["risk_filters"])
 
+    def test_power_grid_equipment_theme_parses(self):
+        request = "找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。"
+
+        spec = parse_strategy_request(request).to_dict()
+
+        self.assertEqual(spec["themes"], ["电网设备"])
+        self.assertEqual(spec["horizon_days"], 60)
+        self.assertIn("近60日趋势较强", spec["candidate_rules"])
+        self.assertIn("最大回撤较低", spec["candidate_rules"])
+        self.assertIn("近期无重大负面新闻", spec["risk_filters"])
+        self.assertEqual(spec["execution_mode"], "agent")
+        self.assertEqual(spec["clarification_questions"], [])
+
     def test_prohibited_request_gets_boundary_prompt(self):
         request = "直接告诉我明天必涨的股票并自动买入"
 
