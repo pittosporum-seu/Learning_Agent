@@ -29,13 +29,20 @@
 
 ## 3. 实践实验
 
-- [ ] 写一个最小 Agent Loop
-- [ ] 给 Agent 接入一个工具
-- [ ] 做一个基础 RAG 问答
-- [ ] 加入短期 Memory
-- [ ] 写一个简单 MCP Server
-- [ ] 给 Agent 增加日志和评测
-- [ ] 做一个 Coding Agent 最小修复任务实验
+- [x] 将 Labs 主线调整为个性化投资调研 Agent 系统
+- [x] 固化 12 个投研 Labs 总计划
+- [ ] Lab 01: Strategy Intake
+- [ ] Lab 02: Strategy Agent Loop
+- [ ] Lab 03: Finance Tool Use Mock
+- [ ] Lab 04: Research RAG Basic
+- [ ] Lab 05: User Preference Memory
+- [ ] Lab 06: Skill Registry
+- [ ] Lab 07: Skill Generation
+- [ ] Lab 08: MX Skills Adapter
+- [ ] Lab 09: Research Planner
+- [ ] Lab 10: Evidence Report
+- [ ] Lab 11: Simulation Portfolio
+- [ ] Lab 12: Evaluation & Safety
 - [x] 建立 labs 实验目录说明
 
 ## 4. 工程化清单
@@ -75,6 +82,17 @@
 - [x] 新增相关文档审核脚本
 - [x] 建立仓库待办机制
 - [x] 新增 GitHub Issue 任务模板
-- [ ] 后续重写文章时同步审核文档图、资源索引和所有导航文件
+- [x] 新增密钥检查脚本
+- [x] 将密钥检查接入内容更新 hook
+- [ ] 后续重写文章或 Product / Labs 文档时同步审核文档图、资源索引和所有导航文件
+
+## 8. 产品主线：个性化投研 Agent
+
+- [x] 建立产品愿景文档
+- [x] 建立 Lab 总计划
+- [x] 建立密钥、安全与合规边界文档
+- [x] 建立共享案例目录
+- [ ] 补齐共享案例 mock 材料
+- [ ] 完成第一个可运行 Strategy Intake Lab
 
 详见：[docs/series-plan.md](docs/series-plan.md)

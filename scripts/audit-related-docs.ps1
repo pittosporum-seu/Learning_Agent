@@ -42,11 +42,22 @@ $documentGraph = Read-RepoFile "docs/document-graph.md"
 $resources = Read-RepoFile "resources/README.md"
 $hook = Read-RepoFile "hooks/content-update.md"
 $todo = Read-RepoFile "TODO.md"
+$roadmap = Read-RepoFile "roadmap.md"
+$docsReadme = Read-RepoFile "docs/README.md"
+$labsReadme = Read-RepoFile "labs/README.md"
+$productReadme = Read-RepoFile "docs/product/README.md"
+$productVision = Read-RepoFile "docs/product/personalized-investment-research-agent.md"
+$labPlan = Read-RepoFile "docs/product/lab-plan.md"
+$securityPlan = Read-RepoFile "docs/product/security-and-secrets.md"
+$envExample = Read-RepoFile ".env.example"
+$gitignore = Read-RepoFile ".gitignore"
+$secretCheck = Read-RepoFile "scripts/check-secrets.ps1"
 
 $requiredDirectoryReadmes = @(
     "docs/readings/README.md",
     "docs/patterns/README.md",
     "docs/engineering/README.md",
+    "docs/product/README.md",
     "skills/README.md"
 )
 
@@ -90,6 +101,9 @@ if ($seriesPlan -notlike "*Agent-Learning-Hub*") {
 if ($hook -notlike "*audit-related-docs.ps1*") {
     Add-Failure "hooks/content-update.md does not require audit-related-docs.ps1"
 }
+if ($hook -notlike "*check-secrets.ps1*") {
+    Add-Failure "hooks/content-update.md does not require check-secrets.ps1"
+}
 if ($hook -notlike "*TODO.md*") {
     Add-Failure "hooks/content-update.md does not mention TODO.md"
 }
@@ -120,6 +134,68 @@ foreach ($dirName in @("readings", "patterns", "engineering")) {
 
 if ($resources -notlike "*docs/readings/*") {
     Add-Failure "resources/README.md does not explain the relation with docs/readings"
+}
+
+$requiredProductDocs = @(
+    "docs/product/personalized-investment-research-agent.md",
+    "docs/product/lab-plan.md",
+    "docs/product/security-and-secrets.md"
+)
+
+foreach ($doc in $requiredProductDocs) {
+    $null = Read-RepoFile $doc
+    if ($readme -notlike "*$doc*") {
+        Add-Failure "README.md does not link $doc"
+    }
+}
+
+if ($docsReadme -notlike "*product/*") {
+    Add-Failure "docs/README.md does not mention product/"
+}
+if ($productReadme -notlike "*personalized-investment-research-agent.md*" -or
+    $productReadme -notlike "*lab-plan.md*" -or
+    $productReadme -notlike "*security-and-secrets.md*") {
+    Add-Failure "docs/product/README.md does not link all product docs"
+}
+if ($documentGraph -notlike "*product/personalized-investment-research-agent.md*" -or
+    $documentGraph -notlike "*product/lab-plan.md*" -or
+    $documentGraph -notlike "*product/security-and-secrets.md*") {
+    Add-Failure "docs/document-graph.md does not map product docs"
+}
+if ($labsReadme -notlike "*lab-plan.md*" -or
+    $labsReadme -notlike "*01-strategy-intake*" -or
+    $labsReadme -notlike "*12-evaluation-safety*") {
+    Add-Failure "labs/README.md does not describe the investment research lab route"
+}
+if ($labPlan -notlike "*Lab 01*" -or $labPlan -notlike "*Lab 12*" -or $labPlan -notlike "*mx-xuangu*") {
+    Add-Failure "docs/product/lab-plan.md does not cover the full lab route or MX skills"
+}
+if ($productVision -notlike "*MIMO_API_KEY*" -or
+    $productVision -notlike "*MX_APIKEY*" -or
+    $productVision -notlike "*mx-xuangu*" -or
+    $productVision -notlike "*mx-moni*") {
+    Add-Failure "docs/product/personalized-investment-research-agent.md is missing model, data, or risk boundary"
+}
+if ($securityPlan -notlike "*MIMO_API_KEY*" -or
+    $securityPlan -notlike "*MX_APIKEY*" -or
+    $securityPlan -notlike "*check-secrets.ps1*" -or
+    $securityPlan -notlike "*.env.example*") {
+    Add-Failure "docs/product/security-and-secrets.md is missing required secret or safety guidance"
+}
+if ($envExample -notlike "*MIMO_API_KEY=your_mimo_api_key_from_hermes*" -or
+    $envExample -notlike "*MX_APIKEY=your_mx_apikey_from_hermes*") {
+    Add-Failure ".env.example is missing placeholder model or MX keys"
+}
+if ($gitignore -notlike "*!.env.example*") {
+    Add-Failure ".gitignore does not allow .env.example"
+}
+if ($secretCheck -notlike "*git ls-files --cached --others --exclude-standard*" -or
+    $secretCheck -notlike "*MIMO_API_KEY*" -or
+    $secretCheck -notlike "*MX_APIKEY*") {
+    Add-Failure "scripts/check-secrets.ps1 is missing expected scan behavior"
+}
+if ($roadmap -notlike "*Lab 01: Strategy Intake*" -or $todo -notlike "*Lab 01: Strategy Intake*") {
+    Add-Failure "roadmap.md or TODO.md does not reflect the investment research lab plan"
 }
 
 if ($failures.Count -gt 0) {

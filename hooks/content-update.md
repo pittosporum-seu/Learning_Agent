@@ -7,6 +7,7 @@
 - 新增一篇 `Agent基础知识 xx` 文章。
 - 重写已有文章。
 - 从粘贴文本、聊天记录或草稿中整理正式 Markdown。
+- 新增或调整 Product、Labs、Skills、Engineering 等长期维护文档。
 
 ## 执行步骤
 
@@ -26,12 +27,15 @@
    - `resources/README.md`
    - `roadmap.md`
    - `TODO.md`
+   - `docs/product/README.md`
+   - `labs/README.md`
    - 新增目录对应的 README，例如 `docs/readings/README.md`、`docs/patterns/README.md`、`docs/engineering/README.md`、`skills/README.md`
 6. 如果新增了维护流程、脚本或目录，同步更新根 README 的仓库结构。
 7. 运行内容检查和相关文档审核脚本：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/check-content.ps1
+powershell -ExecutionPolicy Bypass -File scripts/check-secrets.ps1
 powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 ```
 
@@ -49,10 +53,13 @@ powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 - `TODO.md` 中当前任务状态是否同步。
 - 是否误把写作提示、自检表、聊天痕迹放进正式文章。
 - 参考链接是否去掉跟踪参数。
+- 是否误提交真实 API Key、Token、Cookie、Session、Password 或真实环境文件。
+- 财经相关输出是否包含来源、检索时间、风险提示和人工确认边界。
 
 ## 维护原则
 
 - 正式仓库只保留可长期阅读和复用的内容。
 - 草稿生成过程可以在本地存在，但不进入正式文章。
 - 每次新增或重写文章都要同步导航、文档图、资源索引和待办状态，不让 README、TODO、roadmap、series plan 和 document graph 脱节。
+- 每次涉及 Product、Labs、Skills 或脚本变更，都要同步审核相关文档，并运行密钥检查。
 - 自动检查只负责发现明显问题，最终仍要看一眼 diff。

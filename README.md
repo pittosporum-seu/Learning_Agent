@@ -41,16 +41,24 @@
 - 对真实工程有什么启发。
 - 有哪些限制和容易误用的地方。
 
-### Stage 3: 最小可运行实验
+### Stage 3: 个性化投研 Agent Labs
 
-后续在 `labs/` 里补充小实验，例如：
+`labs/` 将围绕一个连续场景展开：用户用自然语言描述投资研究策略，系统解析策略、规划投研流程、调用 mock 或真实财经工具、生成带证据和风险提示的观察池报告，并把稳定流程沉淀为 Skill。
 
-- 最小 Agent Loop。
-- 函数调用与工具路由。
-- RAG 检索与引用。
-- 简单 Memory 机制。
-- MCP Server / Client 示例。
-- Agent 评测与回归测试。
+完整设计见：
+
+- [个性化投资调研 Agent 系统愿景](docs/product/personalized-investment-research-agent.md)
+- [个性化投研 Agent Lab 总计划](docs/product/lab-plan.md)
+- [密钥、安全与合规边界](docs/product/security-and-secrets.md)
+
+这条 Lab 主线会覆盖：
+
+- Strategy Intake 和 Agent Loop。
+- 财经 Tool Use、RAG、Memory。
+- Skill Registry、Skill Generation。
+- 东方财富妙想 Skills Adapter。
+- 投研 Planner、证据化报告、模拟组合。
+- 密钥检查、风险提示和评测安全。
 
 ### Stage 4: Agent 工程化
 
@@ -71,6 +79,7 @@
 ├── README.md
 ├── TODO.md
 ├── roadmap.md
+├── .env.example
 ├── .github/
 │   └── ISSUE_TEMPLATE/
 │       ├── config.yml
@@ -96,19 +105,28 @@
 │   │   └── 12-evaluation-trace-safety.md
 │   ├── patterns/
 │   │   └── README.md
+│   ├── product/
+│   │   ├── README.md
+│   │   ├── lab-plan.md
+│   │   ├── personalized-investment-research-agent.md
+│   │   └── security-and-secrets.md
 │   └── readings/
 │       └── README.md
 ├── hooks/
 │   └── content-update.md
 ├── labs/
-│   └── README.md
+│   ├── README.md
+│   └── shared/
+│       └── investment_research_case/
+│           └── README.md
 ├── resources/
 │   └── README.md
 ├── skills/
 │   └── README.md
 └── scripts/
     ├── audit-related-docs.ps1
-    └── check-content.ps1
+    ├── check-content.ps1
+    └── check-secrets.ps1
 ```
 
 ## 维护原则
@@ -118,7 +136,9 @@
 - 先用最小例子讲清楚，再扩展复杂系统。
 - 所有实验尽量可运行、可复现、可测试。
 - 避免把 Agent 神秘化，优先讨论边界、成本和可靠性。
-- 新增或重写文章后按 `hooks/content-update.md` 同步导航、更新文档图，并运行内容检查和相关文档审核。
+- 投研 Labs 可以输出候选股票和观察池，但必须给出数据来源、风险提示和人工确认边界。
+- 真实密钥只通过环境变量读取，仓库只保留 `.env.example`。
+- 新增或重写文章后按 `hooks/content-update.md` 同步导航、更新文档图，并运行内容检查、密钥检查和相关文档审核。
 - 当前待办统一维护在 [TODO.md](TODO.md)，需要公开协作时再转成 GitHub Issue。
 
 ## 推荐阅读
@@ -129,3 +149,5 @@
 - OpenAI Agents SDK documentation
 - LangGraph documentation
 - LlamaIndex documentation
+- 东方财富妙想 Skills
+- 小米 MiMo
