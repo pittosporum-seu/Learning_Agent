@@ -31,7 +31,7 @@
 
 - [x] 将 Labs 主线调整为个性化投资调研 Agent 系统
 - [x] 固化 12 个投研 Labs 总计划
-- [ ] Lab 01: Strategy Intake
+- [x] Lab 01: Strategy Intake
 - [ ] Lab 02: Strategy Agent Loop
 - [ ] Lab 03: Finance Tool Use Mock
 - [ ] Lab 04: Research RAG Basic
@@ -63,7 +63,7 @@
 - [x] 建立 skills 示例目录
 - [x] 将扩展目录接入 README、文档图和审核脚本
 - [x] 为 readings 补第一批精读模板
-- [ ] 为 labs 补最小实验骨架
+- [x] 为 Lab 01 补可运行实验骨架
 - [ ] 为 skills 补第一批 `SKILL.md`
 
 ## 6. 系列规划
@@ -92,7 +92,8 @@
 - [x] 建立 Lab 总计划
 - [x] 建立密钥、安全与合规边界文档
 - [x] 建立共享案例目录
-- [ ] 补齐共享案例 mock 材料
-- [ ] 完成第一个可运行 Strategy Intake Lab
+- [x] 补齐共享案例第一批策略材料
+- [x] 完成第一个可运行 Strategy Intake Lab
+- [ ] 补齐共享行情、股票池和资讯 mock 数据
 
 详见：[docs/series-plan.md](docs/series-plan.md)

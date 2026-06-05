@@ -20,9 +20,9 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 实现 Lab 01: Strategy Intake | `labs/01-strategy-intake/README.md`、`src/`、`tests/`、共享 mock 策略材料 | 能把自然语言投研策略解析成 `StrategySpec`，不输出个股推荐 |
-| P0 | 补齐投研共享案例第一批材料 | `labs/shared/investment_research_case/strategy_request.md`、`strategy_policy.md`、`risk_policy.md`、`user_profile.md` | Lab 01-03 能复用同一套策略、偏好和风险边界 |
-| P1 | 实现 Lab 02-03 mock 闭环 | `labs/02-strategy-agent-loop/`、`labs/03-finance-tool-use-mock/` | 能用 mock 工具完成策略规划、候选筛选、行情/资讯查询 |
+| P0 | 实现 Lab 02: Strategy Agent Loop | `labs/02-strategy-agent-loop/README.md`、`src/`、`tests/` | 能把 Lab 01 的 `StrategySpec` 放进循环状态，逐步生成投研计划 |
+| P0 | 为 Lab 03 准备 mock 数据 | `mock_universe.csv`、`mock_prices.csv`、`mock_news.md` | Lab 03 能用同一套 mock 数据模拟候选筛选、行情和资讯查询 |
+| P1 | 实现 Lab 03: Finance Tool Use Mock | `labs/03-finance-tool-use-mock/` | 能用 mock 工具完成候选筛选、行情/资讯查询 |
 | P1 | 设计投研 Skill 示例 | `skills/investment-research-workflow/SKILL.md` | 包含触发场景、禁用场景、步骤、输出格式、风险提示和测试样例 |
 | P1 | 补工程化清单第一批 | `docs/engineering/permission-boundary.md`、`trace-and-logging.md`、`evaluation-checklist.md` | 每篇是短清单，包含上线前检查项，并覆盖财经输出边界 |
 
@@ -46,3 +46,4 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-05 | 建立仓库待办机制和 GitHub Issue 任务模板 | 本轮提交 |
 | 2026-06-05 | 补第一批 readings 精读模板 | 本轮提交 |
 | 2026-06-05 | 固化个性化投研 Agent 产品愿景、Lab 总计划和密钥安全检查 | 本轮提交 |
+| 2026-06-05 | 完成 Lab 01: Strategy Intake 和共享策略材料第一版 | 本轮提交 |

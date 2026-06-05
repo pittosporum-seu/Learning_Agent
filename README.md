@@ -116,9 +116,17 @@
 │   └── content-update.md
 ├── labs/
 │   ├── README.md
+│   ├── 01-strategy-intake/
+│   │   ├── README.md
+│   │   ├── src/
+│   │   └── tests/
 │   └── shared/
 │       └── investment_research_case/
-│           └── README.md
+│           ├── README.md
+│           ├── risk_policy.md
+│           ├── strategy_policy.md
+│           ├── strategy_request.md
+│           └── user_profile.md
 ├── resources/
 │   └── README.md
 ├── skills/

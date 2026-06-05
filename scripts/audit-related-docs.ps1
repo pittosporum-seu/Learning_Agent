@@ -49,6 +49,14 @@ $productReadme = Read-RepoFile "docs/product/README.md"
 $productVision = Read-RepoFile "docs/product/personalized-investment-research-agent.md"
 $labPlan = Read-RepoFile "docs/product/lab-plan.md"
 $securityPlan = Read-RepoFile "docs/product/security-and-secrets.md"
+$lab01Readme = Read-RepoFile "labs/01-strategy-intake/README.md"
+$lab01Source = Read-RepoFile "labs/01-strategy-intake/src/strategy_intake.py"
+$lab01Tests = Read-RepoFile "labs/01-strategy-intake/tests/test_strategy_intake.py"
+$sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
+$sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
+$sharedStrategyPolicy = Read-RepoFile "labs/shared/investment_research_case/strategy_policy.md"
+$sharedRiskPolicy = Read-RepoFile "labs/shared/investment_research_case/risk_policy.md"
+$sharedUserProfile = Read-RepoFile "labs/shared/investment_research_case/user_profile.md"
 $envExample = Read-RepoFile ".env.example"
 $gitignore = Read-RepoFile ".gitignore"
 $secretCheck = Read-RepoFile "scripts/check-secrets.ps1"
@@ -163,6 +171,7 @@ if ($documentGraph -notlike "*product/personalized-investment-research-agent.md*
     Add-Failure "docs/document-graph.md does not map product docs"
 }
 if ($labsReadme -notlike "*lab-plan.md*" -or
+    $labsReadme -notlike "*01-strategy-intake/README.md*" -or
     $labsReadme -notlike "*01-strategy-intake*" -or
     $labsReadme -notlike "*12-evaluation-safety*") {
     Add-Failure "labs/README.md does not describe the investment research lab route"
@@ -194,8 +203,43 @@ if ($secretCheck -notlike "*git ls-files --cached --others --exclude-standard*" 
     $secretCheck -notlike "*MX_APIKEY*") {
     Add-Failure "scripts/check-secrets.ps1 is missing expected scan behavior"
 }
-if ($roadmap -notlike "*Lab 01: Strategy Intake*" -or $todo -notlike "*Lab 01: Strategy Intake*") {
+if ($roadmap -notlike "*Lab 01: Strategy Intake*" -or $todo -notlike "*Lab 02: Strategy Agent Loop*") {
     Add-Failure "roadmap.md or TODO.md does not reflect the investment research lab plan"
+}
+if ($roadmap -notlike "*x] Lab 01: Strategy Intake*" -or
+    $todo -notlike "*Lab 01: Strategy Intake*") {
+    Add-Failure "roadmap.md or TODO.md does not mark Lab 01 as complete"
+}
+if ($readme -notlike "*01-strategy-intake*" -or
+    $documentGraph -notlike "*01-strategy-intake/README.md*" -or
+    $labPlan -notlike "*labs/01-strategy-intake/*") {
+    Add-Failure "README.md, docs/document-graph.md, or lab-plan.md does not link Lab 01"
+}
+if ($lab01Readme -notlike "*strategy_intake.py*" -or
+    $lab01Readme -notlike "*unittest discover*" -or
+    $lab01Readme -notlike "*StrategySpec*") {
+    Add-Failure "labs/01-strategy-intake/README.md is missing run, test, or output guidance"
+}
+if ($lab01Source -notlike "*class StrategySpec*" -or
+    $lab01Source -notlike "*parse_strategy_request*" -or
+    $lab01Source -notlike "*RISK_DISCLOSURE*" -or
+    $lab01Source -notlike "*PROHIBITED_PATTERNS*") {
+    Add-Failure "Lab 01 source is missing StrategySpec, parser, risk disclosure, or prohibited patterns"
+}
+if ($lab01Tests -notlike "*test_default_case_parses_to_agent_spec*" -or
+    $lab01Tests -notlike "*test_prohibited_request_gets_boundary_prompt*") {
+    Add-Failure "Lab 01 tests do not cover default parsing and prohibited requests"
+}
+if ($sharedCaseReadme -notlike "*strategy_request.md*" -or
+    $sharedCaseReadme -notlike "*risk_policy.md*" -or
+    $sharedCaseReadme -notlike "*user_profile.md*") {
+    Add-Failure "shared investment research case README does not list first-batch materials"
+}
+if ($sharedStrategyRequest -notlike "*Workflow*" -or
+    $sharedStrategyPolicy -notlike "*StrategySpec*" -or
+    $sharedRiskPolicy -notlike "*API Key*" -or
+    $sharedUserProfile -notlike "*risk_level*") {
+    Add-Failure "shared investment research case first-batch materials are incomplete"
 }
 
 if ($failures.Count -gt 0) {

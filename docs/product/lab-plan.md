@@ -68,6 +68,8 @@ outputs/
 
 ## Lab 01: Strategy Intake
 
+状态：已实现第一版 mock 解析器，见 `labs/01-strategy-intake/`。
+
 目标：把用户自然语言策略解析成结构化 `StrategySpec`。
 
 关键点：

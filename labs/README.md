@@ -22,6 +22,9 @@ labs/
 ├── shared/
 │   └── investment_research_case/
 ├── 01-strategy-intake/
+│   ├── README.md
+│   ├── src/
+│   └── tests/
 ├── 02-strategy-agent-loop/
 ├── 03-finance-tool-use-mock/
 ├── 04-research-rag-basic/
@@ -35,7 +38,14 @@ labs/
 └── 12-evaluation-safety/
 ```
 
-当前只固化计划和共享案例目录，具体 Lab 会按顺序实现。
+当前已实现 Lab 01，后续按 Lab 02、Lab 03 继续推进。
+
+## 当前状态
+
+- [x] [Lab 01: Strategy Intake](01-strategy-intake/README.md)
+- [ ] Lab 02: Strategy Agent Loop
+- [ ] Lab 03: Finance Tool Use Mock
+- [ ] Lab 04-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进
 
 ## 统一要求
 
