@@ -44,7 +44,7 @@ function Import-HermesXiaomiEnv {
         Set-Item -Path Env:MIMO_BASE_URL -Value $env:XIAOMI_BASE_URL
     }
     if (-not $env:XIAOMI_MODEL) {
-        Set-Item -Path Env:XIAOMI_MODEL -Value "mimo-v2.5-pro"
+        Set-Item -Path Env:XIAOMI_MODEL -Value "mimo-v2.5"
     }
     if ($env:XIAOMI_MODEL) {
         Set-Item -Path Env:MIMO_MODEL -Value $env:XIAOMI_MODEL

@@ -18,6 +18,7 @@
         --red: #b42318;
         --blue: #2453a6;
         --code: #111827;
+        --surface: #fbfcfe;
       }
 
       * {
@@ -105,6 +106,18 @@
 
       .intro-panel {
         grid-column: 1 / -1;
+        order: 3;
+      }
+
+      .input-panel {
+        order: 1;
+        align-self: start;
+        position: sticky;
+        top: 14px;
+      }
+
+      .result-panel {
+        order: 2;
       }
 
       .panel-header {
@@ -133,6 +146,27 @@
         padding: 12px;
         background: #fbfcfe;
         min-height: 130px;
+      }
+
+      .workflow-line {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .workflow-step {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        padding: 5px 9px;
+      }
+
+      .workflow-arrow {
+        color: var(--muted);
       }
 
       .explain-title {
@@ -230,6 +264,11 @@
         border-radius: 8px;
         padding: 9px 13px;
         cursor: pointer;
+        min-height: 40px;
+        transition:
+          background 0.16s ease,
+          border-color 0.16s ease,
+          transform 0.16s ease;
       }
 
       .button.primary {
@@ -242,6 +281,10 @@
         border-color: var(--accent);
       }
 
+      .button:active {
+        transform: scale(0.98);
+      }
+
       .button.primary:hover {
         background: var(--accent-dark);
       }
@@ -249,6 +292,22 @@
       .button:disabled {
         cursor: wait;
         opacity: 0.72;
+      }
+
+      .button.is-loading {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .button.is-loading::before {
+        content: "";
+        width: 13px;
+        height: 13px;
+        border: 2px solid rgba(255, 255, 255, 0.45);
+        border-top-color: #ffffff;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
       }
 
       .samples {
@@ -272,10 +331,97 @@
         border-color: var(--accent);
       }
 
+      .sample:disabled {
+        cursor: wait;
+        opacity: 0.66;
+      }
+
       .parse-status {
         color: var(--muted);
         font-size: 12px;
         min-height: 18px;
+      }
+
+      .activity {
+        display: none;
+        margin-top: 14px;
+        padding: 12px;
+        border-left: 3px solid var(--accent);
+        background: var(--surface);
+        border-radius: 0 8px 8px 0;
+      }
+
+      .activity.visible {
+        display: block;
+      }
+
+      .activity-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 9px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .progress-track {
+        height: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #e8edf3;
+      }
+
+      .progress-fill {
+        width: 0;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--accent);
+        transition: width 0.28s ease;
+      }
+
+      .stage-list {
+        display: grid;
+        gap: 6px;
+        margin-top: 11px;
+      }
+
+      .stage {
+        display: grid;
+        grid-template-columns: 16px 1fr;
+        gap: 8px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .stage-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #cbd5e1;
+      }
+
+      .stage.active {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .stage.active .stage-dot {
+        background: var(--accent);
+        box-shadow: 0 0 0 5px rgba(15, 118, 110, 0.12);
+        animation: pulse 1s ease-in-out infinite;
+      }
+
+      .stage.complete .stage-dot {
+        background: var(--accent-dark);
+      }
+
+      .stream-log {
+        margin-top: 11px;
+        max-height: 120px;
+        overflow: auto;
+        color: #dbeafe;
       }
 
       .summary-grid {
@@ -371,6 +517,12 @@
         overflow-wrap: anywhere;
       }
 
+      .activity .stream-log {
+        margin-top: 11px;
+        max-height: 120px;
+        color: #dbeafe;
+      }
+
       .risk-note {
         border-left: 3px solid var(--amber);
         background: #fff7ed;
@@ -400,9 +552,44 @@
           margin-top: 16px;
         }
 
+        textarea {
+          min-height: 150px;
+        }
+
+        .input-panel {
+          position: static;
+        }
+
         .summary-grid,
         .explain-grid {
           grid-template-columns: 1fr;
+        }
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+        }
+        50% {
+          box-shadow: 0 0 0 7px rgba(15, 118, 110, 0.2);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
@@ -457,11 +644,20 @@
           </div>
         </section>
 
-        <section class="panel">
+        <section class="panel input-panel">
           <div class="panel-header">
             <h2>策略输入</h2>
           </div>
           <div class="panel-body">
+            <div class="workflow-line" aria-label="处理流程">
+              <span class="workflow-step">自然语言</span>
+              <span class="workflow-arrow">→</span>
+              <span class="workflow-step">规则基线</span>
+              <span class="workflow-arrow">→</span>
+              <span class="workflow-step">MiMo 补全</span>
+              <span class="workflow-arrow">→</span>
+              <span class="workflow-step">StrategySpec</span>
+            </div>
             <div class="mode-row">
               <div class="segmented" aria-label="解析模式">
                 <button type="button" data-mode="rules" aria-pressed="true">规则基线</button>
@@ -470,18 +666,32 @@
               <div class="runtime-note" id="runtimeNote">规则基线不会调用外部 API</div>
             </div>
 
-            <textarea id="requestInput"></textarea>
+            <textarea
+              id="requestInput"
+              placeholder="描述你的投研策略，例如：找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。"
+            ></textarea>
             <div class="actions">
               <button class="button primary" id="parseButton">解析</button>
               <button class="button" id="resetButton">恢复默认</button>
               <button class="button" id="copyJsonButton">复制 JSON</button>
               <span class="parse-status" id="parseStatus">准备解析</span>
             </div>
+            <div class="activity" id="activityPanel" aria-live="polite">
+              <div class="activity-header">
+                <span id="activityTitle">处理轨迹</span>
+                <span id="progressLabel">0%</span>
+              </div>
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="stage-list" id="stageList"></div>
+              <pre class="stream-log" id="streamLog"></pre>
+            </div>
             <div class="samples" id="samples"></div>
           </div>
         </section>
 
-        <section class="panel">
+        <section class="panel result-panel">
           <div class="panel-header">
             <h2>解析结果</h2>
           </div>
@@ -545,6 +755,14 @@
     </div>
 
     <script>
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+      window.addEventListener("load", () => {
+        window.requestAnimationFrame(() => window.scrollTo(0, 0));
+      });
+
       const defaultRequest =
         "找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。";
 
@@ -564,7 +782,29 @@
       const jsonOutput = document.getElementById("jsonOutput");
       const parseStatus = document.getElementById("parseStatus");
       const runtimeNote = document.getElementById("runtimeNote");
+      const activityPanel = document.getElementById("activityPanel");
+      const progressLabel = document.getElementById("progressLabel");
+      const progressFill = document.getElementById("progressFill");
+      const stageList = document.getElementById("stageList");
+      const streamLog = document.getElementById("streamLog");
       const modeButtons = [...document.querySelectorAll("[data-mode]")];
+      const stageTemplates = {
+        rules: [
+          ["intake", "读取输入"],
+          ["baseline", "规则基线解析"],
+          ["merge", "整理 StrategySpec"],
+          ["safety", "安全边界检查"],
+          ["done", "完成"],
+        ],
+        mimo: [
+          ["intake", "读取输入"],
+          ["baseline", "规则基线解析"],
+          ["mimo", "MiMo 语义补全"],
+          ["merge", "合并结果"],
+          ["safety", "安全边界检查"],
+          ["done", "完成"],
+        ],
+      };
       let currentMode = "rules";
       let parseTimer = null;
       let parseSerial = 0;
@@ -583,6 +823,76 @@
           });
           samplesNode.appendChild(button);
         }
+      }
+
+      function resetActivity(mode) {
+        activityPanel.classList.add("visible");
+        progressFill.style.width = "0%";
+        progressLabel.textContent = "0%";
+        streamLog.textContent = "";
+        streamLog.dataset.lastMessage = "";
+        stageList.innerHTML = "";
+
+        for (const [stageId, label] of stageTemplates[mode] || stageTemplates.rules) {
+          const item = document.createElement("div");
+          item.className = "stage";
+          item.dataset.stage = stageId;
+          item.innerHTML = `<span class="stage-dot"></span><span>${label}</span>`;
+          stageList.appendChild(item);
+        }
+      }
+
+      function setBusy(isBusy) {
+        parseButton.disabled = isBusy;
+        parseButton.classList.toggle("is-loading", isBusy);
+        parseButton.textContent = isBusy ? "处理中" : "解析";
+        for (const button of samplesNode.querySelectorAll(".sample")) {
+          button.disabled = isBusy;
+        }
+      }
+
+      function appendLog(message) {
+        if (streamLog.dataset.lastMessage === message) {
+          return;
+        }
+        streamLog.dataset.lastMessage = message;
+        const time = new Date().toLocaleTimeString("zh-CN", {
+          hour12: false,
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        streamLog.textContent += `[${time}] ${message}\n`;
+        streamLog.scrollTop = streamLog.scrollHeight;
+      }
+
+      function updateStage(stageId, message, progress) {
+        const stages = stageTemplates[currentMode] || stageTemplates.rules;
+        const activeIndex = stages.findIndex(([id]) => id === stageId);
+        for (const node of stageList.querySelectorAll(".stage")) {
+          const index = stages.findIndex(([id]) => id === node.dataset.stage);
+          node.classList.toggle("complete", activeIndex >= 0 && index < activeIndex);
+          node.classList.toggle("active", node.dataset.stage === stageId);
+        }
+
+        const boundedProgress = Math.max(0, Math.min(100, Number(progress) || 0));
+        progressFill.style.width = `${boundedProgress}%`;
+        progressLabel.textContent = `${boundedProgress}%`;
+        parseStatus.textContent = message;
+        appendLog(message);
+      }
+
+      function readStreamEvent(block) {
+        let eventName = "message";
+        const dataLines = [];
+        for (const line of block.split("\n")) {
+          if (line.startsWith("event:")) {
+            eventName = line.slice(6).trim();
+          }
+          if (line.startsWith("data:")) {
+            dataLines.push(line.slice(5).trimStart());
+          }
+        }
+        return { eventName, data: JSON.parse(dataLines.join("\n") || "{}") };
       }
 
       function setMode(mode) {
@@ -677,34 +987,99 @@
         }
 
         const currentSerial = ++parseSerial;
-        parseButton.disabled = true;
-        parseButton.textContent = currentMode === "mimo" ? "调用 MiMo 中" : "解析中";
-        parseStatus.textContent = currentMode === "mimo" ? "正在调用 MiMo" : "解析中";
+        const requestPayload = { request: requestText, mode: currentMode };
+        resetActivity(currentMode);
+        setBusy(true);
+        updateStage("intake", "读取自然语言策略", 8);
         try {
-          const response = await fetch("/api/parse", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ request: requestText, mode: currentMode }),
-          });
-          const payload = await response.json();
-          if (!response.ok || payload.error) {
-            throw new Error(payload.error || "请求失败");
-          }
+          const payload = await parseWithStream(requestPayload, currentSerial);
           if (currentSerial !== parseSerial) {
             return;
           }
           renderSpec(payload);
+          updateStage("done", "解析完成", 100);
           parseStatus.textContent =
             payload.provider === "mimo" ? "MiMo 已解析当前输入" : "规则基线已解析当前输入";
         } catch (error) {
-          renderError(String(error.message || error));
-          parseStatus.textContent = "解析失败";
+          if (currentSerial === parseSerial) {
+            renderError(String(error.message || error));
+            parseStatus.textContent = "解析失败";
+            appendLog(`解析失败：${String(error.message || error)}`);
+          }
         } finally {
           if (currentSerial === parseSerial) {
-            parseButton.disabled = false;
-            parseButton.textContent = "解析";
+            setBusy(false);
           }
         }
+      }
+
+      async function parseWithStream(requestPayload, currentSerial) {
+        const response = await fetch("/api/parse-stream", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestPayload),
+        });
+
+        if (!response.ok || !response.body) {
+          return parseWithFetch(requestPayload);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        let resultPayload = null;
+
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) {
+            break;
+          }
+          buffer += decoder.decode(value, { stream: true }).replace(/\r\n/g, "\n");
+
+          let boundary = buffer.indexOf("\n\n");
+          while (boundary >= 0) {
+            const block = buffer.slice(0, boundary);
+            buffer = buffer.slice(boundary + 2);
+            const { eventName, data } = readStreamEvent(block);
+            if (currentSerial !== parseSerial) {
+              return resultPayload;
+            }
+            if (eventName === "stage") {
+              updateStage(data.stage, data.message, data.progress);
+            }
+            if (eventName === "result") {
+              resultPayload = data;
+            }
+            if (eventName === "error") {
+              throw new Error(data.error || "请求失败");
+            }
+            boundary = buffer.indexOf("\n\n");
+          }
+        }
+
+        if (!resultPayload) {
+          throw new Error("没有收到解析结果");
+        }
+        return resultPayload;
+      }
+
+      async function parseWithFetch(requestPayload) {
+        updateStage("baseline", "生成规则基线 StrategySpec", 35);
+        if (requestPayload.mode === "mimo") {
+          updateStage("mimo", "调用 MiMo 做语义补全", 62);
+        }
+
+        const response = await fetch("/api/parse", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestPayload),
+        });
+        const payload = await response.json();
+        if (!response.ok || payload.error) {
+          throw new Error(payload.error || "请求失败");
+        }
+        updateStage("safety", "补齐风险提示和安全边界", 92);
+        return payload;
       }
 
       function scheduleParse() {
@@ -762,7 +1137,11 @@
 
       renderSamples();
       input.value = defaultRequest;
-      loadHealth().then(parseRequest);
+      loadHealth().then(() => {
+        if (currentMode === "rules") {
+          parseRequest();
+        }
+      });
     </script>
   </body>
 </html>

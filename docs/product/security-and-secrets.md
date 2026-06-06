@@ -14,7 +14,7 @@
 | `XIAOMI_MODEL` | 小米 MiMo 模型名，Hermes canonical 变量 | Hermes |
 | `MIMO_CHAT_COMPLETIONS_URL` | 可选，MiMo OpenAI-compatible chat completions 端点 | Hermes 或本地环境 |
 | `MIMO_BASE_URL` | 可选，自定义兼容网关基础地址 | Hermes 或本地环境 |
-| `MIMO_MODEL` | 可选，默认 `mimo-v2.5-pro` | Hermes 或本地环境 |
+| `MIMO_MODEL` | 可选，默认 `mimo-v2.5` | Hermes 或本地环境 |
 | `MX_APIKEY` | 调用东方财富妙想 Skills | Hermes |
 | `MX_API_URL` | 可选，妙想 API 基础地址 | Hermes 或本地环境 |
 

@@ -37,14 +37,14 @@ class MimoStrategyIntakeTests(unittest.TestCase):
             "MIMO_BASE_URL": "https://wrong.example/v1",
             "XIAOMI_BASE_URL": "https://token-plan-sgp.xiaomimimo.com/v1",
             "MIMO_MODEL": "wrong-model",
-            "XIAOMI_MODEL": "mimo-v2.5-pro",
+            "XIAOMI_MODEL": "mimo-v2.5",
         }
 
         config = MimoConfig.from_env(env)
 
         self.assertEqual(config.api_key, "xiaomi-key")
         self.assertEqual(config.chat_url, "https://token-plan-sgp.xiaomimimo.com/v1/chat/completions")
-        self.assertEqual(config.model, "mimo-v2.5-pro")
+        self.assertEqual(config.model, "mimo-v2.5")
 
     def test_build_chat_url_accepts_base_or_exact_endpoint(self):
         self.assertEqual(build_chat_url(DEFAULT_MIMO_BASE_URL), DEFAULT_MIMO_CHAT_URL)

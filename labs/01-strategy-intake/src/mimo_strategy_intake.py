@@ -16,7 +16,7 @@ from strategy_intake import RISK_DISCLOSURE, parse_strategy_request
 
 DEFAULT_MIMO_BASE_URL = "https://token-plan-sgp.xiaomimimo.com/v1"
 DEFAULT_MIMO_CHAT_URL = f"{DEFAULT_MIMO_BASE_URL}/chat/completions"
-DEFAULT_MIMO_MODEL = "mimo-v2.5-pro"
+DEFAULT_MIMO_MODEL = "mimo-v2.5"
 
 STRATEGY_FIELDS = (
     "original_request",

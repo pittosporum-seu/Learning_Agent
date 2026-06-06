@@ -188,7 +188,7 @@ Require-Contains ".env.example" $envExample @(
     "MIMO_API_KEY=your_mimo_api_key_from_hermes",
     "XIAOMI_API_KEY=your_mimo_api_key_from_hermes",
     "XIAOMI_BASE_URL=https://token-plan-sgp.xiaomimimo.com/v1",
-    "XIAOMI_MODEL=mimo-v2.5-pro",
+    "XIAOMI_MODEL=mimo-v2.5",
     "MX_APIKEY=your_mx_apikey_from_hermes"
 )
 Require-Contains ".gitignore" $gitignore @("!.env.example")
@@ -211,6 +211,7 @@ Require-Contains "labs/README.md" $labsReadme @(
 Require-Contains "labs/01-strategy-intake/README.md" $lab01Readme @(
     "StrategySpec",
     "MiMo",
+    "/api/parse-stream",
     "strategy_intake.py",
     "demo/run_demo.py",
     "run-lab-demo.ps1",
@@ -240,15 +241,21 @@ Require-Contains "labs/01-strategy-intake/tests/test_mimo_strategy_intake.py" $l
     "fake_transport",
     "test_mimo_response_merges_with_baseline_and_safety_fields"
 )
+Require-Contains "labs/01-strategy-intake/tests/test_web_server.py" (Read-RepoFile "labs/01-strategy-intake/tests/test_web_server.py") @(
+    "test_parse_stream_returns_stages_and_result",
+    "/api/parse-stream"
+)
 Require-Contains "labs/01-strategy-intake/demo/run_demo.py" $lab01Demo @("build_demo_results", "--request", "--output")
 Require-Contains "labs/01-strategy-intake/web/server.py" $lab01WebServer @(
     "ThreadingHTTPServer",
     "/api/parse",
+    "/api/parse-stream",
     "parse_strategy_request_with_mimo"
 )
 Require-Contains "labs/01-strategy-intake/web/index.html" $lab01WebIndex @(
     "StrategySpec",
     'fetch("/api/parse"',
+    'fetch("/api/parse-stream"',
     'data-mode="mimo"',
     'data-mode="rules"'
 )

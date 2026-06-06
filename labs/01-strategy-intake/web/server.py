@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
@@ -42,7 +43,7 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:
         parsed = urlparse(self.path)
-        if parsed.path != "/api/parse":
+        if parsed.path not in ("/api/parse", "/api/parse-stream"):
             self.send_error(404, "Not found")
             return
 
@@ -50,6 +51,10 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
             payload = self.read_json_body()
             request = str(payload.get("request") or DEFAULT_REQUEST)
             mode = str(payload.get("mode") or "rules").strip().lower()
+            if parsed.path == "/api/parse-stream":
+                self.stream_parse(request, mode)
+                return
+
             if mode == "mimo":
                 self.send_json(parse_strategy_request_with_mimo(request))
                 return
@@ -62,6 +67,36 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
             self.send_json({"error": str(exc), "provider": "mimo"}, status=502)
         except Exception as exc:  # pragma: no cover - demo server guardrail
             self.send_json({"error": str(exc)}, status=500)
+
+    def stream_parse(self, request: str, mode: str) -> None:
+        self.send_response(200)
+        self.send_header("Content-Type", "text/event-stream; charset=utf-8")
+        self.send_header("Cache-Control", "no-cache")
+        self.end_headers()
+
+        try:
+            self.send_sse("stage", {"stage": "intake", "message": "读取自然语言策略", "progress": 12})
+            time.sleep(0.08)
+            self.send_sse("stage", {"stage": "baseline", "message": "生成规则基线 StrategySpec", "progress": 30})
+
+            if mode == "mimo":
+                self.send_sse("stage", {"stage": "mimo", "message": "调用 MiMo 做语义补全", "progress": 55})
+                result = parse_strategy_request_with_mimo(request)
+                self.send_sse("stage", {"stage": "merge", "message": "合并模型结果与规则基线", "progress": 78})
+            else:
+                result = {"provider": "rules", "strategy_spec": parse_strategy_request(request).to_dict()}
+                self.send_sse("stage", {"stage": "merge", "message": "整理规则解析结果", "progress": 78})
+
+            time.sleep(0.08)
+            self.send_sse("stage", {"stage": "safety", "message": "补齐风险提示和安全边界", "progress": 92})
+            self.send_sse("result", result)
+            self.send_sse("stage", {"stage": "done", "message": "解析完成", "progress": 100})
+        except MimoConfigError as exc:
+            self.send_sse("error", {"error": str(exc), "provider": "mimo"})
+        except MimoResponseError as exc:
+            self.send_sse("error", {"error": str(exc), "provider": "mimo"})
+        except Exception as exc:  # pragma: no cover - demo server guardrail
+            self.send_sse("error", {"error": str(exc)})
 
     def read_json_body(self) -> dict[str, object]:
         length = int(self.headers.get("Content-Length", "0"))
@@ -85,6 +120,12 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(content)))
         self.end_headers()
         self.wfile.write(content)
+
+    def send_sse(self, event_name: str, payload: dict[str, object]) -> None:
+        body = json.dumps(payload, ensure_ascii=False)
+        content = f"event: {event_name}\ndata: {body}\n\n".encode("utf-8")
+        self.wfile.write(content)
+        self.wfile.flush()
 
     def log_message(self, format: str, *args: object) -> None:
         print(f"[web] {self.address_string()} - {format % args}")

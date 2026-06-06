@@ -53,7 +53,7 @@ MiMo 模式从本地环境变量读取 key，仓库只保留 `.env.example` 占�
 ```powershell
 $env:XIAOMI_API_KEY="<read-from-hermes>"
 $env:XIAOMI_BASE_URL="https://token-plan-sgp.xiaomimimo.com/v1"
-$env:XIAOMI_MODEL="mimo-v2.5-pro"
+$env:XIAOMI_MODEL="mimo-v2.5"
 ```
 
 Hermes 对应配置：
@@ -61,7 +61,7 @@ Hermes 对应配置：
 ```text
 provider: xiaomi
 base_url: https://token-plan-sgp.xiaomimimo.com/v1
-model: mimo-v2.5-pro
+model: mimo-v2.5
 key_env: XIAOMI_API_KEY
 ```
 
@@ -89,7 +89,9 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-web.ps1 -Lab 01-strateg
 http://127.0.0.1:8765/
 ```
 
-网页会先做健康检查：如果检测到 `MIMO_API_KEY` 或 `XIAOMI_API_KEY`，默认切到 MiMo 解析；否则使用规则基线。MiMo 模式需要点击“解析”触发，避免输入时反复消耗 token。
+网页会先做健康检查：如果检测到 `MIMO_API_KEY` 或 `XIAOMI_API_KEY`，默认切到 MiMo 解析；否则使用规则基线。MiMo 模式需要点击“解析”触发，避免输入时或刷新页面时反复消耗 token。
+
+Web demo 通过 `/api/parse-stream` 返回阶段事件，页面会展示处理进度、当前阶段和流式日志。这里的流式输出用于呈现 Agent 处理轨迹；最终仍以完整 `StrategySpec` JSON 作为结果。
 
 在本机 Windows 环境下，`scripts/run-lab-web.ps1` 会尝试从 WSL Hermes 的 `.env` 中加载 `XIAOMI_API_KEY`、`XIAOMI_BASE_URL` 和 `XIAOMI_MODEL` 到当前 server 进程环境；不会打印或提交真实 key。
 
