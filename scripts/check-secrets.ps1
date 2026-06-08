@@ -30,7 +30,7 @@ $placeholderPattern = '(?i)^(your_|example|placeholder|changeme|todo|test|mock|d
 $checks = @(
     @{
         Name = "real environment secret"
-        Pattern = '(?i)\b(MIMO_API_KEY|MX_APIKEY|OPENAI_API_KEY|ANTHROPIC_API_KEY)\s*[:=]\s*([^\s`"''>]+)'
+        Pattern = '(?i)\b(LLM_API_KEY|MIMO_API_KEY|MX_APIKEY|OPENAI_API_KEY|ANTHROPIC_API_KEY)\s*[:=]\s*([^\s`"''>]+)'
         ValueGroup = 2
     },
     @{

@@ -2,7 +2,7 @@
 
 这组 Lab 用一个连续场景贯穿 12 篇 `Agent基础知识`：构建一个个性化投资调研系统。
 
-愿景是：用户用自然语言描述策略，系统生成投研流程规划，逐步调用 Skills 执行；当某个流程稳定后，再固化为可复用 Skill。模型侧采用小米 MiMo，财经信息源逐步接入东方财富妙想 Skills。测试默认使用 mock，真实 key 只从 Hermes 注入到环境变量。
+愿景是：用户用自然语言描述策略，系统生成投研流程规划，逐步调用 Skills 执行；当某个流程稳定后，再固化为可复用 Skill。模型侧采用可配置的 OpenAI-compatible provider，当前 Hermes 示例可映射到小米 MiMo；财经信息源逐步接入东方财富妙想 Skills。测试默认使用 mock，真实 key 只从 Hermes 或受信任的本地环境注入到环境变量。
 
 默认示例策略：
 
@@ -30,7 +30,7 @@
 
 | Lab | 名称 | 对应文章 | 目标产出 | 状态 |
 | --- | --- | --- | --- | --- |
-| 01 | Strategy Intake | 01 Workflow vs Agent | 自然语言策略转 `StrategySpec`，支持规则基线和 MiMo 解析 | 已实现 |
+| 01 | Strategy Intake | 01 Workflow vs Agent | 自然语言策略转 `StrategySpec`，支持规则基线和可配置模型解析 | 已实现 |
 | 02 | Strategy Agent Loop | 02 Agent Loop | Observe-Decide-Act 循环、trace、阻断、投研计划生成 | 已实现 |
 | 03 | Finance Tool Use Mock | 03 Tool Use | mock `mx-xuangu`、`mx-data`、`mx-search` 的工具调用 | 下一步 |
 | 04 | Research RAG Basic | 04 RAG | 检索策略规则、风险规则和报告模板 | 计划中 |
@@ -75,7 +75,7 @@ outputs/
 关键点：
 
 - 规则基线用于稳定字段、回归测试和边界拦截。
-- MiMo 模式读取 `MIMO_API_KEY` 或 `XIAOMI_API_KEY`，真实调用模型做语义补全。
+- 模型模式读取 `LLM_API_KEY`、`LLM_BASE_URL` 和 `LLM_MODEL`，真实调用 OpenAI-compatible provider 做语义补全。
 - 不在这一层调用真实财经数据，也不生成个股名单。
 
 验收标准：
@@ -83,7 +83,7 @@ outputs/
 - 给定策略文本，可以输出稳定 JSON。
 - 缺少关键字段时能提出待确认问题。
 - 高风险请求能转为风险边界提示。
-- Web demo 能在 `http://127.0.0.1:8765/` 展示规则基线和 MiMo 两种模式。
+- Web demo 能在 `http://127.0.0.1:8765/` 展示规则基线和可配置模型解析两种模式，且默认不调用模型。
 - 测试不依赖真实 API key。
 
 ## Lab 02: Strategy Agent Loop

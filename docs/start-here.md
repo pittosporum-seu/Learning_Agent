@@ -99,7 +99,7 @@ http://127.0.0.1:8765/
 
 | Lab | 展示概念 | 运行方式 |
 | --- | --- | --- |
-| [Lab 01: Strategy Intake](../labs/01-strategy-intake/README.md) | 自然语言策略解析、规则基线、MiMo 语义补全、安全边界 | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake` |
+| [Lab 01: Strategy Intake](../labs/01-strategy-intake/README.md) | 自然语言策略解析、规则基线、可配置模型语义补全、安全边界 | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake` |
 | [Lab 02: Strategy Agent Loop](../labs/02-strategy-agent-loop/README.md) | 最小 Agent Loop、trace、阻断、max-turn 保护 | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 02-strategy-agent-loop` |
 
 当前继续方向：
@@ -113,5 +113,5 @@ http://127.0.0.1:8765/
 - 本仓库中的投研内容仅用于学习演示和观察池，不构成投资建议或收益承诺。
 - 不提交真实 API key、token、cookie、session、账户信息或个人隐私。
 - 默认测试使用 mock 数据和 mock 模型响应。
-- 真实 MiMo 或东方财富妙想 Skills 只能从 Hermes 或受信任的本地环境注入。
+- 真实模型 provider 或东方财富妙想 Skills 只能从 Hermes 或受信任的本地环境注入。
 - 涉及候选股票、观察池、模拟组合或 Skill 启用时，必须保留风险提示和人工确认边界。

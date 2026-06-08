@@ -61,7 +61,7 @@
 
 - [Lab 01: Strategy Intake](labs/01-strategy-intake/README.md)
   - 规则基线解析。
-  - MiMo 真实模型解析模式。
+  - 可配置模型解析模式。
   - 本地 Web demo。
 - [Lab 02: Strategy Agent Loop](labs/02-strategy-agent-loop/README.md)
   - 最小 Observe-Decide-Act Loop。

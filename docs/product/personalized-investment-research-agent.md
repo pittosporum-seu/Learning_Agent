@@ -90,11 +90,14 @@ flowchart LR
 
 ## 模型与密钥
 
-模型层采用小米 MiMo，运行时从环境变量读取：
+模型层采用可配置的 OpenAI-compatible provider，运行时从环境变量读取：
 
-- `MIMO_API_KEY`: 小米 MiMo API Key，由 Hermes 注入或读取后写入运行环境。
-- `MIMO_BASE_URL`: 可选，MiMo 服务地址或兼容网关地址。
-- `MIMO_MODEL`: 可选，默认模型名。
+- `LLM_API_KEY`: 模型 provider API Key，由 Hermes 或受信任的本地环境注入。
+- `LLM_BASE_URL`: OpenAI-compatible 基础地址。
+- `LLM_MODEL`: 模型名。
+- `LLM_PROVIDER_LABEL`: 可选，Web demo 中展示的 provider 名称。
+
+当前 Hermes 示例可以映射到小米 MiMo，但系统设计不绑定某一个模型 provider。
 
 财经数据层采用东方财富妙想 Skills，运行时从环境变量读取：
 
@@ -177,4 +180,4 @@ flowchart TD
 4. 系统生成带证据和风险提示的报告。
 5. 系统通过测试检查：输出有证据、有来源、有风险提示、没有泄露密钥。
 
-第二阶段再接入真实的 MiMo 和东方财富妙想 Skills，并保留 mock 测试。
+第二阶段再接入真实模型 provider 和东方财富妙想 Skills，并保留 mock 测试。

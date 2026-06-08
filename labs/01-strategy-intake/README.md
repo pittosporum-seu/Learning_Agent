@@ -5,7 +5,7 @@
 它对应 `Agent基础知识 01: Workflow vs Agent`。现在它同时提供两种入口：
 
 - 规则基线：不调用外部 API，字段稳定，适合回归测试和安全边界验证。
-- MiMo 解析：读取本地环境变量里的小米 MiMo key，真实调用模型，在规则基线上做语义补全、归一化和追问判断。
+- 模型解析：读取本地环境变量里的 OpenAI-compatible provider 配置，在规则基线上做语义补全、归一化和追问判断。
 
 本 Lab 仍然不查真实行情，不调用东方财富妙想财经数据，不输出真实个股推荐，也不执行交易。它只负责把策略意图、筛选条件、风险边界和待确认问题整理清楚。
 
@@ -46,34 +46,26 @@ python labs/01-strategy-intake/src/strategy_intake.py "找最近 60 日趋势较
 python labs/01-strategy-intake/src/strategy_intake.py
 ```
 
-## MiMo 配置
+## 模型解析配置
 
-MiMo 模式从本地环境变量读取 key，仓库只保留 `.env.example` 占位，不提交真实密钥。
-
-```powershell
-$env:XIAOMI_API_KEY="<read-from-hermes>"
-$env:XIAOMI_BASE_URL="https://token-plan-sgp.xiaomimimo.com/v1"
-$env:XIAOMI_MODEL="mimo-v2.5"
-```
-
-Hermes 对应配置：
-
-```text
-provider: xiaomi
-base_url: https://token-plan-sgp.xiaomimimo.com/v1
-model: mimo-v2.5
-key_env: XIAOMI_API_KEY
-```
-
-如需走自定义网关，可以设置：
+模型解析模式从本地环境变量读取 OpenAI-compatible provider 配置，仓库只保留 `.env.example` 占位，不提交真实密钥。网页默认使用规则基线；只有手动切到“模型解析”并点击“解析”时才会调用模型。
 
 ```powershell
-$env:XIAOMI_CHAT_COMPLETIONS_URL="https://your-gateway.example/v1/chat/completions"
+$env:LLM_API_KEY="<read-from-trusted-runtime>"
+$env:LLM_BASE_URL="https://token-plan-sgp.xiaomimimo.com/v1"
+$env:LLM_MODEL="mimo-v2.5"
+$env:LLM_PROVIDER_LABEL="Xiaomi MiMo"
 ```
 
-兼容变量 `MIMO_API_KEY`、`MIMO_BASE_URL`、`MIMO_MODEL` 仍可使用，但优先级低于 `XIAOMI_*`。
+如果要换成其他 OpenAI-compatible 网关，只需要替换 `LLM_BASE_URL`、`LLM_MODEL` 和 `LLM_PROVIDER_LABEL`。如需直接指定 chat completions 端点，可以设置：
 
-测试默认 mock MiMo 响应，不依赖真实 key。
+```powershell
+$env:LLM_CHAT_COMPLETIONS_URL="https://your-gateway.example/v1/chat/completions"
+```
+
+兼容变量 `XIAOMI_API_KEY`、`XIAOMI_BASE_URL`、`XIAOMI_MODEL`、`MIMO_API_KEY`、`MIMO_BASE_URL`、`MIMO_MODEL` 仍可使用，但优先级低于 `LLM_*`。当前本机启动脚本会把 Hermes 里的 Xiaomi MiMo 配置映射到 `LLM_*`，但不会把页面默认切到模型解析。
+
+测试默认 mock 模型响应，不依赖真实 key。
 
 ## Web Demo
 
@@ -89,11 +81,11 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-web.ps1 -Lab 01-strateg
 http://127.0.0.1:8765/
 ```
 
-网页会先做健康检查：如果检测到 `MIMO_API_KEY` 或 `XIAOMI_API_KEY`，默认切到 MiMo 解析；否则使用规则基线。MiMo 模式需要点击“解析”触发，避免输入时或刷新页面时反复消耗 token。
+网页会先做健康检查：如果检测到 `LLM_API_KEY` 或兼容的 Xiaomi/MiMo 环境变量，会显示模型 provider 已配置；但默认仍然停留在规则基线。模型模式需要手动切换并点击“解析”触发，避免输入时或刷新页面时反复消耗 token。
 
 Web demo 通过 `/api/parse-stream` 返回阶段事件，页面会展示处理进度、当前阶段和流式日志。这里的流式输出用于呈现 Agent 处理轨迹；最终仍以完整 `StrategySpec` JSON 作为结果。
 
-在本机 Windows 环境下，`scripts/run-lab-web.ps1` 会尝试从 WSL Hermes 的 `.env` 中加载 `XIAOMI_API_KEY`、`XIAOMI_BASE_URL` 和 `XIAOMI_MODEL` 到当前 server 进程环境；不会打印或提交真实 key。
+在本机 Windows 环境下，`scripts/run-lab-web.ps1` 会尝试从 WSL Hermes 的 `.env` 中加载 Xiaomi 或通用 LLM 配置到当前 server 进程环境；不会打印或提交真实 key。
 
 ## Demo 脚本
 
@@ -142,7 +134,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 
 ## 设计边界
 
-- 规则基线和 MiMo 解析都只产出 `StrategySpec`。
+- 规则基线和模型解析都只产出 `StrategySpec`。
 - 不在这一层生成真实股票名单。
 - 缺少主题、时间窗口或筛选规则时，输出待确认问题。
 - 发现“稳赚”“必涨”“自动买入”等高风险请求时，转为风险边界提示。

@@ -35,7 +35,7 @@
 6. 如果新增了维护流程、脚本或目录，同步更新根 README 的仓库结构。
 7. 如果涉及真实 API、模型 key、财经数据源或模拟组合，确认：
    - 真实 key 只从环境变量读取。
-   - `MIMO_API_KEY`、`XIAOMI_API_KEY`、`MX_APIKEY` 只能出现在说明文档或 `.env.example` 占位中，不能提交真实值。
+   - `LLM_API_KEY`、`MIMO_API_KEY`、`XIAOMI_API_KEY`、`MX_APIKEY` 只能出现在说明文档或 `.env.example` 占位中，不能提交真实值。
    - `.env.example` 只保留占位。
    - 测试默认 mock，不依赖真实 key。
    - UI 或报告里有风险提示和人工确认边界。

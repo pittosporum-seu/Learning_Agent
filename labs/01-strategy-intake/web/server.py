@@ -14,11 +14,11 @@ LAB_ROOT = WEB_DIR.parent
 SRC_DIR = LAB_ROOT / "src"
 sys.path.insert(0, str(SRC_DIR))
 
-from mimo_strategy_intake import (  # noqa: E402
-    MimoConfigError,
-    MimoResponseError,
-    get_mimo_status,
-    parse_strategy_request_with_mimo,
+from llm_strategy_intake import (  # noqa: E402
+    LLMConfigError,
+    LLMResponseError,
+    get_llm_status,
+    parse_strategy_request_with_llm,
 )
 from strategy_intake import DEFAULT_REQUEST, parse_strategy_request  # noqa: E402
 
@@ -34,8 +34,8 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
                 {
                     "status": "ok",
                     "lab": "01-strategy-intake",
-                    "mimo": get_mimo_status(),
-                    "modes": ["rules", "mimo"],
+                    "llm": get_llm_status(),
+                    "modes": ["rules", "llm"],
                 }
             )
             return
@@ -51,20 +51,21 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
             payload = self.read_json_body()
             request = str(payload.get("request") or DEFAULT_REQUEST)
             mode = str(payload.get("mode") or "rules").strip().lower()
+            mode = "llm" if mode == "mimo" else mode
             if parsed.path == "/api/parse-stream":
                 self.stream_parse(request, mode)
                 return
 
-            if mode == "mimo":
-                self.send_json(parse_strategy_request_with_mimo(request))
+            if mode == "llm":
+                self.send_json(parse_strategy_request_with_llm(request))
                 return
 
             spec = parse_strategy_request(request).to_dict()
             self.send_json({"provider": "rules", "strategy_spec": spec})
-        except MimoConfigError as exc:
-            self.send_json({"error": str(exc), "provider": "mimo"}, status=400)
-        except MimoResponseError as exc:
-            self.send_json({"error": str(exc), "provider": "mimo"}, status=502)
+        except LLMConfigError as exc:
+            self.send_json({"error": str(exc), "provider": "llm"}, status=400)
+        except LLMResponseError as exc:
+            self.send_json({"error": str(exc), "provider": "llm"}, status=502)
         except Exception as exc:  # pragma: no cover - demo server guardrail
             self.send_json({"error": str(exc)}, status=500)
 
@@ -79,9 +80,9 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
             time.sleep(0.08)
             self.send_sse("stage", {"stage": "baseline", "message": "生成规则基线 StrategySpec", "progress": 30})
 
-            if mode == "mimo":
-                self.send_sse("stage", {"stage": "mimo", "message": "调用 MiMo 做语义补全", "progress": 55})
-                result = parse_strategy_request_with_mimo(request)
+            if mode == "llm":
+                self.send_sse("stage", {"stage": "llm", "message": "调用模型做语义补全", "progress": 55})
+                result = parse_strategy_request_with_llm(request)
                 self.send_sse("stage", {"stage": "merge", "message": "合并模型结果与规则基线", "progress": 78})
             else:
                 result = {"provider": "rules", "strategy_spec": parse_strategy_request(request).to_dict()}
@@ -91,10 +92,10 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
             self.send_sse("stage", {"stage": "safety", "message": "补齐风险提示和安全边界", "progress": 92})
             self.send_sse("result", result)
             self.send_sse("stage", {"stage": "done", "message": "解析完成", "progress": 100})
-        except MimoConfigError as exc:
-            self.send_sse("error", {"error": str(exc), "provider": "mimo"})
-        except MimoResponseError as exc:
-            self.send_sse("error", {"error": str(exc), "provider": "mimo"})
+        except LLMConfigError as exc:
+            self.send_sse("error", {"error": str(exc), "provider": "llm"})
+        except LLMResponseError as exc:
+            self.send_sse("error", {"error": str(exc), "provider": "llm"})
         except Exception as exc:  # pragma: no cover - demo server guardrail
             self.send_sse("error", {"error": str(exc)})
 

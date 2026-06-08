@@ -73,7 +73,7 @@ flowchart LR
 flowchart TD
     U["自然语言策略"] --> L01["Lab 01 Strategy Intake"]
     L01 --> R1["规则基线 StrategySpec"]
-    L01 --> M1["MiMo 解析 StrategySpec"]
+    L01 --> M1["可配置模型解析 StrategySpec"]
     R1 --> L02["Lab 02 Agent Loop"]
     M1 --> L02
     L02 --> P["mock 投研计划"]
@@ -162,7 +162,7 @@ flowchart TD
 | [product/lab-plan.md](product/lab-plan.md) | 把 12 篇基础文章映射成 12 个投研 Labs。 |
 | [product/security-and-secrets.md](product/security-and-secrets.md) | 定义 Hermes 注入密钥、`.env.example`、提交前检查和财经输出边界。 |
 | [../labs/README.md](../labs/README.md) | Labs 入口，说明投研主线和统一要求。 |
-| [../labs/01-strategy-intake/README.md](../labs/01-strategy-intake/README.md) | 第一个可运行 Lab，把自然语言投研策略解析成 `StrategySpec`，支持规则基线和 MiMo 模式。 |
+| [../labs/01-strategy-intake/README.md](../labs/01-strategy-intake/README.md) | 第一个可运行 Lab，把自然语言投研策略解析成 `StrategySpec`，支持规则基线和可配置模型解析模式。 |
 | [../labs/02-strategy-agent-loop/README.md](../labs/02-strategy-agent-loop/README.md) | 第二个可运行 Lab，把 `StrategySpec` 放进最小 Agent Loop。 |
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |
 | [../labs/shared/testing/README.md](../labs/shared/testing/README.md) | 统一 Lab 测试入口说明。 |

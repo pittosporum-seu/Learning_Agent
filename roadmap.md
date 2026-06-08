@@ -39,7 +39,7 @@
 - [x] 将 Labs 主线调整为个性化投资调研 Agent 系统
 - [x] 固化 12 个投研 Labs 总计划
 - [x] Lab 01: Strategy Intake
-- [x] Lab 01: MiMo 真实解析模式
+- [x] Lab 01: 可配置模型解析模式
 - [x] Lab 02: Strategy Agent Loop
 - [ ] Lab 03: Finance Tool Use Mock
 - [ ] Lab 04: Research RAG Basic

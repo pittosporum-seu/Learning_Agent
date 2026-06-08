@@ -602,7 +602,7 @@
             <h1>Lab 01 Strategy Intake</h1>
             <div class="subtitle">把自然语言投研想法解析成可执行的 StrategySpec</div>
           </div>
-          <div class="status"><span class="dot"></span><span id="apiStatus">检查 MiMo 配置中</span></div>
+          <div class="status"><span class="dot"></span><span id="apiStatus">检查模型配置中</span></div>
         </div>
       </header>
 
@@ -626,9 +626,9 @@
                 </div>
               </div>
               <div class="explain-item">
-                <div class="explain-title">MiMo 解析</div>
+                <div class="explain-title">模型解析</div>
                 <div class="explain-text">
-                  MiMo 模式会读取本地环境变量里的 key，真实调用模型，让模型在规则基线上做语义补全、归一化和追问判断。
+                  模型模式读取本地环境变量里的 OpenAI-compatible provider 配置，在规则基线上做语义补全、归一化和追问判断。
                 </div>
               </div>
               <div class="explain-item">
@@ -654,14 +654,14 @@
               <span class="workflow-arrow">→</span>
               <span class="workflow-step">规则基线</span>
               <span class="workflow-arrow">→</span>
-              <span class="workflow-step">MiMo 补全</span>
+              <span class="workflow-step">模型补全</span>
               <span class="workflow-arrow">→</span>
               <span class="workflow-step">StrategySpec</span>
             </div>
             <div class="mode-row">
               <div class="segmented" aria-label="解析模式">
                 <button type="button" data-mode="rules" aria-pressed="true">规则基线</button>
-                <button type="button" data-mode="mimo" aria-pressed="false">MiMo 解析</button>
+                <button type="button" data-mode="llm" aria-pressed="false">模型解析</button>
               </div>
               <div class="runtime-note" id="runtimeNote">规则基线不会调用外部 API</div>
             </div>
@@ -796,10 +796,10 @@
           ["safety", "安全边界检查"],
           ["done", "完成"],
         ],
-        mimo: [
+        llm: [
           ["intake", "读取输入"],
           ["baseline", "规则基线解析"],
-          ["mimo", "MiMo 语义补全"],
+          ["llm", "模型语义补全"],
           ["merge", "合并结果"],
           ["safety", "安全边界检查"],
           ["done", "完成"],
@@ -901,12 +901,12 @@
           button.setAttribute("aria-pressed", button.dataset.mode === mode ? "true" : "false");
         }
 
-        const mimo = health?.mimo;
-        if (mode === "mimo") {
-          runtimeNote.textContent = mimo?.configured
-            ? `MiMo 会调用 ${mimo.model}，端点 ${mimo.chat_url}`
-            : "MiMo 未配置 key，当前无法调用模型";
-          parseStatus.textContent = "点击解析会调用 MiMo";
+        const llm = health?.llm;
+        if (mode === "llm") {
+          runtimeNote.textContent = llm?.configured
+            ? `${llm.provider_label || "模型 provider"} · ${llm.model} · ${llm.chat_url}`
+            : "模型 provider 未配置；请在本地环境变量中设置 LLM_API_KEY、LLM_BASE_URL 和 LLM_MODEL";
+          parseStatus.textContent = "点击解析会调用模型 provider";
           return;
         }
 
@@ -951,7 +951,9 @@
               ? "blocked"
               : "";
         const providerLabel =
-          payload.provider === "mimo" ? `MiMo · ${payload.model || "unknown model"}` : "规则基线";
+          payload.provider === "llm"
+            ? `${payload.provider_label || "模型解析"} · ${payload.model || "unknown model"}`
+            : "规则基线";
 
         document.getElementById("providerValue").textContent = providerLabel;
         document.getElementById("modeValue").innerHTML =
@@ -973,7 +975,7 @@
 
       function renderError(message) {
         document.getElementById("providerValue").textContent =
-          currentMode === "mimo" ? "MiMo 调用失败" : "规则解析失败";
+          currentMode === "llm" ? "模型调用失败" : "规则解析失败";
         document.getElementById("parsedRequest").textContent = message;
         document.getElementById("parsedRequest").className = "risk-note error-note";
         jsonOutput.textContent = message;
@@ -999,7 +1001,7 @@
           renderSpec(payload);
           updateStage("done", "解析完成", 100);
           parseStatus.textContent =
-            payload.provider === "mimo" ? "MiMo 已解析当前输入" : "规则基线已解析当前输入";
+            payload.provider === "llm" ? "模型已解析当前输入" : "规则基线已解析当前输入";
         } catch (error) {
           if (currentSerial === parseSerial) {
             renderError(String(error.message || error));
@@ -1065,8 +1067,8 @@
 
       async function parseWithFetch(requestPayload) {
         updateStage("baseline", "生成规则基线 StrategySpec", 35);
-        if (requestPayload.mode === "mimo") {
-          updateStage("mimo", "调用 MiMo 做语义补全", 62);
+        if (requestPayload.mode === "llm") {
+          updateStage("llm", "调用模型做语义补全", 62);
         }
 
         const response = await fetch("/api/parse", {
@@ -1084,8 +1086,8 @@
 
       function scheduleParse() {
         window.clearTimeout(parseTimer);
-        if (currentMode === "mimo") {
-          parseStatus.textContent = "MiMo 模式下点击解析，避免输入时反复消耗 token";
+        if (currentMode === "llm") {
+          parseStatus.textContent = "模型模式下点击解析，避免输入时反复消耗 token";
           return;
         }
         parseStatus.textContent = "等待输入停止";
@@ -1096,11 +1098,11 @@
         try {
           const response = await fetch("/api/health");
           health = await response.json();
-          const mimo = health.mimo || {};
-          document.getElementById("apiStatus").textContent = mimo.configured
-            ? `MiMo 已就绪 · ${mimo.model}`
-            : "MiMo 未配置 · 使用规则基线";
-          setMode(mimo.configured ? "mimo" : "rules");
+          const llm = health.llm || {};
+          document.getElementById("apiStatus").textContent = llm.configured
+            ? `模型已配置 · ${llm.provider_label || "provider"} · ${llm.model}`
+            : "模型未配置 · 默认规则基线";
+          setMode("rules");
         } catch (error) {
           document.getElementById("apiStatus").textContent = "健康检查失败 · 使用规则基线";
           setMode("rules");
@@ -1115,7 +1117,9 @@
       for (const button of modeButtons) {
         button.addEventListener("click", () => {
           setMode(button.dataset.mode);
-          parseRequest();
+          if (button.dataset.mode === "rules") {
+            parseRequest();
+          }
         });
       }
 

@@ -74,8 +74,9 @@ $runLabWeb = Read-RepoFile "scripts/run-lab-web.ps1"
 $lab01Readme = Read-RepoFile "labs/01-strategy-intake/README.md"
 $lab01Source = Read-RepoFile "labs/01-strategy-intake/src/strategy_intake.py"
 $lab01MimoSource = Read-RepoFile "labs/01-strategy-intake/src/mimo_strategy_intake.py"
+$lab01LlmSource = Read-RepoFile "labs/01-strategy-intake/src/llm_strategy_intake.py"
 $lab01Tests = Read-RepoFile "labs/01-strategy-intake/tests/test_strategy_intake.py"
-$lab01MimoTests = Read-RepoFile "labs/01-strategy-intake/tests/test_mimo_strategy_intake.py"
+$lab01LlmTests = Read-RepoFile "labs/01-strategy-intake/tests/test_llm_strategy_intake.py"
 $lab01Demo = Read-RepoFile "labs/01-strategy-intake/demo/run_demo.py"
 $lab01WebServer = Read-RepoFile "labs/01-strategy-intake/web/server.py"
 $lab01WebIndex = Read-RepoFile "labs/01-strategy-intake/web/index.html"
@@ -136,6 +137,7 @@ Require-Contains "hooks/content-update.md" $hook @(
     "check-secrets.ps1",
     "run-lab-tests.ps1",
     "TODO.md",
+    "LLM_API_KEY",
     "MIMO_API_KEY"
 )
 Require-Contains "docs/document-graph.md" $documentGraph @(
@@ -161,7 +163,7 @@ $roadmapTokens = @(
     'Start Here',
     'Glossary',
     '[x] Lab 01: Strategy Intake',
-    '[x] Lab 01: MiMo',
+    '[x] Lab 01:',
     '[x] Lab 02: Strategy Agent Loop',
     '[ ] Lab 03: Finance Tool Use Mock'
 )
@@ -210,7 +212,9 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "API key"
 )
 Require-Contains "docs/product/personalized-investment-research-agent.md" $productVision @(
-    "MIMO_API_KEY",
+    "LLM_API_KEY",
+    "LLM_BASE_URL",
+    "LLM_MODEL",
     "MX_APIKEY",
     "mx-xuangu",
     "mx-moni"
@@ -219,11 +223,16 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "Lab 01",
     "Lab 02",
     "Lab 12",
-    "MiMo",
+    "OpenAI-compatible",
+    "LLM_API_KEY",
     "mx-xuangu",
     "mx-search"
 )
 Require-Contains "docs/product/security-and-secrets.md" $securityPlan @(
+    "LLM_API_KEY",
+    "LLM_BASE_URL",
+    "LLM_MODEL",
+    "LLM_CHAT_COMPLETIONS_URL",
     "MIMO_API_KEY",
     "XIAOMI_API_KEY",
     "XIAOMI_BASE_URL",
@@ -235,6 +244,9 @@ Require-Contains "docs/product/security-and-secrets.md" $securityPlan @(
 )
 
 Require-Contains ".env.example" $envExample @(
+    "LLM_API_KEY=your_openai_compatible_api_key_from_trusted_runtime",
+    "LLM_BASE_URL=https://token-plan-sgp.xiaomimimo.com/v1",
+    "LLM_MODEL=mimo-v2.5",
     "MIMO_API_KEY=your_mimo_api_key_from_hermes",
     "XIAOMI_API_KEY=your_mimo_api_key_from_hermes",
     "XIAOMI_BASE_URL=https://token-plan-sgp.xiaomimimo.com/v1",
@@ -244,6 +256,7 @@ Require-Contains ".env.example" $envExample @(
 Require-Contains ".gitignore" $gitignore @("!.env.example")
 Require-Contains "scripts/check-secrets.ps1" $secretCheck @(
     "git ls-files --cached --others --exclude-standard",
+    "LLM_API_KEY",
     "MIMO_API_KEY",
     "MX_APIKEY"
 )
@@ -260,7 +273,8 @@ Require-Contains "labs/README.md" $labsReadme @(
 
 Require-Contains "labs/01-strategy-intake/README.md" $lab01Readme @(
     "StrategySpec",
-    "MiMo",
+    "LLM_API_KEY",
+    "OpenAI-compatible",
     "/api/parse-stream",
     "strategy_intake.py",
     "demo/run_demo.py",
@@ -277,19 +291,26 @@ Require-Contains "labs/01-strategy-intake/src/strategy_intake.py" $lab01Source @
     "PROHIBITED_PATTERNS"
 )
 Require-Contains "labs/01-strategy-intake/src/mimo_strategy_intake.py" $lab01MimoSource @(
-    "DEFAULT_MIMO_CHAT_URL",
-    "DEFAULT_MIMO_MODEL",
     "parse_strategy_request_with_mimo",
-    "MimoConfig",
+    "parse_strategy_request_with_llm",
+    "MimoConfig"
+)
+Require-Contains "labs/01-strategy-intake/src/llm_strategy_intake.py" $lab01LlmSource @(
+    "DEFAULT_XIAOMI_CHAT_URL",
+    "DEFAULT_PROVIDER_LABEL",
+    "parse_strategy_request_with_llm",
+    "LLMConfig",
+    "LLM_API_KEY",
     "api-key"
 )
 Require-Contains "labs/01-strategy-intake/tests/test_strategy_intake.py" $lab01Tests @(
     "test_default_case_parses_to_agent_spec",
     "test_prohibited_request_gets_boundary_prompt"
 )
-Require-Contains "labs/01-strategy-intake/tests/test_mimo_strategy_intake.py" $lab01MimoTests @(
+Require-Contains "labs/01-strategy-intake/tests/test_llm_strategy_intake.py" $lab01LlmTests @(
     "fake_transport",
-    "test_mimo_response_merges_with_baseline_and_safety_fields"
+    "test_llm_response_merges_with_baseline_and_safety_fields",
+    "test_env_config_uses_llm_values"
 )
 Require-Contains "labs/01-strategy-intake/tests/test_web_server.py" (Read-RepoFile "labs/01-strategy-intake/tests/test_web_server.py") @(
     "test_parse_stream_returns_stages_and_result",
@@ -300,13 +321,13 @@ Require-Contains "labs/01-strategy-intake/web/server.py" $lab01WebServer @(
     "ThreadingHTTPServer",
     "/api/parse",
     "/api/parse-stream",
-    "parse_strategy_request_with_mimo"
+    "parse_strategy_request_with_llm"
 )
 $lab01WebIndexTokens = @(
     "StrategySpec",
     'fetch("/api/parse"',
     'fetch("/api/parse-stream"',
-    'data-mode="mimo"',
+    'data-mode="llm"',
     'data-mode="rules"'
 )
 Require-Contains "labs/01-strategy-intake/web/index.html" $lab01WebIndex $lab01WebIndexTokens
@@ -334,7 +355,7 @@ Require-Contains "labs/shared/testing/README.md" $sharedTestingReadme @("run_lab
 Require-Contains "labs/shared/testing/run_lab_tests.py" $sharedTestingRunner @("unittest", "--lab")
 Require-Contains "scripts/run-lab-tests.ps1" $runLabTests @("run_lab_tests.py")
 Require-Contains "scripts/run-lab-demo.ps1" $runLabDemo @("run_demo.py")
-Require-Contains "scripts/run-lab-web.ps1" $runLabWeb @("server.py", "HostName")
+Require-Contains "scripts/run-lab-web.ps1" $runLabWeb @("server.py", "HostName", "LLM_API_KEY", "LLM_CHAT_COMPLETIONS_URL")
 
 Require-Contains "labs/shared/investment_research_case/README.md" $sharedCaseReadme @(
     "strategy_request.md",
