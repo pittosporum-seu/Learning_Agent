@@ -112,8 +112,11 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 ```text
 .
 ├── README.md
+├── AGENTS.md
 ├── TODO.md
 ├── roadmap.md
+├── .agents/
+├── .codex/
 ├── .env.example
 ├── docs/
 ├── hooks/
@@ -134,6 +137,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 - 真实密钥只通过环境变量读取，仓库只保留 `.env.example`。
 - 新增或重写文档后按 `hooks/content-update.md` 同步导航、更新文档图，并运行内容检查、密钥检查和相关文档审核。
 - 新增可运行 Lab 时同步提供 demo 和 tests，并用 `scripts/run-lab-tests.ps1` 做统一回归。
+- Codex 维护规则见 [AGENTS.md](AGENTS.md)，可复用工作流见 `.agents/skills/`。
 - 当前待办统一维护在 [TODO.md](TODO.md)，需要公开协作时再转成 GitHub Issue。
 
 ## 推荐阅读

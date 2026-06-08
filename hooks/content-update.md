@@ -30,6 +30,8 @@
    - `docs/product/README.md`
    - `docs/product/lab-plan.md`
    - `docs/product/security-and-secrets.md`
+   - `AGENTS.md`
+   - 相关目录的 `AGENTS.md`
    - `labs/README.md`
    - 新增目录对应的 README，例如 `docs/readings/README.md`、`docs/patterns/README.md`、`docs/engineering/README.md`、`skills/README.md`
 6. 如果新增了维护流程、脚本或目录，同步更新根 README 的仓库结构。

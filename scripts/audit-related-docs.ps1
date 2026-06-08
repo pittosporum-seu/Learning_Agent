@@ -70,6 +70,14 @@ $secretCheck = Read-RepoFile "scripts/check-secrets.ps1"
 $runLabTests = Read-RepoFile "scripts/run-lab-tests.ps1"
 $runLabDemo = Read-RepoFile "scripts/run-lab-demo.ps1"
 $runLabWeb = Read-RepoFile "scripts/run-lab-web.ps1"
+$rootAgents = Read-RepoFile "AGENTS.md"
+$productAgents = Read-RepoFile "docs/product/AGENTS.md"
+$labsAgents = Read-RepoFile "labs/AGENTS.md"
+$lab01Agents = Read-RepoFile "labs/01-strategy-intake/AGENTS.md"
+$lab02Agents = Read-RepoFile "labs/02-strategy-agent-loop/AGENTS.md"
+$labImplementationSkill = Read-RepoFile ".agents/skills/lab-implementation/SKILL.md"
+$docsSyncSkill = Read-RepoFile ".agents/skills/docs-sync/SKILL.md"
+$codexRules = Read-RepoFile ".codex/rules/learning-agent.rules"
 
 $lab01Readme = Read-RepoFile "labs/01-strategy-intake/README.md"
 $lab01Source = Read-RepoFile "labs/01-strategy-intake/src/strategy_intake.py"
@@ -124,6 +132,8 @@ Require-Contains "README.md" $readme @(
     "docs/product/security-and-secrets.md",
     "labs/01-strategy-intake/README.md",
     "labs/02-strategy-agent-loop/README.md",
+    "AGENTS.md",
+    ".agents/skills",
     "run-lab-web.ps1",
     "run-lab-tests.ps1"
 )
@@ -137,6 +147,7 @@ Require-Contains "hooks/content-update.md" $hook @(
     "check-secrets.ps1",
     "run-lab-tests.ps1",
     "TODO.md",
+    "AGENTS.md",
     "LLM_API_KEY",
     "MIMO_API_KEY"
 )
@@ -149,6 +160,8 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "labs/02-strategy-agent-loop",
     "product/lab-plan.md",
     "product/security-and-secrets.md",
+    "AGENTS.md",
+    ".agents/skills",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
     "run-lab-tests.ps1"
@@ -166,11 +179,12 @@ $roadmapTokens = @(
     '[x] Lab 01:',
     'routing_decision',
     '[x] Lab 02: Strategy Agent Loop',
-    '[ ] Lab 03: Finance Tool Use Mock'
+    '[ ] Lab 03: Finance Tool Use Mock',
+    'Codex'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
 
-Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/")
+Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/", "product/AGENTS.md")
 Require-Contains "docs/start-here.md" $startHere @(
     "Start Here",
     "Agent Loop",
@@ -272,6 +286,61 @@ Require-Contains "labs/README.md" $labsReadme @(
     "12-evaluation-safety",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
+    "run-lab-tests.ps1"
+)
+
+Require-Contains "AGENTS.md" $rootAgents @(
+    "Agent learning showcase",
+    "docs/start-here.md",
+    "docs/product/lab-plan.md",
+    "scripts/check-content.ps1",
+    "Completion Report"
+)
+Require-Contains "docs/product/AGENTS.md" $productAgents @(
+    "docs/product/lab-plan.md",
+    "docs/product/security-and-secrets.md",
+    "showcase framework",
+    "MX_APIKEY"
+)
+Require-Contains "labs/AGENTS.md" $labsAgents @(
+    "mock-first",
+    "README.md",
+    "demo",
+    "tests",
+    "run-lab-tests.ps1"
+)
+Require-Contains "labs/01-strategy-intake/AGENTS.md" $lab01Agents @(
+    "Strategy Intake + Workflow/Agent Router",
+    "StrategySpec",
+    "routing_decision",
+    "Workflow:",
+    "Blocked:"
+)
+Require-Contains "labs/02-strategy-agent-loop/AGENTS.md" $lab02Agents @(
+    "Agent Loop + structured trace",
+    "why_this_action",
+    "guardrail_triggered",
+    "next_action_hint",
+    "max_turns"
+)
+Require-Contains ".agents/skills/lab-implementation/SKILL.md" $labImplementationSkill @(
+    "name: lab-implementation",
+    "description:",
+    "docs/product/lab-plan.md",
+    "run-lab-tests.ps1 -Lab <lab-folder>",
+    "check-secrets.ps1"
+)
+Require-Contains ".agents/skills/docs-sync/SKILL.md" $docsSyncSkill @(
+    "name: docs-sync",
+    "description:",
+    "docs/document-graph.md",
+    "resources/README.md",
+    "audit-related-docs.ps1"
+)
+Require-Contains ".codex/rules/learning-agent.rules" $codexRules @(
+    "AGENTS.md",
+    "mock-first",
+    "environment-gated",
     "run-lab-tests.ps1"
 )
 

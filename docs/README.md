@@ -9,6 +9,7 @@
 - [`document-graph.md`](document-graph.md): 用 Mermaid 图整理来源路线、文章依赖和维护关系。
 - [`series-plan.md`](series-plan.md): Agent 基础知识系列的 12 篇写作规划。
 - [`product/README.md`](product/README.md): 个性化投研 Agent 产品案例入口。
+- [`product/AGENTS.md`](product/AGENTS.md): 产品文档的 Codex 持久规则。
 - `product/`: 个性化投研 Agent 系统的产品愿景、Lab 总计划和安全边界。
 - `foundations/`: Agent 基础知识。
 - `readings/`: 官方文档、论文、工程博客和开源项目精读。
