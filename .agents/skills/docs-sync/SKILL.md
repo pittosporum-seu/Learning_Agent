@@ -28,6 +28,7 @@ When docs structure or long-lived content changes, update relevant files among:
 - `docs/start-here.md`
 - `docs/document-graph.md`
 - `docs/product/README.md`
+- `docs/product/showcase-framework.md`
 - `docs/product/lab-plan.md`
 - `docs/product/security-and-secrets.md`
 - `labs/README.md`

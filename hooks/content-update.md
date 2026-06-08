@@ -28,6 +28,7 @@
    - `roadmap.md`
    - `TODO.md`
    - `docs/product/README.md`
+   - `docs/product/showcase-framework.md`
    - `docs/product/lab-plan.md`
    - `docs/product/security-and-secrets.md`
    - `AGENTS.md`
@@ -57,7 +58,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 ## 检查重点
 
 - 文章是否出现在根 README 的学习路线中。
-- 新增入口、术语或产品案例内容是否同步到 `docs/start-here.md`、`docs/glossary.md` 和 `docs/product/README.md`。
+- 新增入口、术语或产品案例内容是否同步到 `docs/start-here.md`、`docs/glossary.md`、`docs/product/README.md` 和 `docs/product/showcase-framework.md`。
 - 文章是否出现在 `docs/foundations/README.md` 的阅读顺序中。
 - `docs/series-plan.md` 中对应文章状态是否更新。
 - `docs/document-graph.md` 中是否同步文章节点、Lab 节点和维护关系。

@@ -11,6 +11,7 @@ Before changing product docs, read:
 - `AGENTS.md`
 - `docs/product/README.md`
 - `docs/product/personalized-investment-research-agent.md`
+- `docs/product/showcase-framework.md`
 - `docs/product/lab-plan.md`
 - `docs/product/security-and-secrets.md`
 - `labs/README.md`
@@ -28,7 +29,7 @@ Before changing product docs, read:
 - If the system vision changes, sync `personalized-investment-research-agent.md`, `README.md`, and `lab-plan.md`.
 - If Lab sequence, status, or acceptance criteria change, sync `lab-plan.md`, `docs/product/README.md`, `labs/README.md`, `TODO.md`, `roadmap.md`, and `docs/document-graph.md`.
 - If keys, providers, finance APIs, simulation, or human confirmation boundaries change, sync `security-and-secrets.md`, `.env.example`, `scripts/check-secrets.ps1`, and `hooks/content-update.md` as needed.
-- If a future showcase-framework document is added, keep it aligned with the product README, lab plan, and security document.
+- Keep `showcase-framework.md` aligned with the product README, lab plan, and security document.
 
 ## Finance Boundaries
 

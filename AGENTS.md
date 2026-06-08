@@ -12,6 +12,7 @@ Before changing Product docs, Labs, Skills, engineering docs, scripts, or naviga
 
 - `docs/start-here.md`
 - `docs/product/README.md`
+- `docs/product/showcase-framework.md`
 - `docs/product/lab-plan.md`
 - `docs/product/security-and-secrets.md`
 - `labs/README.md`

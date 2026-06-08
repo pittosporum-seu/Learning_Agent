@@ -1,6 +1,7 @@
 # 个性化投研 Agent Lab 总计划
 
 这组 Lab 用一个连续场景贯穿 12 篇 `Agent基础知识`：构建一个个性化投资调研系统。
+整体展示框架见：[Agent 学习展示框架](showcase-framework.md)；本文件负责把框架拆成 Lab 顺序和验收节奏。
 
 愿景是：用户用自然语言描述策略，系统生成投研流程规划，逐步调用 Skills 执行；当某个流程稳定后，再固化为可复用 Skill。模型侧采用可配置的 OpenAI-compatible provider，当前 Hermes 示例可映射到小米 MiMo；财经信息源逐步接入东方财富妙想 Skills。测试默认使用 mock，真实 key 只从 Hermes 或受信任的本地环境注入到环境变量。
 

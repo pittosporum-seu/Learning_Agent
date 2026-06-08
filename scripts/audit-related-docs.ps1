@@ -62,6 +62,7 @@ $glossary = Read-RepoFile "docs/glossary.md"
 $labsReadme = Read-RepoFile "labs/README.md"
 $productReadme = Read-RepoFile "docs/product/README.md"
 $productVision = Read-RepoFile "docs/product/personalized-investment-research-agent.md"
+$showcaseFramework = Read-RepoFile "docs/product/showcase-framework.md"
 $labPlan = Read-RepoFile "docs/product/lab-plan.md"
 $securityPlan = Read-RepoFile "docs/product/security-and-secrets.md"
 $envExample = Read-RepoFile ".env.example"
@@ -128,6 +129,7 @@ Require-Contains "README.md" $readme @(
     "TODO.md",
     "docs/product/README.md",
     "docs/product/personalized-investment-research-agent.md",
+    "docs/product/showcase-framework.md",
     "docs/product/lab-plan.md",
     "docs/product/security-and-secrets.md",
     "labs/01-strategy-intake/README.md",
@@ -143,6 +145,7 @@ Require-Contains "docs/series-plan.md" $seriesPlan @("Agent-Learning-Hub")
 Require-Contains "hooks/content-update.md" $hook @(
     "docs/start-here.md",
     "docs/glossary.md",
+    "docs/product/showcase-framework.md",
     "audit-related-docs.ps1",
     "check-secrets.ps1",
     "run-lab-tests.ps1",
@@ -156,6 +159,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "glossary.md",
     "TODO.md",
     "product/README.md",
+    "product/showcase-framework.md",
     "labs/01-strategy-intake",
     "labs/02-strategy-agent-loop",
     "product/lab-plan.md",
@@ -184,11 +188,12 @@ $roadmapTokens = @(
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
 
-Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/", "product/AGENTS.md")
+Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/", "product/AGENTS.md")
 Require-Contains "docs/start-here.md" $startHere @(
     "Start Here",
     "Agent Loop",
     "Tool Use",
+    "showcase-framework.md",
     "Lab 01",
     "Lab 02",
     "Lab 03",
@@ -221,12 +226,30 @@ Require-Contains "docs/glossary.md" $glossary @(
 Require-Contains "docs/product/README.md" $productReadme @(
     "Start Here",
     "personalized-investment-research-agent.md",
+    "showcase-framework.md",
     "lab-plan.md",
     "security-and-secrets.md",
     "routing_decision",
     "Lab 03-12",
     "SKILL.md",
     "API key"
+)
+Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
+    "Part 0 Showcase Overview",
+    "Part 1 Strategy Intake & Router",
+    "Part 2 Agent Loop & Structured Trace",
+    "Part 3 Finance Tool Use Mock",
+    "Part 12 Evaluation & Safety",
+    "StrategySpec",
+    "RoutingDecision",
+    "TraceEvent",
+    "ToolCall",
+    "EvidenceItem",
+    "SafetyDecision",
+    "EvalResult",
+    "required_human_confirmation",
+    "risk_disclosure",
+    "mock"
 )
 Require-Contains "docs/product/personalized-investment-research-agent.md" $productVision @(
     "LLM_API_KEY",
@@ -237,6 +260,7 @@ Require-Contains "docs/product/personalized-investment-research-agent.md" $produ
     "mx-moni"
 )
 Require-Contains "docs/product/lab-plan.md" $labPlan @(
+    "showcase-framework.md",
     "Lab 01",
     "Lab 02",
     "Lab 12",
@@ -280,6 +304,7 @@ Require-Contains "scripts/check-secrets.ps1" $secretCheck @(
 )
 
 Require-Contains "labs/README.md" $labsReadme @(
+    "showcase-framework.md",
     "01-strategy-intake/README.md",
     "02-strategy-agent-loop/README.md",
     "03-finance-tool-use-mock",
@@ -292,6 +317,7 @@ Require-Contains "labs/README.md" $labsReadme @(
 Require-Contains "AGENTS.md" $rootAgents @(
     "Agent learning showcase",
     "docs/start-here.md",
+    "docs/product/showcase-framework.md",
     "docs/product/lab-plan.md",
     "scripts/check-content.ps1",
     "Completion Report"
@@ -299,6 +325,7 @@ Require-Contains "AGENTS.md" $rootAgents @(
 Require-Contains "docs/product/AGENTS.md" $productAgents @(
     "docs/product/lab-plan.md",
     "docs/product/security-and-secrets.md",
+    "docs/product/showcase-framework.md",
     "showcase framework",
     "MX_APIKEY"
 )
@@ -333,6 +360,7 @@ Require-Contains ".agents/skills/lab-implementation/SKILL.md" $labImplementation
 Require-Contains ".agents/skills/docs-sync/SKILL.md" $docsSyncSkill @(
     "name: docs-sync",
     "description:",
+    "docs/product/showcase-framework.md",
     "docs/document-graph.md",
     "resources/README.md",
     "audit-related-docs.ps1"

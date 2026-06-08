@@ -20,9 +20,10 @@
 
 1. [Start Here](../start-here.md): 先选择学习路径。
 2. [个性化投资调研 Agent 系统愿景](personalized-investment-research-agent.md): 理解系统想做什么、边界在哪里。
-3. [Lab 总计划](lab-plan.md): 看 12 篇基础文章如何映射到 12 个 Labs。
-4. [密钥、安全与合规边界](security-and-secrets.md): 先明确真实 key、财经输出和人工确认规则。
-5. [Labs 入口](../../labs/README.md): 进入当前可运行实验。
+3. [Agent 学习展示框架](showcase-framework.md): 理解 Parts 0-12 如何把 Agent 概念串成可运行展示系统。
+4. [Lab 总计划](lab-plan.md): 看 12 篇基础文章如何映射到 12 个 Labs。
+5. [密钥、安全与合规边界](security-and-secrets.md): 先明确真实 key、财经输出和人工确认规则。
+6. [Labs 入口](../../labs/README.md): 进入当前可运行实验。
 
 ## 当前做到哪里
 

@@ -2,7 +2,7 @@
 
 这里用于把 `Agent基础知识` 系列落到一个连续场景里：个性化投资调研 Agent 系统。
 
-完整计划见：[个性化投研 Agent Lab 总计划](../docs/product/lab-plan.md)。
+完整计划见：[个性化投研 Agent Lab 总计划](../docs/product/lab-plan.md)。整体展示框架见：[Agent 学习展示框架](../docs/product/showcase-framework.md)。
 
 ## 主线场景
 

@@ -72,10 +72,11 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 
 1. [产品案例入口](product/README.md)
 2. [个性化投资调研 Agent 系统愿景](product/personalized-investment-research-agent.md)
-3. [个性化投研 Agent Lab 总计划](product/lab-plan.md)
-4. [Labs 入口](../labs/README.md)
-5. [Lab 01: Strategy Intake + Workflow/Agent Router](../labs/01-strategy-intake/README.md)
-6. [Lab 02: Strategy Agent Loop](../labs/02-strategy-agent-loop/README.md)
+3. [Agent 学习展示框架](product/showcase-framework.md)
+4. [个性化投研 Agent Lab 总计划](product/lab-plan.md)
+5. [Labs 入口](../labs/README.md)
+6. [Lab 01: Strategy Intake + Workflow/Agent Router](../labs/01-strategy-intake/README.md)
+7. [Lab 02: Strategy Agent Loop](../labs/02-strategy-agent-loop/README.md)
 
 启动 Lab 01 网页 demo：
 
@@ -92,6 +93,7 @@ http://127.0.0.1:8765/
 观察重点：
 
 - 投研只是贯穿案例，核心是学习 Agent 的任务理解、循环执行、工具调用、证据收集、记忆、Skill 固化和安全评测。
+- 展示框架把 Parts 0-12 统一起来，说明每个 Lab 的输入、输出、观察点、边界和验收标准。
 - Lab 01 / Lab 02 不生成真实股票名单，也不执行交易。
 - Lab 02 trace 补强后，Lab 03 会进入 Finance Tool Use Mock，用 mock 工具展示工具注册、入参、返回、失败和 trace。
 

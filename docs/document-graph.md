@@ -34,6 +34,7 @@ flowchart TD
     X7 --> P0["投研系统愿景"]
     X7 --> P1["Lab 总计划"]
     X7 --> P2["密钥、安全与合规边界"]
+    X7 --> P3["Agent 学习展示框架"]
     X7 --> X5
 ```
 
@@ -149,7 +150,7 @@ flowchart TD
 | 资料精读 | [readings/](readings/) | 拆解官方文档、论文、工程博客和开源项目。 |
 | 设计模式 | [patterns/](patterns/) | 沉淀可复用 Agent 模式和适用边界。 |
 | 工程清单 | [engineering/](engineering/) | 管理权限、trace、eval、安全、成本等上线检查项。 |
-| 产品设计 | [product/](product/) | 定义个性化投研 Agent 系统愿景、Lab 总计划、密钥安全和财经输出边界。 |
+| 产品设计 | [product/](product/) | 定义个性化投研 Agent 系统愿景、展示框架、Lab 总计划、密钥安全和财经输出边界。 |
 | 实践实验 | [../labs/](../labs/) | 承接基础文章，补最小可运行实验。 |
 | Skill 示例 | [../skills/](../skills/) | 把重复流程沉淀成 `SKILL.md` 示例。 |
 | Codex 规则 | [../AGENTS.md](../AGENTS.md) | 为后续 Codex 修改 Product、Labs、Skills 和文档结构提供持久规则。 |
@@ -162,6 +163,7 @@ flowchart TD
 | --- | --- |
 | [product/README.md](product/README.md) | 个性化投研 Agent 产品案例入口，说明投研只是贯穿案例，并给出阅读顺序和财经输出边界。 |
 | [product/personalized-investment-research-agent.md](product/personalized-investment-research-agent.md) | 定义个性化投研 Agent 系统愿景、边界、架构和 Skill 固化思路。 |
+| [product/showcase-framework.md](product/showcase-framework.md) | 固化 Learning_Agent 的可运行展示框架，说明 Parts 0-12、统一数据契约、展示原则和实现顺序。 |
 | [product/lab-plan.md](product/lab-plan.md) | 把 12 篇基础文章映射成 12 个投研 Labs。 |
 | [product/security-and-secrets.md](product/security-and-secrets.md) | 定义 Hermes 注入密钥、`.env.example`、提交前检查和财经输出边界。 |
 | [product/AGENTS.md](product/AGENTS.md) | 产品文档修改规则，约束产品定位、Lab 计划同步和财经输出边界。 |
