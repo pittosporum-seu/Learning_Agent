@@ -50,7 +50,15 @@ def print_summary(results: list[dict[str, Any]]) -> None:
         print(f"status: {state['status']}")
         print(f"execution_mode: {spec.get('execution_mode', 'n/a')}")
         print(f"themes: {', '.join(spec.get('themes') or []) or '未确认'}")
-        print(f"trace: {' -> '.join(event['action'] for event in state['trace'])}")
+        print("trace:")
+        for event in state["trace"]:
+            result = event.get("result") or {}
+            print(
+                f"- turn {event['turn']}: action={event['action']} | "
+                f"guardrail={event['guardrail_triggered']} | "
+                f"why={event['why_this_action']} | "
+                f"result={result.get('summary', 'n/a')}"
+            )
         if state["research_plan"]:
             print("research_plan:")
             for step in state["research_plan"]:

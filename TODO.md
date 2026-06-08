@@ -17,13 +17,12 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 补强 Lab 02 structured trace | `labs/02-strategy-agent-loop/` | trace 明确展示 observation、decision、why_this_action、result、guardrail 和 next_action_hint |
+| P0 | 准备 Lab 03 mock 财经数据 | `mock_universe.csv`、`mock_prices.csv`、`mock_news.md` | Lab 03 能用同一套 mock 数据模拟候选筛选、行情和资讯查询 |
 
 ## Next
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 准备 Lab 03 mock 财经数据 | `mock_universe.csv`、`mock_prices.csv`、`mock_news.md` | Lab 03 能用同一套 mock 数据模拟候选筛选、行情和资讯查询 |
 | P0 | 实现 Lab 03: Finance Tool Use Mock | `labs/03-finance-tool-use-mock/` | 能用 mock 工具完成候选筛选、行情和资讯查询 |
 | P1 | 设计投研 Skill 示例 | `skills/investment-research-workflow/SKILL.md` | 包含触发场景、禁用场景、步骤、输出格式、风险提示和测试样例 |
 | P1 | 补工程化清单第一批 | `docs/engineering/permission-boundary.md`、`trace-and-logging.md`、`evaluation-checklist.md` | 每篇是短清单，包含上线前检查项，并覆盖财经输出边界 |
@@ -57,3 +56,4 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-08 | 为 Lab 01 增加 routing_decision 教学路由 | 本轮提交 |
 | 2026-06-08 | 建立 Codex 持久规则层 | 本轮提交 |
 | 2026-06-08 | 固化展示框架文档 | 本轮提交 |
+| 2026-06-08 | 补强 Lab 02 structured trace | 本轮提交 |

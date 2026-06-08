@@ -42,6 +42,7 @@
 - [x] Lab 01: 可配置模型解析模式
 - [x] Lab 01: routing_decision 教学路由
 - [x] Lab 02: Strategy Agent Loop
+- [x] Lab 02: structured trace 教学补强
 - [ ] Lab 03: Finance Tool Use Mock
 - [ ] Lab 04: Research RAG Basic
 - [ ] Lab 05: User Preference Memory

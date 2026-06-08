@@ -450,6 +450,9 @@ Require-Contains "labs/01-strategy-intake/web/index.html" $lab01WebIndex $lab01W
 
 Require-Contains "labs/02-strategy-agent-loop/README.md" $lab02Readme @(
     "Agent Loop",
+    "why_this_action",
+    "guardrail_triggered",
+    "next_action_hint",
     "run-lab-demo.ps1",
     "run-lab-tests.ps1",
     "max_turns"
@@ -457,12 +460,19 @@ Require-Contains "labs/02-strategy-agent-loop/README.md" $lab02Readme @(
 Require-Contains "labs/02-strategy-agent-loop/src/agent_loop.py" $lab02Source @(
     "run_strategy_agent_loop",
     "TraceEvent",
+    "why_this_action",
+    "guardrail_triggered",
+    "next_action_hint",
+    "plan_step_count",
+    "guardrail_was_triggered",
     "LoopState",
     "build_research_plan",
     "max_turns"
 )
 Require-Contains "labs/02-strategy-agent-loop/tests/test_agent_loop.py" $lab02Tests @(
     "test_agent_request_builds_multistep_research_plan",
+    "assert_structured_trace",
+    "plan_step_count",
     "test_max_turn_guardrail_can_fail_closed"
 )
 Require-Contains "labs/02-strategy-agent-loop/demo/run_demo.py" $lab02Demo @("run_strategy_agent_loop", "--request", "--output")

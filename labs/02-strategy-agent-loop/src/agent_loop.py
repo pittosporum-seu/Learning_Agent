@@ -21,8 +21,11 @@ class TraceEvent:
     turn: int
     observation: str
     decision: str
+    why_this_action: str
     action: str
-    result: str
+    result: dict[str, Any]
+    guardrail_triggered: bool
+    next_action_hint: str
     status: str
 
 
@@ -54,8 +57,11 @@ def run_strategy_agent_loop(request: str = DEFAULT_REQUEST, max_turns: int = 8) 
                 turn=turn,
                 observation=observation,
                 decision=describe_decision(action),
+                why_this_action=describe_why_this_action(action, observation, state),
                 action=action,
                 result=result,
+                guardrail_triggered=guardrail_was_triggered(action, result),
+                next_action_hint=build_next_action_hint(state, action, result),
                 status=state.status,
             )
         )
@@ -67,8 +73,29 @@ def run_strategy_agent_loop(request: str = DEFAULT_REQUEST, max_turns: int = 8) 
         state.error = f"Loop exceeded max_turns={max_turns}."
         state.final_output = {
             "summary": "Agent loop stopped by max_turns guardrail.",
+            "max_turns_guardrail": True,
             "risk_disclosure": RISK_DISCLOSURE,
         }
+        state.trace.append(
+            TraceEvent(
+                turn=max_turns + 1,
+                observation="Loop turn budget is exhausted before reaching a terminal state.",
+                decision="Fail closed because the loop exceeded the configured max_turns.",
+                why_this_action="The max_turns guardrail prevents uncontrolled or unclear loops from continuing.",
+                action="max_turns_guardrail",
+                result={
+                    "ok": False,
+                    "summary": "Stopped by max_turns guardrail.",
+                    "details": {
+                        "max_turns": max_turns,
+                        "safe_next_step": "Inspect the trace and raise max_turns only after confirming the loop is bounded.",
+                    },
+                },
+                guardrail_triggered=True,
+                next_action_hint="Stop the loop and review the trace before retrying.",
+                status=state.status,
+            )
+        )
 
     return state
 
@@ -103,44 +130,103 @@ def decide_next_action(state: LoopState) -> str:
     return "stop"
 
 
-def execute_action(state: LoopState, action: str) -> str:
+def execute_action(state: LoopState, action: str) -> dict[str, Any]:
     if action == "parse_strategy":
         spec = parse_strategy_request(state.request).to_dict()
         state.strategy_spec = spec
-        return f"Parsed request into StrategySpec with execution_mode={spec['execution_mode']}."
+        routing_decision = spec.get("routing_decision", {})
+        return {
+            "ok": True,
+            "summary": (
+                "Parsed request into StrategySpec "
+                f"with execution_mode={spec['execution_mode']} and routing_mode={routing_decision.get('mode')}."
+            ),
+            "execution_mode": spec["execution_mode"],
+            "routing_mode": routing_decision.get("mode"),
+            "matched_signals": routing_decision.get("matched_signals", []),
+            "details": {
+                "requires_agent": spec.get("requires_agent"),
+                "clarification_question_count": len(spec.get("clarification_questions", [])),
+                "prohibited_action_count": len(spec.get("prohibited_actions", [])),
+            },
+        }
 
     if action == "request_clarification":
         return request_clarification(state)
 
     if action == "build_research_plan":
         state.research_plan = build_research_plan(state.strategy_spec or {})
-        return f"Built research plan with {len(state.research_plan)} steps."
+        planned_tools = [
+            step["mock_tool"]
+            for step in state.research_plan
+            if step.get("mock_tool")
+        ]
+        requires_human_confirmation = any(step.get("requires_human_confirmation") for step in state.research_plan)
+        return {
+            "ok": True,
+            "summary": f"Built research plan with {len(state.research_plan)} steps.",
+            "plan_step_count": len(state.research_plan),
+            "planned_tools": planned_tools,
+            "requires_human_confirmation": requires_human_confirmation,
+            "details": {
+                "step_ids": [step["step_id"] for step in state.research_plan],
+            },
+        }
 
     if action == "finalize":
         state.status = "completed"
         state.final_output = build_final_output(state)
-        return "Final output prepared."
+        return {
+            "ok": True,
+            "summary": state.final_output["summary"],
+            "next_lab": state.final_output["next_lab"],
+            "details": {
+                "plan_step_ids": state.final_output["plan_step_ids"],
+            },
+        }
 
     if action == "stop":
         state.status = "completed"
-        return "Loop already complete."
+        return {
+            "ok": True,
+            "summary": "Loop already complete.",
+            "details": {},
+        }
 
     state.status = "failed"
     state.error = f"Unknown action: {action}"
-    return state.error
+    return {
+        "ok": False,
+        "summary": state.error,
+        "details": {
+            "safe_next_step": "Stop and inspect the action router.",
+        },
+    }
 
 
-def request_clarification(state: LoopState) -> str:
+def request_clarification(state: LoopState) -> dict[str, Any]:
     spec = state.strategy_spec or {}
+    safe_next_step = "Revise the request into a research or watchlist question."
     state.status = "blocked"
     state.final_output = {
         "summary": "Strategy request cannot move forward until the user clarifies or removes unsafe intent.",
         "clarification_questions": spec.get("clarification_questions", []),
         "prohibited_actions": spec.get("prohibited_actions", []),
-        "next_action_for_user": "Revise the request into a research or watchlist question.",
+        "next_action_for_user": safe_next_step,
+        "safe_next_step": safe_next_step,
         "risk_disclosure": spec.get("risk_disclosure", RISK_DISCLOSURE),
     }
-    return "Blocked and prepared clarification request."
+    return {
+        "ok": False,
+        "summary": "Blocked and prepared clarification request.",
+        "clarification_questions": spec.get("clarification_questions", []),
+        "prohibited_actions": spec.get("prohibited_actions", []),
+        "safe_next_step": safe_next_step,
+        "details": {
+            "routing_mode": (spec.get("routing_decision") or {}).get("mode"),
+            "matched_signals": (spec.get("routing_decision") or {}).get("matched_signals", []),
+        },
+    }
 
 
 def build_research_plan(spec: dict[str, Any]) -> list[dict[str, Any]]:
@@ -244,7 +330,47 @@ def describe_decision(action: str) -> str:
         "build_research_plan": "Build a research plan from the valid StrategySpec.",
         "finalize": "Prepare final output and stop the loop.",
         "stop": "No further action is needed.",
+        "max_turns_guardrail": "Fail closed because max_turns was exceeded.",
     }.get(action, "Unknown action.")
+
+
+def describe_why_this_action(action: str, observation: str, state: LoopState) -> str:
+    if action == "parse_strategy":
+        return "The loop cannot decide or plan until the natural-language request becomes a StrategySpec."
+    if action == "request_clarification":
+        spec = state.strategy_spec or {}
+        if spec.get("prohibited_actions"):
+            return "The StrategySpec contains prohibited or high-risk intent, so the loop must fail closed."
+        return "Required strategy details are missing, so planning would be unsafe or ambiguous."
+    if action == "build_research_plan":
+        return "The StrategySpec is complete enough to produce a mock research plan without calling real tools."
+    if action == "finalize":
+        return "The mock research plan is ready, so the loop can prepare the handoff summary for later Labs."
+    if action == "stop":
+        return "The loop already reached a terminal state."
+    return f"The action router selected {action} after observing: {observation}"
+
+
+def guardrail_was_triggered(action: str, result: dict[str, Any]) -> bool:
+    return action in {"request_clarification", "max_turns_guardrail"} or result.get("ok") is False
+
+
+def build_next_action_hint(state: LoopState, action: str, result: dict[str, Any]) -> str:
+    if action == "parse_strategy":
+        if (state.strategy_spec or {}).get("clarification_questions") or (state.strategy_spec or {}).get("prohibited_actions"):
+            return "Next loop should request clarification and stop safely."
+        return "Next loop should build a mock research plan."
+    if action == "build_research_plan":
+        return "Next loop should finalize the planning summary."
+    if action == "request_clarification":
+        return result.get("safe_next_step", "Wait for a safer revised request.")
+    if action == "finalize":
+        return "Loop is complete; Lab 03 can consume the mock_tool placeholders later."
+    if action == "max_turns_guardrail":
+        return "Stop the loop and review the trace before retrying."
+    if state.status == "failed":
+        return "Stop and inspect the failed action."
+    return "No further action is needed."
 
 
 def main() -> None:

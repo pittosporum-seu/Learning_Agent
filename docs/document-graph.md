@@ -171,7 +171,7 @@ flowchart TD
 | [../labs/AGENTS.md](../labs/AGENTS.md) | Labs 修改规则，要求 mock-first、demo、tests 和可观察输出。 |
 | [../labs/01-strategy-intake/README.md](../labs/01-strategy-intake/README.md) | 第一个可运行 Lab，把自然语言投研策略解析成 `StrategySpec` 和 `routing_decision`，支持规则基线和可配置模型解析模式。 |
 | [../labs/01-strategy-intake/AGENTS.md](../labs/01-strategy-intake/AGENTS.md) | Lab 01 持久规则，约束 `StrategySpec`、`routing_decision` 和四类样例。 |
-| [../labs/02-strategy-agent-loop/README.md](../labs/02-strategy-agent-loop/README.md) | 第二个可运行 Lab，把 `StrategySpec` 放进最小 Agent Loop。 |
+| [../labs/02-strategy-agent-loop/README.md](../labs/02-strategy-agent-loop/README.md) | 第二个可运行 Lab，把 `StrategySpec` 放进最小 Agent Loop，并用 structured trace 展示 observation、decision、why_this_action、result、guardrail 和 next_action_hint。 |
 | [../labs/02-strategy-agent-loop/AGENTS.md](../labs/02-strategy-agent-loop/AGENTS.md) | Lab 02 持久规则，约束 Agent Loop 和 structured trace。 |
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |
 | [../labs/shared/testing/README.md](../labs/shared/testing/README.md) | 统一 Lab 测试入口说明。 |

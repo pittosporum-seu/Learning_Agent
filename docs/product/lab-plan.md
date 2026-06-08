@@ -97,6 +97,7 @@ outputs/
 
 - 每一轮只做一个清晰动作。
 - 状态里保留 `StrategySpec`、研究计划、trace、最终输出和错误。
+- `TraceEvent` 固定展示 observation、decision、why_this_action、action、result、guardrail_triggered、next_action_hint 和 status。
 - 不完整或不安全请求会阻断并返回追问。
 - 有 max-turn 保护，避免循环失控。
 
@@ -104,6 +105,7 @@ outputs/
 
 - mock 运行能完成一条策略的计划生成。
 - 日志可追踪每一步为什么发生。
+- structured trace 的 `result` 是结构化对象，并能展示 plan_step_count、planned_tools、requires_human_confirmation 等关键字段。
 - workflow 请求和 agent 请求会生成不同计划。
 - 风险请求不会进入投研执行计划。
 
