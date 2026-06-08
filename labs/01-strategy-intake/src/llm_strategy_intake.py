@@ -31,6 +31,7 @@ STRATEGY_FIELDS = (
     "output",
     "execution_mode",
     "requires_agent",
+    "routing_decision",
     "assumptions",
     "clarification_questions",
     "prohibited_actions",
@@ -179,6 +180,7 @@ def build_llm_payload(request: str, baseline_spec: dict[str, Any], model: str) -
             "risk_filters": "风险过滤条件数组。",
             "execution_mode": "只能是 workflow、agent、needs_clarification。",
             "requires_agent": "当 execution_mode 为 agent 时为 true，否则为 false。",
+            "routing_decision": "保留 baseline_strategy_spec 中的路由解释；不要自行扩大执行权限。",
             "clarification_questions": "缺信息或不安全时需要向用户追问的问题。",
             "prohibited_actions": "只使用 guaranteed_return、certain_price_move、auto_trade、real_trade 等边界标签。",
         },
@@ -351,6 +353,7 @@ def merge_strategy_spec(baseline_spec: dict[str, Any], model_spec: dict[str, Any
         merged["execution_mode"] = "needs_clarification"
 
     merged["requires_agent"] = merged["execution_mode"] == "agent"
+    merged["routing_decision"] = baseline_spec.get("routing_decision", {})
     return merged
 
 

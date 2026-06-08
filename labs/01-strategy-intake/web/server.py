@@ -79,6 +79,8 @@ class StrategyIntakeHandler(BaseHTTPRequestHandler):
             self.send_sse("stage", {"stage": "intake", "message": "读取自然语言策略", "progress": 12})
             time.sleep(0.08)
             self.send_sse("stage", {"stage": "baseline", "message": "生成规则基线 StrategySpec", "progress": 30})
+            time.sleep(0.08)
+            self.send_sse("stage", {"stage": "route", "message": "生成 workflow / agent 路由决策", "progress": 48})
 
             if mode == "llm":
                 self.send_sse("stage", {"stage": "llm", "message": "调用模型做语义补全", "progress": 55})

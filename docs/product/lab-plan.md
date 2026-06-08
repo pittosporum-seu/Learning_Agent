@@ -30,7 +30,7 @@
 
 | Lab | 名称 | 对应文章 | 目标产出 | 状态 |
 | --- | --- | --- | --- | --- |
-| 01 | Strategy Intake | 01 Workflow vs Agent | 自然语言策略转 `StrategySpec`，支持规则基线和可配置模型解析 | 已实现 |
+| 01 | Strategy Intake + Workflow/Agent Router | 01 Workflow vs Agent | 自然语言策略转 `StrategySpec` 和 `routing_decision`，解释 workflow / agent / clarification / blocked 的路由原因 | 已实现 |
 | 02 | Strategy Agent Loop | 02 Agent Loop | Observe-Decide-Act 循环、trace、阻断、投研计划生成 | 已实现 |
 | 03 | Finance Tool Use Mock | 03 Tool Use | mock `mx-xuangu`、`mx-data`、`mx-search` 的工具调用 | 下一步 |
 | 04 | Research RAG Basic | 04 RAG | 检索策略规则、风险规则和报告模板 | 计划中 |
@@ -68,19 +68,21 @@ outputs/
 - 哪些操作需要人工确认。
 - 验收标准是什么。
 
-## Lab 01: Strategy Intake
+## Lab 01: Strategy Intake + Workflow/Agent Router
 
-目标：把用户自然语言策略解析成结构化 `StrategySpec`。
+目标：把用户自然语言策略解析成结构化 `StrategySpec`，并把 workflow / agent / needs_clarification / blocked 的路由判断显式展示出来。
 
 关键点：
 
 - 规则基线用于稳定字段、回归测试和边界拦截。
+- `routing_decision` 解释命中的判断信号、下一步和为什么不选其他模式。
 - 模型模式读取 `LLM_API_KEY`、`LLM_BASE_URL` 和 `LLM_MODEL`，真实调用 OpenAI-compatible provider 做语义补全。
 - 不在这一层调用真实财经数据，也不生成个股名单。
 
 验收标准：
 
 - 给定策略文本，可以输出稳定 JSON。
+- 四类样例能分别路由到 workflow、agent、needs_clarification 和 blocked。
 - 缺少关键字段时能提出待确认问题。
 - 高风险请求能转为风险边界提示。
 - Web demo 能在 `http://127.0.0.1:8765/` 展示规则基线和可配置模型解析两种模式，且默认不调用模型。
@@ -263,4 +265,4 @@ outputs/
 
 ## 推荐推进节奏
 
-先完成 Lab 01-03，跑通“策略解析、Agent Loop、mock 工具调用”；再做 Lab 04-07，把知识检索、偏好记忆和 Skill 固化串起来；最后做 Lab 08-12，接真实数据源、证据报告、模拟组合和评测安全。
+先完成 Lab 01 的路由解释和 Lab 02 的 structured trace，再进入 Lab 03 mock 工具调用；随后做 Lab 04-07，把知识检索、偏好记忆和 Skill 固化串起来；最后做 Lab 08-12，接真实数据源、证据报告、模拟组合和评测安全。

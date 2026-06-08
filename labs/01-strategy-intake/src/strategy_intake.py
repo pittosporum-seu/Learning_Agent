@@ -57,6 +57,15 @@ PROHIBITED_PATTERNS = {
 
 
 @dataclass
+class RoutingDecision:
+    mode: str
+    reason: str
+    matched_signals: list[str]
+    next_step: str
+    not_selected: dict[str, str]
+
+
+@dataclass
 class StrategySpec:
     original_request: str
     market: str
@@ -68,6 +77,7 @@ class StrategySpec:
     output: str
     execution_mode: str
     requires_agent: bool
+    routing_decision: RoutingDecision
     assumptions: list[str]
     clarification_questions: list[str]
     prohibited_actions: list[str]
@@ -108,8 +118,23 @@ def parse_strategy_request(
 
     execution_mode = classify_execution_mode(
         text=text,
+        market=market,
+        themes=themes,
+        horizon_days=horizon_days,
         candidate_rules=candidate_rules,
         risk_filters=risk_filters,
+        clarification_questions=clarification_questions,
+        prohibited_actions=prohibited_actions,
+    )
+    routing_decision = build_routing_decision(
+        text=text,
+        market=market,
+        themes=themes,
+        horizon_days=horizon_days,
+        candidate_rules=candidate_rules,
+        risk_filters=risk_filters,
+        output=output,
+        execution_mode=execution_mode,
         clarification_questions=clarification_questions,
         prohibited_actions=prohibited_actions,
     )
@@ -125,6 +150,7 @@ def parse_strategy_request(
         output=output,
         execution_mode=execution_mode,
         requires_agent=execution_mode == "agent",
+        routing_decision=routing_decision,
         assumptions=assumptions,
         clarification_questions=clarification_questions,
         prohibited_actions=prohibited_actions,
@@ -290,21 +316,151 @@ def detect_prohibited_actions(text: str) -> list[str]:
 
 def classify_execution_mode(
     text: str,
+    market: str,
+    themes: list[str],
+    horizon_days: int | None,
     candidate_rules: list[str],
     risk_filters: list[str],
     clarification_questions: list[str],
     prohibited_actions: list[str],
 ) -> str:
-    if prohibited_actions or clarification_questions:
+    if prohibited_actions:
+        return "needs_clarification"
+    if clarification_questions:
         return "needs_clarification"
 
-    time_sensitive = any(token in text for token in ["新闻", "公告", "研报", "最近", "近期", "近"])
-    wants_report = any(token in text for token in ["报告", "观察池", "流程", "规划"])
-    multi_step = len(candidate_rules) + len(risk_filters) >= 3
+    signals = build_routing_signals(
+        text=text,
+        market=market,
+        themes=themes,
+        horizon_days=horizon_days,
+        candidate_rules=candidate_rules,
+        risk_filters=risk_filters,
+        output=extract_output(text, prohibited_actions),
+        clarification_questions=clarification_questions,
+        prohibited_actions=prohibited_actions,
+    )
 
-    if time_sensitive or wants_report or multi_step:
+    if any(signal in signals for signal in ["time_sensitive", "watchlist_output", "evidence_report_output", "multi_condition", "risk_filter"]):
         return "agent"
     return "workflow"
+
+
+def build_routing_decision(
+    text: str,
+    market: str,
+    themes: list[str],
+    horizon_days: int | None,
+    candidate_rules: list[str],
+    risk_filters: list[str],
+    output: str,
+    execution_mode: str,
+    clarification_questions: list[str],
+    prohibited_actions: list[str],
+) -> RoutingDecision:
+    signals = build_routing_signals(
+        text=text,
+        market=market,
+        themes=themes,
+        horizon_days=horizon_days,
+        candidate_rules=candidate_rules,
+        risk_filters=risk_filters,
+        output=output,
+        clarification_questions=clarification_questions,
+        prohibited_actions=prohibited_actions,
+    )
+
+    if prohibited_actions:
+        mode = "blocked"
+        reason = "请求包含收益确定性或自动交易等禁止意图，不能进入投研执行链路。"
+        next_step = "安全阻断；请改写为观察池、研究报告或模拟验证问题。"
+        not_selected = {
+            "workflow": "请求包含禁止意图，不能转成固定筛选流程。",
+            "agent": "请求包含禁止意图，不能进入多步骤 Agent 执行。",
+            "needs_clarification": "仅追问不足以继续，必须先移除收益确定性或自动交易意图。",
+        }
+    elif execution_mode == "needs_clarification":
+        mode = "needs_clarification"
+        reason = "缺少主题、时间窗口或候选规则等必要信息，继续执行前需要追问。"
+        next_step = "向用户追问缺失字段后重新解析。"
+        not_selected = {
+            "workflow": "必要字段不足，不能直接进入固定筛选流程。",
+            "agent": "必要字段不足，不能进入多步骤 Agent 执行。",
+            "blocked": "未发现必须阻断的收益确定性或自动交易意图。",
+        }
+    elif execution_mode == "agent":
+        mode = "agent"
+        reason = "任务包含近期数据、风险核验或观察池输出，需要多步骤证据收集和人工确认。"
+        next_step = "进入 Lab 02 Strategy Agent Loop。"
+        not_selected = {
+            "workflow": "固定筛选流程不足以完成近期数据、新闻风险或证据报告核验。",
+            "needs_clarification": "市场、主题、时间窗口和筛选规则已足够明确。",
+            "blocked": "未发现收益承诺、确定性涨跌或自动交易等禁止意图。",
+        }
+    else:
+        mode = "workflow"
+        reason = "条件固定、所需字段完整，适合按预定义筛选流程执行。"
+        next_step = "进入固定筛选 workflow；后续 Lab 03 可用 mock 工具执行筛选。"
+        not_selected = {
+            "agent": "没有近期新闻核验、多源证据或动态规划需求。",
+            "needs_clarification": "市场、主题和筛选规则已足够明确。",
+            "blocked": "未发现收益承诺、确定性涨跌或自动交易等禁止意图。",
+        }
+
+    return RoutingDecision(
+        mode=mode,
+        reason=reason,
+        matched_signals=signals,
+        next_step=next_step,
+        not_selected=not_selected,
+    )
+
+
+def build_routing_signals(
+    text: str,
+    market: str,
+    themes: list[str],
+    horizon_days: int | None,
+    candidate_rules: list[str],
+    risk_filters: list[str],
+    output: str,
+    clarification_questions: list[str],
+    prohibited_actions: list[str],
+) -> list[str]:
+    signals: list[str] = []
+
+    if prohibited_actions:
+        signals.append("prohibited_intent")
+        signals.extend(f"prohibited:{action}" for action in prohibited_actions)
+        return dedupe(signals)
+
+    if market == "未指定":
+        signals.append("missing_market")
+    if not themes:
+        signals.append("missing_theme")
+    if horizon_days is None and needs_horizon(text, candidate_rules):
+        signals.append("missing_horizon")
+    if not candidate_rules:
+        signals.append("missing_candidate_rules")
+    if clarification_questions:
+        signals.append("missing_information")
+
+    if any(token in text for token in ["新闻", "公告", "研报", "最近", "近期", "近"]):
+        signals.append("time_sensitive")
+    if len(candidate_rules) >= 2 or len(candidate_rules) + len(risk_filters) >= 3:
+        signals.append("multi_condition")
+    if any(filter_item != "排除 ST / *ST" for filter_item in risk_filters):
+        signals.append("risk_filter")
+    if any(rule.startswith(("市盈率", "市净率", "ROE")) for rule in candidate_rules):
+        signals.append("valuation_filter")
+    if "观察池" in output:
+        signals.append("watchlist_output")
+    if "报告" in output:
+        signals.append("evidence_report_output")
+    if candidate_rules and themes and not any(signal in signals for signal in ["time_sensitive", "risk_filter", "watchlist_output", "evidence_report_output"]):
+        signals.append("deterministic_screening")
+
+    return dedupe(signals)
 
 
 def dedupe(items: list[str]) -> list[str]:

@@ -24,6 +24,12 @@ class StrategyIntakeTests(unittest.TestCase):
         self.assertEqual(spec["output"], "候选观察池和证据化报告")
         self.assertEqual(spec["execution_mode"], "agent")
         self.assertTrue(spec["requires_agent"])
+        self.assertEqual(spec["routing_decision"]["mode"], "agent")
+        self.assertIn("time_sensitive", spec["routing_decision"]["matched_signals"])
+        self.assertIn("multi_condition", spec["routing_decision"]["matched_signals"])
+        self.assertIn("watchlist_output", spec["routing_decision"]["matched_signals"])
+        self.assertIn("Lab 02", spec["routing_decision"]["next_step"])
+        self.assertIn("固定筛选流程不足", spec["routing_decision"]["not_selected"]["workflow"])
         self.assertEqual(spec["clarification_questions"], [])
         self.assertIn("不构成投资建议", spec["risk_disclosure"])
         self.assertNotIn("stocks", spec)
@@ -36,6 +42,10 @@ class StrategyIntakeTests(unittest.TestCase):
 
         self.assertEqual(spec["execution_mode"], "needs_clarification")
         self.assertFalse(spec["requires_agent"])
+        self.assertEqual(spec["routing_decision"]["mode"], "needs_clarification")
+        self.assertIn("missing_information", spec["routing_decision"]["matched_signals"])
+        self.assertIn("missing_theme", spec["routing_decision"]["matched_signals"])
+        self.assertIn("重新解析", spec["routing_decision"]["next_step"])
         self.assertTrue(any("主题或行业" in question for question in spec["clarification_questions"]))
         self.assertTrue(any("观察时间窗口" in question for question in spec["clarification_questions"]))
         self.assertTrue(any("候选筛选规则" in question for question in spec["clarification_questions"]))
@@ -50,6 +60,11 @@ class StrategyIntakeTests(unittest.TestCase):
         self.assertIn("市盈率小于20", spec["candidate_rules"])
         self.assertEqual(spec["execution_mode"], "workflow")
         self.assertFalse(spec["requires_agent"])
+        self.assertEqual(spec["routing_decision"]["mode"], "workflow")
+        self.assertIn("valuation_filter", spec["routing_decision"]["matched_signals"])
+        self.assertIn("deterministic_screening", spec["routing_decision"]["matched_signals"])
+        self.assertIn("固定筛选 workflow", spec["routing_decision"]["next_step"])
+        self.assertIn("没有近期新闻核验", spec["routing_decision"]["not_selected"]["agent"])
 
     def test_user_profile_overrides_defaults(self):
         request = "找近 30 日趋势较强的新能源股票"
@@ -72,6 +87,7 @@ class StrategyIntakeTests(unittest.TestCase):
         self.assertIn("最大回撤较低", spec["candidate_rules"])
         self.assertIn("近期无重大负面新闻", spec["risk_filters"])
         self.assertEqual(spec["execution_mode"], "agent")
+        self.assertEqual(spec["routing_decision"]["mode"], "agent")
         self.assertEqual(spec["clarification_questions"], [])
 
     def test_prohibited_request_gets_boundary_prompt(self):
@@ -80,6 +96,11 @@ class StrategyIntakeTests(unittest.TestCase):
         spec = parse_strategy_request(request).to_dict()
 
         self.assertEqual(spec["execution_mode"], "needs_clarification")
+        self.assertEqual(spec["routing_decision"]["mode"], "blocked")
+        self.assertIn("prohibited_intent", spec["routing_decision"]["matched_signals"])
+        self.assertIn("prohibited:certain_price_move", spec["routing_decision"]["matched_signals"])
+        self.assertIn("prohibited:auto_trade", spec["routing_decision"]["matched_signals"])
+        self.assertIn("安全阻断", spec["routing_decision"]["next_step"])
         self.assertIn("certain_price_move", spec["prohibited_actions"])
         self.assertIn("auto_trade", spec["prohibited_actions"])
         self.assertEqual(spec["output"], "风险边界提示和可替代的投研问题")

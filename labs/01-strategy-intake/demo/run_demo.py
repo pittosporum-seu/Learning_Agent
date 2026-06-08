@@ -47,9 +47,14 @@ def build_demo_results(requests: list[str]) -> list[dict[str, Any]]:
 def print_summary(results: list[dict[str, Any]]) -> None:
     for item in results:
         spec = item["strategy_spec"]
+        routing = spec["routing_decision"]
         print("=" * 80)
         print(f"{item['case_id']}: {item['request']}")
         print(f"execution_mode: {spec['execution_mode']}")
+        print(f"routing_decision: {routing['mode']}")
+        print(f"routing_reason: {routing['reason']}")
+        print(f"matched_signals: {', '.join(routing['matched_signals']) if routing['matched_signals'] else '未命中'}")
+        print(f"next_step: {routing['next_step']}")
         print(f"market: {spec['market']}")
         print(f"themes: {', '.join(spec['themes']) if spec['themes'] else '未确认'}")
         print(f"horizon_days: {spec['horizon_days'] if spec['horizon_days'] is not None else '未确认'}")

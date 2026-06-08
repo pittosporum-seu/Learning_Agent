@@ -1,13 +1,13 @@
-# Lab 01: Strategy Intake
+# Lab 01: Strategy Intake + Workflow/Agent Router
 
-这个 Lab 解决第一件事：把用户自然语言里的投研想法解析成结构化 `StrategySpec`。
+这个 Lab 解决第一件事：把用户自然语言里的投研想法解析成结构化 `StrategySpec`，并明确展示它应该进入 `workflow`、`agent`、`needs_clarification` 还是 `blocked`。
 
 它对应 `Agent基础知识 01: Workflow vs Agent`。现在它同时提供两种入口：
 
 - 规则基线：不调用外部 API，字段稳定，适合回归测试和安全边界验证。
 - 模型解析：读取本地环境变量里的 OpenAI-compatible provider 配置，在规则基线上做语义补全、归一化和追问判断。
 
-本 Lab 仍然不查真实行情，不调用东方财富妙想财经数据，不输出真实个股推荐，也不执行交易。它只负责把策略意图、筛选条件、风险边界和待确认问题整理清楚。
+本 Lab 仍然不查真实行情，不调用东方财富妙想财经数据，不输出真实个股推荐，也不执行交易。它只负责把策略意图、筛选条件、风险边界、待确认问题和路由原因整理清楚。
 
 ## 输入
 
@@ -28,9 +28,40 @@
 - `risk_filters`: 风险过滤规则。
 - `user_preferences`: 用户偏好。
 - `execution_mode`: `workflow`、`agent` 或 `needs_clarification`。
+- `routing_decision`: 为什么走 `workflow`、`agent`、`needs_clarification` 或 `blocked`。
 - `clarification_questions`: 需要用户补充的问题。
 - `prohibited_actions`: 不安全或不合规意图标签。
 - `risk_disclosure`: 固定风险提示。
+
+`routing_decision` 是这个 Lab 的教学核心：
+
+```json
+{
+  "mode": "agent",
+  "reason": "任务包含近期数据、风险核验或观察池输出，需要多步骤证据收集和人工确认。",
+  "matched_signals": [
+    "time_sensitive",
+    "multi_condition",
+    "risk_filter",
+    "watchlist_output"
+  ],
+  "next_step": "进入 Lab 02 Strategy Agent Loop。",
+  "not_selected": {
+    "workflow": "固定筛选流程不足以完成近期数据、新闻风险或证据报告核验。",
+    "needs_clarification": "市场、主题、时间窗口和筛选规则已足够明确。",
+    "blocked": "未发现收益承诺、确定性涨跌或自动交易等禁止意图。"
+  }
+}
+```
+
+## 四类样例
+
+| 类型 | 输入 | 预期路由 | 教学点 |
+| --- | --- | --- | --- |
+| 简单 Workflow | `筛选市盈率小于20的银行股` | `workflow` | 条件固定，适合预定义筛选流程。 |
+| Agent Task | `找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。` | `agent` | 需要近期数据、风险核验、证据收集和后续人工确认。 |
+| Needs Clarification | `帮我找一些适合观察的股票` | `needs_clarification` | 缺少主题、时间窗口和筛选规则，需要先追问。 |
+| Blocked | `直接告诉我明天必涨的股票并自动买入` | `blocked` | 包含确定性涨跌和自动交易意图，必须安全阻断。 |
 
 ## 运行
 
@@ -83,7 +114,7 @@ http://127.0.0.1:8765/
 
 网页会先做健康检查：如果检测到 `LLM_API_KEY` 或兼容的 Xiaomi/MiMo 环境变量，会显示模型 provider 已配置；但默认仍然停留在规则基线。模型模式需要手动切换并点击“解析”触发，避免输入时或刷新页面时反复消耗 token。
 
-Web demo 通过 `/api/parse-stream` 返回阶段事件，页面会展示处理进度、当前阶段和流式日志。这里的流式输出用于呈现 Agent 处理轨迹；最终仍以完整 `StrategySpec` JSON 作为结果。
+Web demo 通过 `/api/parse-stream` 返回阶段事件，页面会展示处理进度、当前阶段和流式日志。这里的流式输出用于呈现 Agent 处理轨迹；最终仍以完整 `StrategySpec` JSON 作为结果。页面会单独展示 `routing_decision` 的 mode、reason、matched_signals、next_step 和 not_selected。
 
 在本机 Windows 环境下，`scripts/run-lab-web.ps1` 会尝试从 WSL Hermes 的 `.env` 中加载 Xiaomi 或通用 LLM 配置到当前 server 进程环境；不会打印或提交真实 key。
 
@@ -134,10 +165,10 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 
 ## 设计边界
 
-- 规则基线和模型解析都只产出 `StrategySpec`。
+- 规则基线和模型解析都只产出 `StrategySpec` 与其中的 `routing_decision`。
 - 不在这一层生成真实股票名单。
 - 缺少主题、时间窗口或筛选规则时，输出待确认问题。
-- 发现“稳赚”“必涨”“自动买入”等高风险请求时，转为风险边界提示。
+- 发现“稳赚”“必涨”“自动买入”等高风险请求时，`routing_decision.mode` 设为 `blocked`，并转为风险边界提示。
 - 所有输出固定包含风险提示。
 - 真实 key 只从环境变量读取，提交前必须运行 `scripts/check-secrets.ps1`。
 

@@ -47,6 +47,7 @@ class StrategyIntakeWebServerTests(unittest.TestCase):
 
         self.assertIn("event: stage", body)
         self.assertIn('"stage": "baseline"', body)
+        self.assertIn('"stage": "route"', body)
         self.assertIn("event: result", body)
         self.assertIn('"provider": "rules"', body)
 

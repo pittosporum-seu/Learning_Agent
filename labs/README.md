@@ -38,10 +38,10 @@ labs/
 
 ## 当前状态
 
-- [x] [Lab 01: Strategy Intake](01-strategy-intake/README.md)
-  - 规则基线解析。
-  - 可配置模型解析模式。
-  - 本地 Web demo 和测试。
+- [x] [Lab 01: Strategy Intake + Workflow/Agent Router](01-strategy-intake/README.md)
+  - 规则基线解析和 `routing_decision`。
+  - 展示 workflow / agent / needs_clarification / blocked 的判断原因。
+  - 可配置模型解析模式、本地 Web demo 和测试。
 - [x] [Lab 02: Strategy Agent Loop](02-strategy-agent-loop/README.md)
   - 最小 Observe-Decide-Act Loop。
   - 根据 `StrategySpec` 生成 mock 投研计划。

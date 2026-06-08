@@ -19,7 +19,7 @@
 2. [02 Agent Loop](foundations/02-agent-loop.md)
 3. [03 Tool Use](foundations/03-tool-use.md)
 4. [Glossary](glossary.md)
-5. [Lab 01: Strategy Intake](../labs/01-strategy-intake/README.md)
+5. [Lab 01: Strategy Intake + Workflow/Agent Router](../labs/01-strategy-intake/README.md)
 6. [Lab 02: Strategy Agent Loop](../labs/02-strategy-agent-loop/README.md)
 
 可运行命令：
@@ -32,7 +32,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 
 观察重点：
 
-- Lab 01 如何把自然语言策略转成 `StrategySpec`。
+- Lab 01 如何把自然语言策略转成 `StrategySpec`，并用 `routing_decision` 展示 workflow / agent / clarification / blocked 的判断原因。
 - Lab 02 如何把 `StrategySpec` 放进 observe -> decide -> act 的循环。
 - 高风险或缺信息输入为什么会被阻断或追问。
 
@@ -74,7 +74,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 2. [个性化投资调研 Agent 系统愿景](product/personalized-investment-research-agent.md)
 3. [个性化投研 Agent Lab 总计划](product/lab-plan.md)
 4. [Labs 入口](../labs/README.md)
-5. [Lab 01: Strategy Intake](../labs/01-strategy-intake/README.md)
+5. [Lab 01: Strategy Intake + Workflow/Agent Router](../labs/01-strategy-intake/README.md)
 6. [Lab 02: Strategy Agent Loop](../labs/02-strategy-agent-loop/README.md)
 
 启动 Lab 01 网页 demo：
@@ -93,19 +93,19 @@ http://127.0.0.1:8765/
 
 - 投研只是贯穿案例，核心是学习 Agent 的任务理解、循环执行、工具调用、证据收集、记忆、Skill 固化和安全评测。
 - Lab 01 / Lab 02 不生成真实股票名单，也不执行交易。
-- 后续 Lab 03 会进入 Finance Tool Use Mock，用 mock 工具展示工具注册、入参、返回、失败和 trace。
+- Lab 02 trace 补强后，Lab 03 会进入 Finance Tool Use Mock，用 mock 工具展示工具注册、入参、返回、失败和 trace。
 
 ## 当前可运行
 
 | Lab | 展示概念 | 运行方式 |
 | --- | --- | --- |
-| [Lab 01: Strategy Intake](../labs/01-strategy-intake/README.md) | 自然语言策略解析、规则基线、可配置模型语义补全、安全边界 | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake` |
+| [Lab 01: Strategy Intake + Workflow/Agent Router](../labs/01-strategy-intake/README.md) | 自然语言策略解析、`routing_decision`、规则基线、可配置模型语义补全、安全边界 | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake` |
 | [Lab 02: Strategy Agent Loop](../labs/02-strategy-agent-loop/README.md) | 最小 Agent Loop、trace、阻断、max-turn 保护 | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 02-strategy-agent-loop` |
 
 当前继续方向：
 
-- Lab 03: Finance Tool Use Mock。
-- 目标是用 mock `mx-xuangu`、`mx-data`、`mx-search` 风格工具展示 Tool Use。
+- 先补强 Lab 02 structured trace，让 observe、decide、act、result 和 next action 更直观。
+- 然后进入 Lab 03: Finance Tool Use Mock，用 mock `mx-xuangu`、`mx-data`、`mx-search` 风格工具展示 Tool Use。
 - 默认测试不依赖真实 key。
 
 ## 安全边界

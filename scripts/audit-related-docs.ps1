@@ -157,13 +157,14 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "Lab 02: Strategy Agent Loop", "Lab 03: Finance Tool Use Mock")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
     'Glossary',
     '[x] Lab 01: Strategy Intake',
     '[x] Lab 01:',
+    'routing_decision',
     '[x] Lab 02: Strategy Agent Loop',
     '[ ] Lab 03: Finance Tool Use Mock'
 )
@@ -177,6 +178,7 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Lab 01",
     "Lab 02",
     "Lab 03",
+    "routing_decision",
     "mock",
     "key",
     "run-lab-tests.ps1"
@@ -207,6 +209,7 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "personalized-investment-research-agent.md",
     "lab-plan.md",
     "security-and-secrets.md",
+    "routing_decision",
     "Lab 03-12",
     "SKILL.md",
     "API key"
@@ -223,6 +226,7 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "Lab 01",
     "Lab 02",
     "Lab 12",
+    "routing_decision",
     "OpenAI-compatible",
     "LLM_API_KEY",
     "mx-xuangu",
@@ -273,6 +277,10 @@ Require-Contains "labs/README.md" $labsReadme @(
 
 Require-Contains "labs/01-strategy-intake/README.md" $lab01Readme @(
     "StrategySpec",
+    "Workflow/Agent Router",
+    "routing_decision",
+    "not_selected",
+    "blocked",
     "LLM_API_KEY",
     "OpenAI-compatible",
     "/api/parse-stream",
@@ -286,6 +294,9 @@ Require-Contains "labs/01-strategy-intake/README.md" $lab01Readme @(
 )
 Require-Contains "labs/01-strategy-intake/src/strategy_intake.py" $lab01Source @(
     "class StrategySpec",
+    "class RoutingDecision",
+    "build_routing_decision",
+    "matched_signals",
     "parse_strategy_request",
     "RISK_DISCLOSURE",
     "PROHIBITED_PATTERNS"
@@ -300,12 +311,16 @@ Require-Contains "labs/01-strategy-intake/src/llm_strategy_intake.py" $lab01LlmS
     "DEFAULT_PROVIDER_LABEL",
     "parse_strategy_request_with_llm",
     "LLMConfig",
+    "routing_decision",
     "LLM_API_KEY",
     "api-key"
 )
 Require-Contains "labs/01-strategy-intake/tests/test_strategy_intake.py" $lab01Tests @(
     "test_default_case_parses_to_agent_spec",
-    "test_prohibited_request_gets_boundary_prompt"
+    "test_simple_valuation_screen_is_workflow",
+    "test_prohibited_request_gets_boundary_prompt",
+    "routing_decision",
+    "blocked"
 )
 Require-Contains "labs/01-strategy-intake/tests/test_llm_strategy_intake.py" $lab01LlmTests @(
     "fake_transport",
@@ -316,15 +331,19 @@ Require-Contains "labs/01-strategy-intake/tests/test_web_server.py" (Read-RepoFi
     "test_parse_stream_returns_stages_and_result",
     "/api/parse-stream"
 )
-Require-Contains "labs/01-strategy-intake/demo/run_demo.py" $lab01Demo @("build_demo_results", "--request", "--output")
+Require-Contains "labs/01-strategy-intake/demo/run_demo.py" $lab01Demo @("build_demo_results", "--request", "--output", "routing_decision")
 Require-Contains "labs/01-strategy-intake/web/server.py" $lab01WebServer @(
     "ThreadingHTTPServer",
     "/api/parse",
     "/api/parse-stream",
+    '"stage": "route"',
     "parse_strategy_request_with_llm"
 )
 $lab01WebIndexTokens = @(
     "StrategySpec",
+    "routing_decision",
+    "routeValue",
+    "matchedSignals",
     'fetch("/api/parse"',
     'fetch("/api/parse-stream"',
     'data-mode="llm"',

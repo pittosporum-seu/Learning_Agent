@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lab 01 Strategy Intake</title>
+    <title>Lab 01 Strategy Intake Router</title>
     <style>
       :root {
         color-scheme: light;
@@ -599,8 +599,8 @@
       <header>
         <div class="topbar">
           <div>
-            <h1>Lab 01 Strategy Intake</h1>
-            <div class="subtitle">把自然语言投研想法解析成可执行的 StrategySpec</div>
+            <h1>Lab 01 Strategy Intake Router</h1>
+            <div class="subtitle">把自然语言投研想法解析成 StrategySpec，并解释为什么走 workflow / agent / clarification / blocked</div>
           </div>
           <div class="status"><span class="dot"></span><span id="apiStatus">检查模型配置中</span></div>
         </div>
@@ -616,7 +616,7 @@
               <div class="explain-item">
                 <div class="explain-title">入口建模</div>
                 <div class="explain-text">
-                  把一句自然语言策略变成 StrategySpec，让后面的 Planner、Skill 和工具知道市场、主题、时间窗、筛选规则和风险边界。
+                  把一句自然语言策略变成 StrategySpec，让后面的 Planner、Skill 和工具知道市场、主题、时间窗、筛选规则、路由决策和风险边界。
                 </div>
               </div>
               <div class="explain-item">
@@ -653,6 +653,8 @@
               <span class="workflow-step">自然语言</span>
               <span class="workflow-arrow">→</span>
               <span class="workflow-step">规则基线</span>
+              <span class="workflow-arrow">→</span>
+              <span class="workflow-step">路由决策</span>
               <span class="workflow-arrow">→</span>
               <span class="workflow-step">模型补全</span>
               <span class="workflow-arrow">→</span>
@@ -706,6 +708,14 @@
                 <div class="metric-value" id="modeValue">待解析</div>
               </div>
               <div class="metric">
+                <div class="metric-label">路由决策</div>
+                <div class="metric-value" id="routeValue">待解析</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">下一步</div>
+                <div class="metric-value" id="nextStepValue">待解析</div>
+              </div>
+              <div class="metric">
                 <div class="metric-label">市场 / 时间</div>
                 <div class="metric-value" id="marketValue">待解析</div>
               </div>
@@ -718,6 +728,21 @@
             <div class="section">
               <div class="section-title">输出目标</div>
               <div class="risk-note" id="outputValue">待解析</div>
+            </div>
+
+            <div class="section">
+              <div class="section-title">路由解释</div>
+              <div class="risk-note" id="routeReason">待解析</div>
+            </div>
+
+            <div class="section">
+              <div class="section-title">命中信号</div>
+              <div class="pill-row" id="matchedSignals"></div>
+            </div>
+
+            <div class="section">
+              <div class="section-title">为什么不选其他模式</div>
+              <ul id="notSelected"></ul>
             </div>
 
             <div class="section">
@@ -768,7 +793,7 @@
 
       const samples = [
         defaultRequest,
-        "筛选市盈率小于 20、ROE 高于 12%、分红稳定的银行股，生成一个观察逻辑。",
+        "筛选市盈率小于20的银行股。",
         "找最近 30 日趋势较强、成交活跃的特高压方向股票，先做投研流程规划。",
         "帮我找一些适合观察的股票。",
         "直接告诉我明天必涨的股票并自动买入。",
@@ -792,6 +817,7 @@
         rules: [
           ["intake", "读取输入"],
           ["baseline", "规则基线解析"],
+          ["route", "生成路由决策"],
           ["merge", "整理 StrategySpec"],
           ["safety", "安全边界检查"],
           ["done", "完成"],
@@ -799,6 +825,7 @@
         llm: [
           ["intake", "读取输入"],
           ["baseline", "规则基线解析"],
+          ["route", "生成路由决策"],
           ["llm", "模型语义补全"],
           ["merge", "合并结果"],
           ["safety", "安全边界检查"],
@@ -942,14 +969,35 @@
         }
       }
 
+      function modePillClass(mode) {
+        if (mode === "agent") return "agent";
+        if (mode === "blocked") return "blocked";
+        if (mode === "needs_clarification") return "risk";
+        return "";
+      }
+
+      function renderNotSelected(notSelected) {
+        const node = document.getElementById("notSelected");
+        node.innerHTML = "";
+        const entries = Object.entries(notSelected || {});
+        if (!entries.length) {
+          const item = document.createElement("li");
+          item.textContent = "暂无";
+          node.appendChild(item);
+          return;
+        }
+        for (const [mode, reason] of entries) {
+          const item = document.createElement("li");
+          item.textContent = `${mode}: ${reason}`;
+          node.appendChild(item);
+        }
+      }
+
       function renderSpec(payload) {
         const spec = payload.strategy_spec;
-        const modeClass =
-          spec.execution_mode === "agent"
-            ? "agent"
-            : spec.execution_mode === "needs_clarification"
-              ? "blocked"
-              : "";
+        const routing = spec.routing_decision || {};
+        const modeClass = modePillClass(spec.execution_mode);
+        const routeClass = modePillClass(routing.mode);
         const providerLabel =
           payload.provider === "llm"
             ? `${payload.provider_label || "模型解析"} · ${payload.model || "unknown model"}`
@@ -958,15 +1006,21 @@
         document.getElementById("providerValue").textContent = providerLabel;
         document.getElementById("modeValue").innerHTML =
           `<span class="pill ${modeClass}">${spec.execution_mode}</span>`;
+        document.getElementById("routeValue").innerHTML =
+          `<span class="pill ${routeClass}">${routing.mode || spec.execution_mode}</span>`;
+        document.getElementById("nextStepValue").textContent = routing.next_step || "待确认";
         document.getElementById("marketValue").textContent =
           `${spec.market} / ${spec.horizon_days ?? "未确认"} 日`;
         document.getElementById("themesValue").textContent =
           spec.themes.length ? spec.themes.join(", ") : "未确认";
         document.getElementById("outputValue").textContent = spec.output;
+        document.getElementById("routeReason").textContent = routing.reason || "待确认";
         document.getElementById("parsedRequest").textContent = spec.original_request;
         document.getElementById("parsedRequest").className = "risk-note";
         document.getElementById("riskDisclosure").textContent = spec.risk_disclosure;
 
+        renderPills("matchedSignals", routing.matched_signals || [], routeClass);
+        renderNotSelected(routing.not_selected);
         renderPills("candidateRules", spec.candidate_rules, "agent");
         renderPills("riskFilters", spec.risk_filters, "risk");
         renderQuestions(spec.clarification_questions);
@@ -976,6 +1030,12 @@
       function renderError(message) {
         document.getElementById("providerValue").textContent =
           currentMode === "llm" ? "模型调用失败" : "规则解析失败";
+        document.getElementById("modeValue").textContent = "失败";
+        document.getElementById("routeValue").textContent = "失败";
+        document.getElementById("nextStepValue").textContent = "检查输入或模型配置";
+        document.getElementById("routeReason").textContent = message;
+        renderPills("matchedSignals", []);
+        renderNotSelected({});
         document.getElementById("parsedRequest").textContent = message;
         document.getElementById("parsedRequest").className = "risk-note error-note";
         jsonOutput.textContent = message;
@@ -1067,6 +1127,7 @@
 
       async function parseWithFetch(requestPayload) {
         updateStage("baseline", "生成规则基线 StrategySpec", 35);
+        updateStage("route", "生成 workflow / agent 路由决策", 48);
         if (requestPayload.mode === "llm") {
           updateStage("llm", "调用模型做语义补全", 62);
         }

@@ -112,6 +112,8 @@ class LLMStrategyIntakeTests(unittest.TestCase):
         self.assertEqual(result["strategy_spec"]["market"], "A股")
         self.assertEqual(result["strategy_spec"]["themes"], ["电网设备"])
         self.assertTrue(result["strategy_spec"]["requires_agent"])
+        self.assertEqual(result["strategy_spec"]["routing_decision"]["mode"], "agent")
+        self.assertIn("time_sensitive", result["strategy_spec"]["routing_decision"]["matched_signals"])
         self.assertIn("不构成投资建议", result["strategy_spec"]["risk_disclosure"])
         self.assertNotIn("stocks", result["strategy_spec"])
         self.assertNotIn("recommendations", result["strategy_spec"])
