@@ -2,6 +2,13 @@
 
 这个路线图用于规划 `Learning_Agent` 仓库的后续维护。
 
+## 0. 入口体验
+
+- [x] P0 入口体验修正
+- [x] 建立 Start Here 学习入口
+- [x] 建立 Glossary 术语表
+- [x] 强化个性化投研 Agent 产品案例入口
+
 ## 1. 基础概念
 
 - [x] Workflow vs Agent

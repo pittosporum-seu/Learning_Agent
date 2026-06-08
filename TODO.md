@@ -32,7 +32,6 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 优先级 | 任务 | 产出 | 说明 |
 | --- | --- | --- | --- |
-| P1 | 建立术语表 | `docs/glossary.md` | 汇总 Agent、Workflow、Harness、Skill、Trace 等术语 |
 | P1 | 建立链接检查机制 | `scripts/check-links.ps1` | 先检查 Markdown 中的明显坏链接和路径参数 |
 | P2 | 做 GitHub Issues 迁移 | GitHub Issues | 将 `TODO.md` 中长期任务迁到 Issues |
 | P2 | 补更多 benchmark 阅读笔记 | `docs/readings/` | SWE-bench、WebArena、AgentBench、OSWorld 等 |
@@ -53,3 +52,4 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-05 | 为 Lab 01 增加本地 web demo | 本轮提交 |
 | 2026-06-05 | 为 Lab 01 增加 MiMo 真实解析模式和网页说明 | 本轮提交 |
 | 2026-06-05 | 完成 Lab 02: Strategy Agent Loop 初版 | 本轮提交 |
+| 2026-06-08 | 完成 P0 入口体验修正和术语表 | 本轮提交 |

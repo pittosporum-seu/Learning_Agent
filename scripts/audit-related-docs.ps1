@@ -57,6 +57,8 @@ $hook = Read-RepoFile "hooks/content-update.md"
 $todo = Read-RepoFile "TODO.md"
 $roadmap = Read-RepoFile "roadmap.md"
 $docsReadme = Read-RepoFile "docs/README.md"
+$startHere = Read-RepoFile "docs/start-here.md"
+$glossary = Read-RepoFile "docs/glossary.md"
 $labsReadme = Read-RepoFile "labs/README.md"
 $productReadme = Read-RepoFile "docs/product/README.md"
 $productVision = Read-RepoFile "docs/product/personalized-investment-research-agent.md"
@@ -111,8 +113,11 @@ foreach ($index in 1..12) {
 }
 
 Require-Contains "README.md" $readme @(
+    "docs/start-here.md",
+    "docs/glossary.md",
     "docs/document-graph.md",
     "TODO.md",
+    "docs/product/README.md",
     "docs/product/personalized-investment-research-agent.md",
     "docs/product/lab-plan.md",
     "docs/product/security-and-secrets.md",
@@ -125,6 +130,8 @@ Require-Contains "README.md" $readme @(
 Require-Contains "resources/README.md" $resources @("datawhalechina/Agent-Learning-Hub")
 Require-Contains "docs/series-plan.md" $seriesPlan @("Agent-Learning-Hub")
 Require-Contains "hooks/content-update.md" $hook @(
+    "docs/start-here.md",
+    "docs/glossary.md",
     "audit-related-docs.ps1",
     "check-secrets.ps1",
     "run-lab-tests.ps1",
@@ -132,7 +139,10 @@ Require-Contains "hooks/content-update.md" $hook @(
     "MIMO_API_KEY"
 )
 Require-Contains "docs/document-graph.md" $documentGraph @(
+    "start-here.md",
+    "glossary.md",
     "TODO.md",
+    "product/README.md",
     "labs/01-strategy-intake",
     "labs/02-strategy-agent-loop",
     "product/lab-plan.md",
@@ -145,19 +155,59 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("Lab 02: Strategy Agent Loop", "Lab 03: Finance Tool Use Mock")
-Require-Contains "roadmap.md" $roadmap @(
-    "[x] Lab 01: Strategy Intake",
-    "[x] Lab 01: MiMo",
-    "[x] Lab 02: Strategy Agent Loop",
-    "[ ] Lab 03: Finance Tool Use Mock"
+Require-Contains "TODO.md" $todo @("P0", "Lab 02: Strategy Agent Loop", "Lab 03: Finance Tool Use Mock")
+$roadmapTokens = @(
+    '[x] P0',
+    'Start Here',
+    'Glossary',
+    '[x] Lab 01: Strategy Intake',
+    '[x] Lab 01: MiMo',
+    '[x] Lab 02: Strategy Agent Loop',
+    '[ ] Lab 03: Finance Tool Use Mock'
 )
+Require-Contains "roadmap.md" $roadmap $roadmapTokens
 
-Require-Contains "docs/README.md" $docsReadme @("product/")
+Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/")
+Require-Contains "docs/start-here.md" $startHere @(
+    "Start Here",
+    "Agent Loop",
+    "Tool Use",
+    "Lab 01",
+    "Lab 02",
+    "Lab 03",
+    "mock",
+    "key",
+    "run-lab-tests.ps1"
+)
+Require-Contains "docs/glossary.md" $glossary @(
+    "Agent",
+    "Workflow",
+    "Agent Loop",
+    "Tool Use",
+    "RAG",
+    "Memory",
+    "MCP",
+    "Harness",
+    "Coding Agent",
+    "Subagent",
+    "Skill",
+    "Browser Agent",
+    "Computer Use Agent",
+    "Evaluation",
+    "Trace",
+    "Guardrails",
+    "HITL",
+    "StrategySpec",
+    "Evidence Store"
+)
 Require-Contains "docs/product/README.md" $productReadme @(
+    "Start Here",
     "personalized-investment-research-agent.md",
     "lab-plan.md",
-    "security-and-secrets.md"
+    "security-and-secrets.md",
+    "Lab 03-12",
+    "SKILL.md",
+    "API key"
 )
 Require-Contains "docs/product/personalized-investment-research-agent.md" $productVision @(
     "MIMO_API_KEY",
@@ -252,13 +302,14 @@ Require-Contains "labs/01-strategy-intake/web/server.py" $lab01WebServer @(
     "/api/parse-stream",
     "parse_strategy_request_with_mimo"
 )
-Require-Contains "labs/01-strategy-intake/web/index.html" $lab01WebIndex @(
+$lab01WebIndexTokens = @(
     "StrategySpec",
     'fetch("/api/parse"',
     'fetch("/api/parse-stream"',
     'data-mode="mimo"',
     'data-mode="rules"'
 )
+Require-Contains "labs/01-strategy-intake/web/index.html" $lab01WebIndex $lab01WebIndexTokens
 
 Require-Contains "labs/02-strategy-agent-loop/README.md" $lab02Readme @(
     "Agent Loop",

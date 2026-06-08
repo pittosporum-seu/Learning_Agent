@@ -26,7 +26,11 @@ flowchart TD
     B --> X5["Labs 实验"]
     B --> X6["TODO.md 待办板"]
     B --> X7["Product Design 个性化投研 Agent"]
+    B --> X8["Start Here 学习入口"]
+    B --> X9["Glossary 术语表"]
 
+    X8 --> X5
+    X8 --> X7
     X7 --> P0["投研系统愿景"]
     X7 --> P1["Lab 总计划"]
     X7 --> P2["密钥、安全与合规边界"]
@@ -139,6 +143,8 @@ flowchart TD
 
 | 层级 | 目录 | 作用 |
 | --- | --- | --- |
+| 学习入口 | [start-here.md](start-here.md) | 给第一次进入仓库的人三条学习路径和可运行命令。 |
+| 术语表 | [glossary.md](glossary.md) | 统一 Agent、Workflow、RAG、Memory、Trace、Guardrails 等核心术语。 |
 | 资料精读 | [readings/](readings/) | 拆解官方文档、论文、工程博客和开源项目。 |
 | 设计模式 | [patterns/](patterns/) | 沉淀可复用 Agent 模式和适用边界。 |
 | 工程清单 | [engineering/](engineering/) | 管理权限、trace、eval、安全、成本等上线检查项。 |
@@ -151,6 +157,7 @@ flowchart TD
 
 | 文档 | 作用 |
 | --- | --- |
+| [product/README.md](product/README.md) | 个性化投研 Agent 产品案例入口，说明投研只是贯穿案例，并给出阅读顺序和财经输出边界。 |
 | [product/personalized-investment-research-agent.md](product/personalized-investment-research-agent.md) | 定义个性化投研 Agent 系统愿景、边界、架构和 Skill 固化思路。 |
 | [product/lab-plan.md](product/lab-plan.md) | 把 12 篇基础文章映射成 12 个投研 Labs。 |
 | [product/security-and-secrets.md](product/security-and-secrets.md) | 定义 Hermes 注入密钥、`.env.example`、提交前检查和财经输出边界。 |

@@ -2,6 +2,8 @@
 
 这个仓库用来系统整理 Agent 学习笔记、核心概念、实践实验和参考资料。
 
+第一次进入仓库，建议先看：[Start Here](docs/start-here.md)。
+
 目标不是一上来堆框架，而是把 Agent 学习拆成几件能长期沉淀的事：
 
 - 分清什么时候该用 Workflow，什么时候才需要 Agent。
@@ -14,6 +16,14 @@
 这套 `Agent基础知识` 系列最初围绕 [datawhalechina/Agent-Learning-Hub](https://github.com/datawhalechina/Agent-Learning-Hub) 的学习路线展开，再结合 Anthropic、OpenAI、Claude Code、MCP、SWE-bench、WebArena 等资料补充扩展。
 
 整体写作规划见：[Agent 基础知识系列规划](docs/series-plan.md)。文档之间的结构关系见：[Document Graph](docs/document-graph.md)。
+
+三条推荐入口：
+
+- 从零理解 Agent：[Start Here 路线 A](docs/start-here.md#路线-a从零理解-agent)。
+- 从工程落地理解 Agent：[Start Here 路线 B](docs/start-here.md#路线-b从工程落地理解-agent)。
+- 从完整案例理解 Agent：[Start Here 路线 C](docs/start-here.md#路线-c从个性化投研-agent-labs-理解完整系统)。
+
+术语统一入口：[Glossary](docs/glossary.md)。
 
 ## Stage 1: Agent 基础知识
 
@@ -60,6 +70,7 @@
 
 完整设计：
 
+- [个性化投研 Agent 产品案例入口](docs/product/README.md)
 - [个性化投资调研 Agent 系统愿景](docs/product/personalized-investment-research-agent.md)
 - [个性化投研 Agent Lab 总计划](docs/product/lab-plan.md)
 - [密钥、安全与合规边界](docs/product/security-and-secrets.md)

@@ -1,15 +1,77 @@
-# Product Design
+# Product Case: 个性化投研 Agent
 
-这里存放把 `Agent基础知识` 系列落到一个完整场景里的产品设计文档。
+这里是 `Agent基础知识` 系列的连续实践案例入口。个性化投研 Agent 不是为了把仓库变成荐股系统，而是用一个足够真实、边界清晰、可测试的场景，把 Agent 的核心概念串成一条可运行的学习路径。
 
-当前主线是：个性化投资调研 Agent 系统。
+## 为什么选择这个案例
 
-- [个性化投资调研 Agent 系统愿景](personalized-investment-research-agent.md)
-- [Lab 总计划](lab-plan.md)
-- [密钥、安全与合规边界](security-and-secrets.md)
+| Agent 概念 | 投研案例中的对应问题 |
+| --- | --- |
+| Workflow vs Agent | 哪些策略可以走固定流程，哪些策略需要多步骤判断和工具反馈。 |
+| Agent Loop | 系统如何观察当前策略状态、决定下一步、执行动作并记录 trace。 |
+| Tool Use | 如何调用候选筛选、行情数据、资讯搜索等工具，并把结果纳入证据。 |
+| RAG | 如何从风险规则、报告模板和资料片段中检索依据。 |
+| Memory | 如何记住用户风险偏好、排除行业和候选数量。 |
+| MCP / Skills | 如何把财经工具和稳定流程注册成可复用能力。 |
+| Evaluation / Safety | 如何检查风险提示、来源、人工确认和密钥边界。 |
 
-这些文档负责回答三件事：
+这个案例的价值在于：自然语言输入复杂、需要多步骤流程、需要证据、需要偏好和安全边界。它适合展示 Agent 系统设计，但所有财经输出都只用于学习演示和观察池。
 
-- 这个系统最终想解决什么真实问题。
-- 12 篇基础文章如何对应到一组循序渐进的实验。
-- 在财经场景中，如何处理数据来源、风险提示、密钥保护和人工确认。
+## 文档阅读顺序
+
+1. [Start Here](../start-here.md): 先选择学习路径。
+2. [个性化投资调研 Agent 系统愿景](personalized-investment-research-agent.md): 理解系统想做什么、边界在哪里。
+3. [Lab 总计划](lab-plan.md): 看 12 篇基础文章如何映射到 12 个 Labs。
+4. [密钥、安全与合规边界](security-and-secrets.md): 先明确真实 key、财经输出和人工确认规则。
+5. [Labs 入口](../../labs/README.md): 进入当前可运行实验。
+
+## 当前做到哪里
+
+| Lab | 状态 | 当前展示 |
+| --- | --- | --- |
+| [Lab 01: Strategy Intake](../../labs/01-strategy-intake/README.md) | 已实现 | 把自然语言策略解析成 `StrategySpec`，支持规则基线和 MiMo 语义补全。 |
+| [Lab 02: Strategy Agent Loop](../../labs/02-strategy-agent-loop/README.md) | 已实现 | 把 `StrategySpec` 放进最小 Agent Loop，生成 mock 投研计划并记录 trace。 |
+| Lab 03: Finance Tool Use Mock | 下一阶段 | 用 mock `mx-xuangu`、`mx-data`、`mx-search` 风格工具展示工具调用和证据收集。 |
+
+## Lab 03-12 简短路线
+
+| Lab | 主题 | 目标 |
+| --- | --- | --- |
+| 03 | Finance Tool Use Mock | 跑通 mock 财经工具注册、选择、入参、返回、失败和 trace。 |
+| 04 | Research RAG Basic | 检索策略规则、风险规则和报告模板。 |
+| 05 | User Preference Memory | 记住风险偏好、排除条件和候选数量。 |
+| 06 | Skill Registry | 建立 Skill 元数据和选择机制。 |
+| 07 | Skill Generation | 从稳定流程生成 `SKILL.md` 草稿。 |
+| 08 | MX Skills Adapter | 将 mock 工具适配到东方财富妙想 Skills。 |
+| 09 | Research Planner | 将线性计划升级成有状态 DAG。 |
+| 10 | Evidence Report | 生成带来源、时间、证据和风险提示的报告。 |
+| 11 | Simulation Portfolio | 用 mock 或模拟组合接口验证流程，保留人工确认。 |
+| 12 | Evaluation & Safety | 自动检查密钥、证据、风险提示和越权动作。 |
+
+## 财经输出边界
+
+- 仅用于学习演示和观察池，不构成投资建议或收益承诺。
+- 可以生成候选观察池，但必须说明数据来源、检索时间、证据和不确定性。
+- 不输出保证收益、稳赚、必涨等确定性表述。
+- 不绕过人工确认执行自选股、模拟组合、Skill 启用或任何交易相关动作。
+- 不提交真实 API key、token、cookie、账户凭据或个人隐私。
+
+## 当前可运行入口
+
+启动 Lab 01 网页 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-web.ps1 -Lab 01-strategy-intake -Port 8765
+```
+
+运行 Lab 01 / Lab 02 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 02-strategy-agent-loop
+```
+
+运行全部 Lab 测试：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
+```
