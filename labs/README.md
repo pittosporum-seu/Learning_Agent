@@ -54,7 +54,11 @@ labs/
   - 用本地 markdown 知识库展示 RAG。
   - 生成 `retrieval_trace`、`retrieved_context` 和 `augmented_evidence`。
   - 将策略规则、风险规则和报告模板挂回 Lab 03 的 mock 证据。
-- [ ] Lab 05-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
+- [x] [Lab 05: User Preference Memory](05-user-preference-memory/README.md)
+  - 用本地 mock 偏好展示 Memory。
+  - 生成 `memory_snapshot`、`memory_trace` 和 `preference_adjusted_evidence`。
+  - Memory 只调整候选证据视图，不覆盖原始证据、来源或风险提示。
+- [ ] Lab 06-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试
 
@@ -94,6 +98,12 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 03-financ
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 04-research-rag-basic
 ```
 
+运行 Lab 05 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 05-user-preference-memory
+```
+
 运行全部 Lab 测试：
 
 ```powershell
@@ -103,7 +113,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 只运行某个 Lab：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 04-research-rag-basic
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 05-user-preference-memory
 ```
 
 ## 统一要求

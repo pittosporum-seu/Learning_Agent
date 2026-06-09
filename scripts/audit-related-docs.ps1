@@ -120,6 +120,17 @@ $lab04RunLabTests = Read-RepoFile "labs/04-research-rag-basic/tests/test_run_lab
 $lab04StrategyPolicy = Read-RepoFile "labs/04-research-rag-basic/data/strategy_policy.md"
 $lab04RiskPolicy = Read-RepoFile "labs/04-research-rag-basic/data/risk_policy.md"
 $lab04ReportTemplate = Read-RepoFile "labs/04-research-rag-basic/data/report_template.md"
+$lab05Agents = Read-RepoFile "labs/05-user-preference-memory/AGENTS.md"
+$lab05Readme = Read-RepoFile "labs/05-user-preference-memory/README.md"
+$lab05MemoryStore = Read-RepoFile "labs/05-user-preference-memory/src/memory_store.py"
+$lab05PreferencePolicy = Read-RepoFile "labs/05-user-preference-memory/src/preference_policy.py"
+$lab05RunLab = Read-RepoFile "labs/05-user-preference-memory/src/run_lab.py"
+$lab05Demo = Read-RepoFile "labs/05-user-preference-memory/demo/run_demo.py"
+$lab05MemoryStoreTests = Read-RepoFile "labs/05-user-preference-memory/tests/test_memory_store.py"
+$lab05PreferencePolicyTests = Read-RepoFile "labs/05-user-preference-memory/tests/test_preference_policy.py"
+$lab05RunLabTests = Read-RepoFile "labs/05-user-preference-memory/tests/test_run_lab.py"
+$lab05MockPreferences = Read-RepoFile "labs/05-user-preference-memory/data/mock_user_preferences.json"
+$lab05MemoryEvents = Read-RepoFile "labs/05-user-preference-memory/data/memory_events.jsonl"
 
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
@@ -162,6 +173,7 @@ Require-Contains "README.md" $readme @(
     "labs/02-strategy-agent-loop/README.md",
     "labs/03-finance-tool-use-mock/README.md",
     "labs/04-research-rag-basic/README.md",
+    "labs/05-user-preference-memory/README.md",
     "AGENTS.md",
     ".agents/skills",
     "run-lab-web.ps1",
@@ -192,6 +204,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "labs/02-strategy-agent-loop",
     "labs/03-finance-tool-use-mock",
     "labs/04-research-rag-basic",
+    "labs/05-user-preference-memory",
     "product/lab-plan.md",
     "product/security-and-secrets.md",
     "AGENTS.md",
@@ -204,7 +217,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -215,6 +228,7 @@ $roadmapTokens = @(
     '[x] Lab 02: Strategy Agent Loop',
     '[x] Lab 03: Finance Tool Use Mock',
     '[x] Lab 04: Research RAG Basic',
+    '[x] Lab 05: User Preference Memory',
     'Codex'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -229,8 +243,10 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Lab 02",
     "Lab 03",
     "Lab 04",
+    "Lab 05",
     "routing_decision",
     "retrieved_context",
+    "memory_trace",
     "mock",
     "key",
     "run-lab-tests.ps1"
@@ -266,6 +282,8 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "tool_trace",
     "candidate_evidence",
     "retrieved_context",
+    "memory_trace",
+    "preference_adjusted_evidence",
     "Lab 03-12",
     "SKILL.md",
     "API key"
@@ -276,6 +294,7 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 2 Agent Loop & Structured Trace",
     "Part 3 Finance Tool Use Mock",
     "Part 4 Research RAG Basic",
+    "Part 5 User Preference Memory",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
@@ -283,6 +302,7 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "ToolCall",
     "EvidenceItem",
     "retrieved_context",
+    "preference_adjusted_evidence",
     "SafetyDecision",
     "EvalResult",
     "required_human_confirmation",
@@ -305,6 +325,7 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "tool_trace",
     "candidate_evidence",
     "retrieved_context",
+    "preference_adjusted_evidence",
     "routing_decision",
     "OpenAI-compatible",
     "LLM_API_KEY",
@@ -350,6 +371,7 @@ Require-Contains "labs/README.md" $labsReadme @(
     "02-strategy-agent-loop/README.md",
     "03-finance-tool-use-mock/README.md",
     "04-research-rag-basic/README.md",
+    "05-user-preference-memory/README.md",
     "12-evaluation-safety",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
@@ -663,6 +685,87 @@ Require-Contains "labs/04-research-rag-basic/tests/test_run_lab.py" $lab04RunLab
 Require-Contains "labs/04-research-rag-basic/data/strategy_policy.md" $lab04StrategyPolicy @("StrategySpec", "candidate_evidence", "retrieved_context")
 Require-Contains "labs/04-research-rag-basic/data/risk_policy.md" $lab04RiskPolicy @("risk_disclosure", "negative_news", "human_confirmation")
 Require-Contains "labs/04-research-rag-basic/data/report_template.md" $lab04ReportTemplate @("report_template", "source", "chunk_id", "used_for")
+
+Require-Contains "labs/05-user-preference-memory/AGENTS.md" $lab05Agents @(
+    "User Preference Memory",
+    "Memory",
+    "memory_snapshot",
+    "memory_trace",
+    "preference_adjusted_evidence",
+    "risk_disclosure"
+)
+Require-Contains "labs/05-user-preference-memory/README.md" $lab05Readme @(
+    "Memory",
+    "memory_snapshot",
+    "memory_trace",
+    "effective_user_profile",
+    "preference_application",
+    "preference_adjusted_evidence",
+    "risk_disclosure",
+    "run-lab-demo.ps1",
+    "run-lab-tests.ps1"
+)
+Require-Contains "labs/05-user-preference-memory/src/memory_store.py" $lab05MemoryStore @(
+    "build_memory_snapshot",
+    "load_user_preferences",
+    "load_memory_events",
+    "UnknownUserError",
+    "mock_user_preferences.json",
+    "memory_events.jsonl"
+)
+Require-Contains "labs/05-user-preference-memory/src/preference_policy.py" $lab05PreferencePolicy @(
+    "build_effective_user_profile",
+    "apply_preferences",
+    "SUPPORTED_FIELDS",
+    "DANGEROUS_FIELDS",
+    "preference_adjusted_evidence",
+    "risk_disclosure"
+)
+Require-Contains "labs/05-user-preference-memory/src/run_lab.py" $lab05RunLab @(
+    "run_user_preference_memory",
+    "run_research_rag_basic",
+    "memory_snapshot",
+    "memory_trace",
+    "preference_application",
+    "preference_adjusted_evidence",
+    "Lab 06 Skill Registry",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/05-user-preference-memory/demo/run_demo.py" $lab05Demo @(
+    "run_user_preference_memory",
+    "--user-id",
+    "--output",
+    "preference_application"
+)
+Require-Contains "labs/05-user-preference-memory/tests/test_memory_store.py" $lab05MemoryStoreTests @(
+    "test_loads_conservative_and_balanced_users",
+    "test_unknown_user_raises_clear_error",
+    "conservative_user",
+    "balanced_user"
+)
+Require-Contains "labs/05-user-preference-memory/tests/test_preference_policy.py" $lab05PreferencePolicyTests @(
+    "test_effective_user_profile_applies_max_candidates",
+    "test_apply_preferences_filters_excluded_risk_flags",
+    "test_apply_preferences_does_not_mutate_original_evidence",
+    "test_dangerous_preferences_are_ignored"
+)
+Require-Contains "labs/05-user-preference-memory/tests/test_run_lab.py" $lab05RunLabTests @(
+    "test_run_lab_generates_memory_outputs",
+    "test_original_candidate_evidence_is_not_modified",
+    "test_blocked_request_remains_blocked",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/05-user-preference-memory/data/mock_user_preferences.json" $lab05MockPreferences @(
+    "conservative_user",
+    "balanced_user",
+    "excluded_risk_flags",
+    "report_style"
+)
+Require-Contains "labs/05-user-preference-memory/data/memory_events.jsonl" $lab05MemoryEvents @(
+    "preference_update",
+    "unsafe_preference_attempt",
+    "risk_disclosure"
+)
 
 Require-Contains "labs/shared/testing/README.md" $sharedTestingReadme @("run_lab_tests.py")
 Require-Contains "labs/shared/testing/run_lab_tests.py" $sharedTestingRunner @("unittest", "--lab")

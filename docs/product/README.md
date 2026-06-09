@@ -33,6 +33,7 @@
 | [Lab 02: Strategy Agent Loop](../../labs/02-strategy-agent-loop/README.md) | 已实现 | 把 `StrategySpec` 放进最小 Agent Loop，生成 mock 投研计划并记录 trace。 |
 | [Lab 03: Finance Tool Use Mock](../../labs/03-finance-tool-use-mock/README.md) | 已实现 | 用 mock `mx-xuangu`、`mx-data`、`mx-search` 风格工具展示工具调用、`tool_trace` 和 `candidate_evidence`。 |
 | [Lab 04: Research RAG Basic](../../labs/04-research-rag-basic/README.md) | 已实现 | 用本地 markdown 知识库展示 RAG，生成 `retrieval_trace`、`retrieved_context` 和 `augmented_evidence`。 |
+| [Lab 05: User Preference Memory](../../labs/05-user-preference-memory/README.md) | 已实现 | 用本地 mock 用户偏好展示 Memory，生成 `memory_trace` 和 `preference_adjusted_evidence`。 |
 
 ## Lab 03-12 简短路线
 
@@ -40,7 +41,7 @@
 | --- | --- | --- |
 | 03 | Finance Tool Use Mock | 跑通 mock 财经工具注册、选择、入参、返回、失败和 trace。 |
 | 04 | Research RAG Basic | 检索策略规则、风险规则和报告模板，并挂回 Lab 03 的 mock 证据。 |
-| 05 | User Preference Memory | 记住风险偏好、排除条件和候选数量。 |
+| 05 | User Preference Memory | 记住风险偏好、排除条件和候选数量，并只调整证据视图。 |
 | 06 | Skill Registry | 建立 Skill 元数据和选择机制。 |
 | 07 | Skill Generation | 从稳定流程生成 `SKILL.md` 草稿。 |
 | 08 | MX Skills Adapter | 将 mock 工具适配到东方财富妙想 Skills。 |
@@ -65,13 +66,14 @@
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-web.ps1 -Lab 01-strategy-intake -Port 8765
 ```
 
-运行 Lab 01 / Lab 02 / Lab 03 / Lab 04 demo：
+运行 Lab 01 / Lab 02 / Lab 03 / Lab 04 / Lab 05 demo：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 02-strategy-agent-loop
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 03-finance-tool-use-mock
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 04-research-rag-basic
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 05-user-preference-memory
 ```
 
 运行全部 Lab 测试：

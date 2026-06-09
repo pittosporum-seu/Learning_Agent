@@ -35,7 +35,7 @@
 | 02 | Strategy Agent Loop | 02 Agent Loop | Observe-Decide-Act 循环、trace、阻断、投研计划生成 | 已实现 |
 | 03 | Finance Tool Use Mock | 03 Tool Use | mock `mx-xuangu`、`mx-data`、`mx-search` 的工具调用、`tool_trace` 和 `candidate_evidence` | 已实现 |
 | 04 | Research RAG Basic | 04 RAG | 本地 markdown 知识库检索、`retrieval_trace`、`retrieved_context` 和 `augmented_evidence` | 已实现 |
-| 05 | User Preference Memory | 05 Memory | 记住用户风险偏好、排除行业、候选数量 | 计划中 |
+| 05 | User Preference Memory | 05 Memory | 本地 mock 用户偏好、`memory_trace`、`preference_application` 和 `preference_adjusted_evidence` | 已实现 |
 | 06 | Skill Registry | 06 MCP / 10 Skills | 建立 Skill 注册表和能力选择机制 | 计划中 |
 | 07 | Skill Generation | 10 Skills | 把稳定投研流程生成 `SKILL.md` 草稿 | 计划中 |
 | 08 | MX Skills Adapter | 03 Tool Use / 06 MCP | mock 与真实东方财富妙想 Skills 适配 | 计划中 |
@@ -147,18 +147,20 @@ outputs/
 
 ## Lab 05: User Preference Memory
 
-目标：让系统记住用户偏好，但不把偏好当成投资结论。
+目标：让系统读取本地 mock 用户偏好，但不把偏好当成投资结论。
 
 关键点：
 
-- 记录风险等级、排除条件、候选数量、关注主题。
-- 区分短期上下文和长期偏好。
-- 提供重置和覆盖机制。
+- 读取 `conservative_user` 和 `balanced_user` 两个 mock profile。
+- Memory 可以影响 `max_candidates`、`excluded_themes`、`excluded_risk_flags` 和 `report_style`。
+- Memory 只生成 `preference_adjusted_evidence`，不修改原始 `candidate_evidence`。
+- 高风险请求仍然 blocked，不会因为 Memory 继续执行。
 
 验收标准：
 
-- 同一策略在不同用户偏好下输出不同筛选计划。
-- 记忆内容可解释、可查看、可清除。
+- 同一策略在不同用户偏好下输出不同 adjusted view。
+- 记忆内容可解释、可查看。
+- 测试不依赖真实用户数据、真实模型或真实财经 API。
 
 ## Lab 06: Skill Registry
 

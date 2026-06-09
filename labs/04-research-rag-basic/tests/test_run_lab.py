@@ -61,6 +61,17 @@ class RunLabTests(unittest.TestCase):
         self.assertIn("risk_disclosure", result["final_output"])
         self.assertFalse(PROHIBITED_OUTPUT_KEYS.intersection(collect_keys(result)))
 
+    def test_user_profile_none_preserves_default_preferences(self):
+        result = run_research_rag_basic(user_profile=None)
+
+        self.assertEqual(result["strategy_spec"]["user_preferences"]["max_candidates"], 10)
+
+    def test_user_profile_is_passed_to_lab03(self):
+        result = run_research_rag_basic(user_profile={"max_candidates": 1, "risk_level": "low"})
+
+        self.assertEqual(result["strategy_spec"]["user_preferences"]["max_candidates"], 1)
+        self.assertEqual(result["strategy_spec"]["user_preferences"]["risk_level"], "low")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -35,8 +35,12 @@ RISK_DISCLOSURE = _LAB03.RISK_DISCLOSURE
 run_finance_tool_use_mock = _LAB03.run_finance_tool_use_mock
 
 
-def run_research_rag_basic(request: str = DEFAULT_REQUEST, top_k: int = 5) -> dict[str, Any]:
-    lab03_output = run_finance_tool_use_mock(request)
+def run_research_rag_basic(
+    request: str = DEFAULT_REQUEST,
+    top_k: int = 5,
+    user_profile: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    lab03_output = run_finance_tool_use_mock(request, user_profile=user_profile)
     output: dict[str, Any] = {
         "request": request,
         "status": lab03_output["status"],

@@ -24,9 +24,10 @@ PROHIBITED_OUTPUT_KEYS = {"buy", "sell", "recommendation", "target_price"}
 def run_finance_tool_use_mock(
     request: str = DEFAULT_REQUEST,
     registry: ToolRegistry | None = None,
+    user_profile: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     registry = registry or build_default_registry()
-    strategy_spec = parse_strategy_request(request).to_dict()
+    strategy_spec = parse_strategy_request(request, user_profile=user_profile).to_dict()
     routing_mode = (strategy_spec.get("routing_decision") or {}).get("mode")
 
     output: dict[str, Any] = {

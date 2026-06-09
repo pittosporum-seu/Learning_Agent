@@ -75,6 +75,10 @@
   - 用本地 markdown 知识库展示 RAG。
   - 检索策略规则、风险规则和报告模板。
   - 生成 `retrieval_trace`、`retrieved_context` 和 `augmented_evidence`。
+- [Lab 05: User Preference Memory](labs/05-user-preference-memory/README.md)
+  - 用本地 mock 偏好展示 Memory。
+  - 生成 `memory_snapshot`、`memory_trace` 和 `preference_adjusted_evidence`。
+  - Memory 只调整证据视图，不覆盖原始证据或风险提示。
 
 完整设计：
 
@@ -148,6 +152,10 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 - 新增可运行 Lab 时同步提供 demo 和 tests，并用 `scripts/run-lab-tests.ps1` 做统一回归。
 - Codex 维护规则见 [AGENTS.md](AGENTS.md)，可复用工作流见 `.agents/skills/`。
 - 当前待办统一维护在 [TODO.md](TODO.md)，需要公开协作时再转成 GitHub Issue。
+
+## Contributors
+
+- Codex (OpenAI): 仓库维护、Lab 实现和文档同步协作者。
 
 ## 推荐阅读
 

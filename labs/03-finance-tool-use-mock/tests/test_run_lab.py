@@ -63,6 +63,21 @@ class RunLabTests(unittest.TestCase):
         self.assertEqual(result["tool_trace"], [])
         self.assertTrue(result["final_output"]["clarification_questions"])
 
+    def test_user_profile_none_preserves_default_preferences(self):
+        request = "找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。"
+
+        result = run_finance_tool_use_mock(request, user_profile=None)
+
+        self.assertEqual(result["strategy_spec"]["user_preferences"]["max_candidates"], 10)
+
+    def test_user_profile_is_passed_to_strategy_intake(self):
+        request = "找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。"
+
+        result = run_finance_tool_use_mock(request, user_profile={"max_candidates": 1, "risk_level": "low"})
+
+        self.assertEqual(result["strategy_spec"]["user_preferences"]["max_candidates"], 1)
+        self.assertEqual(result["strategy_spec"]["user_preferences"]["risk_level"], "low")
+
 
 if __name__ == "__main__":
     unittest.main()

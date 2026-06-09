@@ -1,0 +1,22 @@
+{
+  "conservative_user": {
+    "user_id": "conservative_user",
+    "risk_level": "low",
+    "exclude_st": true,
+    "max_candidates": 1,
+    "preferred_markets": ["A股"],
+    "excluded_themes": ["高波动主题"],
+    "excluded_risk_flags": ["negative_news", "valuation_watch"],
+    "report_style": "brief_risk_first"
+  },
+  "balanced_user": {
+    "user_id": "balanced_user",
+    "risk_level": "medium",
+    "exclude_st": true,
+    "max_candidates": 2,
+    "preferred_markets": ["A股"],
+    "excluded_themes": [],
+    "excluded_risk_flags": ["negative_news"],
+    "report_style": "balanced_evidence_table"
+  }
+}

@@ -1,0 +1,3 @@
+{"event_id":"evt-001","user_id":"conservative_user","event_type":"preference_update","preferences":{"excluded_themes":["高波动主题"],"report_style":"brief_risk_first"}}
+{"event_id":"evt-002","user_id":"balanced_user","event_type":"preference_update","preferences":{"max_candidates":2,"excluded_risk_flags":["negative_news"]}}
+{"event_id":"evt-003","user_id":"conservative_user","event_type":"unsafe_preference_attempt","preferences":{"risk_disclosure":"hide","delete_sources":true,"skip_guardrails":true,"auto_trade":true}}

@@ -45,7 +45,7 @@
 - [x] Lab 02: structured trace 教学补强
 - [x] Lab 03: Finance Tool Use Mock
 - [x] Lab 04: Research RAG Basic
-- [ ] Lab 05: User Preference Memory
+- [x] Lab 05: User Preference Memory
 - [ ] Lab 06: Skill Registry
 - [ ] Lab 07: Skill Generation
 - [ ] Lab 08: MX Skills Adapter
@@ -113,5 +113,6 @@
 - [x] 完成第二个可运行 Strategy Agent Loop Lab
 - [x] 补齐共享行情、股票池和资讯 mock 数据
 - [x] 完成 Research RAG Basic Lab
+- [x] 完成 User Preference Memory Lab
 
 详见：[docs/series-plan.md](docs/series-plan.md)

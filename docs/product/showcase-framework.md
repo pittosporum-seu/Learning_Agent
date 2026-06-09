@@ -37,7 +37,7 @@
 | Part 2 Agent Loop & Structured Trace | Lab 02 | 02 Agent Loop | observe -> decide -> act、structured trace、fail closed | 已补强 structured trace |
 | Part 3 Finance Tool Use Mock | Lab 03 | 03 Tool Use | mock 财经工具注册、选择、入参、返回和失败处理 | 已实现 |
 | Part 4 Research RAG Basic | Lab 04 | 04 RAG | 从规则、资料片段和报告模板检索依据 | 已实现 |
-| Part 5 User Preference Memory | Lab 05 | 05 Memory | 用户风险偏好、排除条件和观察池偏好的记忆 | 计划中 |
+| Part 5 User Preference Memory | Lab 05 | 05 Memory | 用户风险偏好、排除条件和观察池偏好的记忆 | 已实现 |
 | Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明和选择机制 | 计划中 |
 | Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成 `SKILL.md` 草稿 | 计划中 |
 | Part 8 MX Skills Adapter | Lab 08 | 06 MCP / 03 Tool Use | 东方财富妙想 Skills 的 mock-first 适配边界 | 计划中 |
@@ -97,10 +97,10 @@
 
 - 展示目标：展示如何保存和读取用户偏好，例如风险等级、排除行业、观察池数量和报告格式。
 - 输入：用户偏好、历史交互摘要、当前 `StrategySpec`。
-- 核心输出：偏好快照、偏好命中记录、与当前请求的冲突提示。
+- 核心输出：`memory_snapshot`、`memory_trace`、`effective_user_profile`、`preference_application` 和 `preference_adjusted_evidence`。
 - 读者应该观察什么：Memory 是受边界约束的上下文资产，不是无限制保存个人信息。
 - 不做什么：不保存真实敏感身份信息，不把历史偏好当成自动交易授权。
-- 验收标准：偏好可读、可覆盖、可解释；冲突偏好会追问；测试不依赖真实用户数据。
+- 验收标准：偏好可读、可覆盖、可解释；Memory 只调整证据视图，不修改原始 evidence、来源或 `risk_disclosure`；测试不依赖真实用户数据。
 
 ### Part 6 Skill Registry
 
