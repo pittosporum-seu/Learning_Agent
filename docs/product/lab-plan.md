@@ -37,7 +37,7 @@
 | 04 | Research RAG Basic | 04 RAG | 本地 markdown 知识库检索、`retrieval_trace`、`retrieved_context` 和 `augmented_evidence` | 已实现 |
 | 05 | User Preference Memory | 05 Memory | 本地 mock 用户偏好、`memory_trace`、`preference_application` 和 `preference_adjusted_evidence` | 已实现 |
 | 06 | Skill Registry | 06 MCP / 10 Skills | 本地 mock Skill 元数据、`skill_selection_trace`、`selected_skills` 和 `disabled_skills` | 已实现 |
-| 07 | Skill Generation | 10 Skills | 把稳定投研流程生成 `SKILL.md` 草稿 | 计划中 |
+| 07 | Skill Generation | 10 Skills | 从 Lab 06 输出生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review` | 已实现 |
 | 08 | MX Skills Adapter | 03 Tool Use / 06 MCP | mock 与真实东方财富妙想 Skills 适配 | 计划中 |
 | 09 | Research Planner | 07 Agent Harness | 生成投研 DAG 并管理步骤状态 | 计划中 |
 | 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成带来源、时间、证据和风险提示的报告 | 计划中 |
@@ -183,18 +183,23 @@ outputs/
 
 ## Lab 07: Skill Generation
 
-目标：把稳定投研流程生成 `SKILL.md` 草稿。
+目标：把稳定投研流程生成可审查的 `SKILL.md` 草稿，但不自动启用。
 
 关键点：
 
-- 从执行轨迹中提取稳定步骤。
-- 写清楚触发场景、禁用场景、风险边界和输出格式。
-- 新 Skill 生成后进入审核，不自动启用。
+- 从 Lab 06 的 `selected_skills`、`disabled_skills`、`skill_selection_trace` 和上游 evidence 中提取稳定步骤。
+- 生成 `generated_skill_draft` 和类 `SKILL.md` 的 `skill_draft_markdown`，并明确标记 `DRAFT`。
+- 草稿写清触发场景、禁用场景、输入、输出、步骤、人工确认点、安全边界和测试样例。
+- `draft_review` 检查 `risk_disclosure`、禁用场景、人工 review / confirmation 和禁止字段。
+- 新 Skill draft 只进入人工审核，不自动启用，也不写入 `.agents/` 或 `.codex/`。
 
 验收标准：
 
-- 能从一次完整投研流程生成 Skill 草稿。
-- 草稿包含风险提示和测试样例。
+- 能从一次完整 mock 投研流程生成 Skill draft。
+- blocked 请求不会生成可启用 Skill。
+- 草稿包含风险提示、禁用场景、人工确认点和测试样例。
+- 输出包含 `risk_disclosure`，不生成投资建议、真实股票推荐或交易动作。
+- 测试不依赖真实模型、真实财经 API、真实用户数据或本地 runtime Skill 配置。
 
 ## Lab 08: MX Skills Adapter
 

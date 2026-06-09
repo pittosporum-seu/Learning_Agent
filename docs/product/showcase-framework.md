@@ -39,7 +39,7 @@
 | Part 4 Research RAG Basic | Lab 04 | 04 RAG | 从规则、资料片段和报告模板检索依据 | 已实现 |
 | Part 5 User Preference Memory | Lab 05 | 05 Memory | 用户风险偏好、排除条件和观察池偏好的记忆 | 已实现 |
 | Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明、选择机制和禁用边界 | 已实现 |
-| Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成 `SKILL.md` 草稿 | 计划中 |
+| Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成可审查 `SKILL.md` 草稿 | 已实现 |
 | Part 8 MX Skills Adapter | Lab 08 | 06 MCP / 03 Tool Use | 东方财富妙想 Skills 的 mock-first 适配边界 | 计划中 |
 | Part 9 Research Planner DAG | Lab 09 | 07 Agent Harness | 从线性计划升级到 DAG 研究计划 | 计划中 |
 | Part 10 Evidence Report | Lab 10 | 12 Evaluation / Trace / Safety | 带来源、时间、证据和限制条件的报告 | 计划中 |
@@ -113,12 +113,12 @@
 
 ### Part 7 Skill Generation
 
-- 展示目标：展示如何从稳定流程生成 `SKILL.md` 草稿，并保留人工审查入口。
-- 输入：已通过 Lab 验证的流程、示例输入输出、风险边界。
-- 核心输出：Skill 草稿、适用范围、禁用条件、测试样例。
-- 读者应该观察什么：从流程到 Skill 是“固化能力”，不是让模型随意扩权。
-- 不做什么：不生成带真实 key、真实账户、自动交易权限的 Skill。
-- 验收标准：生成内容可审阅；包含风险提示和测试；高风险动作默认需要人工确认。
+- 展示目标：展示如何从稳定流程生成可审查的 `SKILL.md` 草稿，并保留人工审查入口。
+- 输入：Lab 06 的 `selected_skills`、`disabled_skills`、`skill_selection_trace` 和上游 evidence。
+- 核心输出：`generated_skill_draft`、`skill_draft_markdown`、`draft_review`。
+- 读者应该观察什么：从流程到 Skill 是“固化能力”，不是让模型随意扩权；draft 和正式启用之间必须有人类审核。
+- 不做什么：不生成带真实 key、真实账户、自动交易权限的 Skill；不写入 `.agents/` 或 `.codex/`；不自动启用。
+- 验收标准：生成内容标记 `DRAFT` 且可审阅；包含触发场景、禁用场景、输入、输出、步骤、人工确认点、安全边界、风险提示和测试样例；blocked 请求不生成可启用 Skill。
 
 ### Part 8 MX Skills Adapter
 

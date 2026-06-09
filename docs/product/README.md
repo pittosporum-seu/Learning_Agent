@@ -35,6 +35,7 @@
 | [Lab 04: Research RAG Basic](../../labs/04-research-rag-basic/README.md) | 已实现 | 用本地 markdown 知识库展示 RAG，生成 `retrieval_trace`、`retrieved_context` 和 `augmented_evidence`。 |
 | [Lab 05: User Preference Memory](../../labs/05-user-preference-memory/README.md) | 已实现 | 用本地 mock 用户偏好展示 Memory，生成 `memory_trace` 和 `preference_adjusted_evidence`。 |
 | [Lab 06: Skill Registry](../../labs/06-skill-registry/README.md) | 已实现 | 用本地 mock Skill 元数据展示 Skill 注册、`skill_selection_trace`、选择、禁用和人工确认边界。 |
+| [Lab 07: Skill Generation](../../labs/07-skill-generation/README.md) | 已实现 | 从 Lab 06 输出生成可审查 Skill draft，保留 `skill_draft_markdown` 和 `draft_review`。 |
 
 ## Lab 03-12 简短路线
 
@@ -44,7 +45,7 @@
 | 04 | Research RAG Basic | 检索策略规则、风险规则和报告模板，并挂回 Lab 03 的 mock 证据。 |
 | 05 | User Preference Memory | 记住风险偏好、排除条件和候选数量，并只调整证据视图。 |
 | 06 | Skill Registry | 建立 Skill 元数据和选择机制。 |
-| 07 | Skill Generation | 从稳定流程生成 `SKILL.md` 草稿。 |
+| 07 | Skill Generation | 从稳定流程生成可审查 `SKILL.md` 草稿。 |
 | 08 | MX Skills Adapter | 将 mock 工具适配到东方财富妙想 Skills。 |
 | 09 | Research Planner | 将线性计划升级成有状态 DAG。 |
 | 10 | Evidence Report | 生成带来源、时间、证据和风险提示的报告。 |
@@ -67,7 +68,7 @@
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-web.ps1 -Lab 01-strategy-intake -Port 8765
 ```
 
-运行 Lab 01 / Lab 02 / Lab 03 / Lab 04 / Lab 05 / Lab 06 demo：
+运行 Lab 01 / Lab 02 / Lab 03 / Lab 04 / Lab 05 / Lab 06 / Lab 07 demo：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake
@@ -76,6 +77,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 03-financ
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 04-research-rag-basic
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 05-user-preference-memory
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 06-skill-registry
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 07-skill-generation
 ```
 
 运行全部 Lab 测试：

@@ -62,7 +62,11 @@ labs/
   - 用本地 mock Skill 元数据展示 Skill Registry。
   - 生成 `skill_selection_trace`、`selected_skills` 和 `disabled_skills`。
   - 高风险、证据不足、缺少风险提示或需要人工确认时禁用 Skill。
-- [ ] Lab 07-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
+- [x] [Lab 07: Skill Generation](07-skill-generation/README.md)
+  - 从 Lab 06 的 mock Skill Registry 输出生成可审查 Skill draft。
+  - 生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review`。
+  - 草稿只进入人工 review，不自动启用，也不写入本地 runtime 配置目录。
+- [ ] Lab 08-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试
 
@@ -114,6 +118,12 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 05-user-p
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 06-skill-registry
 ```
 
+运行 Lab 07 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 07-skill-generation
+```
+
 运行全部 Lab 测试：
 
 ```powershell
@@ -123,7 +133,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 只运行某个 Lab：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 06-skill-registry
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 07-skill-generation
 ```
 
 ## 统一要求

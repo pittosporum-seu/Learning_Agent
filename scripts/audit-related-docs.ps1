@@ -141,6 +141,16 @@ $lab06Demo = Read-RepoFile "labs/06-skill-registry/demo/run_demo.py"
 $lab06SkillRegistryTests = Read-RepoFile "labs/06-skill-registry/tests/test_skill_registry.py"
 $lab06SkillSelectorTests = Read-RepoFile "labs/06-skill-registry/tests/test_skill_selector.py"
 $lab06RunLabTests = Read-RepoFile "labs/06-skill-registry/tests/test_run_lab.py"
+$lab07Agents = Read-RepoFile "labs/07-skill-generation/AGENTS.md"
+$lab07Readme = Read-RepoFile "labs/07-skill-generation/README.md"
+$lab07DraftTemplate = Read-RepoFile "labs/07-skill-generation/data/skill_draft_template.md"
+$lab07DraftBuilder = Read-RepoFile "labs/07-skill-generation/src/skill_draft_builder.py"
+$lab07SafetyReview = Read-RepoFile "labs/07-skill-generation/src/skill_safety_review.py"
+$lab07RunLab = Read-RepoFile "labs/07-skill-generation/src/run_lab.py"
+$lab07Demo = Read-RepoFile "labs/07-skill-generation/demo/run_demo.py"
+$lab07DraftBuilderTests = Read-RepoFile "labs/07-skill-generation/tests/test_skill_draft_builder.py"
+$lab07SafetyReviewTests = Read-RepoFile "labs/07-skill-generation/tests/test_skill_safety_review.py"
+$lab07RunLabTests = Read-RepoFile "labs/07-skill-generation/tests/test_run_lab.py"
 
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
@@ -228,7 +238,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -241,6 +251,7 @@ $roadmapTokens = @(
     '[x] Lab 04: Research RAG Basic',
     '[x] Lab 05: User Preference Memory',
     '[x] Lab 06: Skill Registry',
+    '[x] Lab 07: Skill Generation',
     'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -257,10 +268,12 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Lab 04",
     "Lab 05",
     "Lab 06",
+    "Lab 07",
     "routing_decision",
     "retrieved_context",
     "memory_trace",
     "skill_selection_trace",
+    "draft_review",
     "mock",
     "key",
     "run-lab-tests.ps1"
@@ -299,6 +312,7 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "memory_trace",
     "preference_adjusted_evidence",
     "skill_selection_trace",
+    "draft_review",
     "Lab 03-12",
     "SKILL.md",
     "API key"
@@ -311,6 +325,7 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 4 Research RAG Basic",
     "Part 5 User Preference Memory",
     "Part 6 Skill Registry",
+    "Part 7 Skill Generation",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
@@ -320,6 +335,8 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "retrieved_context",
     "preference_adjusted_evidence",
     "skill_selection_trace",
+    "skill_draft_markdown",
+    "draft_review",
     "SafetyDecision",
     "EvalResult",
     "required_human_confirmation",
@@ -344,6 +361,7 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "retrieved_context",
     "preference_adjusted_evidence",
     "skill_selection_trace",
+    "draft_review",
     "routing_decision",
     "OpenAI-compatible",
     "LLM_API_KEY",
@@ -404,6 +422,7 @@ Require-Contains "labs/README.md" $labsReadme @(
     "04-research-rag-basic/README.md",
     "05-user-preference-memory/README.md",
     "06-skill-registry/README.md",
+    "07-skill-generation/README.md",
     "12-evaluation-safety",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
@@ -873,6 +892,83 @@ Require-Contains "labs/06-skill-registry/tests/test_skill_selector.py" $lab06Ski
 Require-Contains "labs/06-skill-registry/tests/test_run_lab.py" $lab06RunLabTests @(
     "test_normal_request_generates_selection_outputs",
     "test_blocked_request_does_not_select_execution_skills",
+    "PROHIBITED_KEYS"
+)
+
+Require-Contains "labs/07-skill-generation/AGENTS.md" $lab07Agents @(
+    "Skill Generation",
+    "generated_skill_draft",
+    "skill_draft_markdown",
+    "draft_review",
+    "risk_disclosure",
+    "Lab 08 MX Skills Adapter"
+)
+Require-Contains "labs/07-skill-generation/README.md" $lab07Readme @(
+    "Skill Generation",
+    ".agents/",
+    ".codex/",
+    "generated_skill_draft",
+    "skill_draft_markdown",
+    "draft_review",
+    "needs_human_review",
+    "risk_disclosure",
+    "run-lab-demo.ps1",
+    "run-lab-tests.ps1"
+)
+Require-Contains "labs/07-skill-generation/data/skill_draft_template.md" $lab07DraftTemplate @(
+    "DRAFT",
+    "Trigger Scenarios",
+    "Disabled Scenarios",
+    "Human Confirmation Points",
+    "Safety Boundaries",
+    "Test Cases"
+)
+Require-Contains "labs/07-skill-generation/src/skill_draft_builder.py" $lab07DraftBuilder @(
+    "build_skill_draft",
+    "choose_draft_source_skill",
+    "generated_skill_draft",
+    "skill_draft_markdown",
+    "human_confirmation_points",
+    "safety_boundaries",
+    "risk_disclosure"
+)
+Require-Contains "labs/07-skill-generation/src/skill_safety_review.py" $lab07SafetyReview @(
+    "review_skill_draft",
+    "needs_human_review",
+    "missing_risk_disclosure",
+    "missing_disabled_scenarios",
+    "missing_human_review_or_confirmation",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/07-skill-generation/src/run_lab.py" $lab07RunLab @(
+    "run_skill_generation",
+    "run_skill_registry",
+    "generated_skill_draft",
+    "skill_draft_markdown",
+    "draft_review",
+    "Lab 08 MX Skills Adapter",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/07-skill-generation/demo/run_demo.py" $lab07Demo @(
+    "run_skill_generation",
+    "--user-id",
+    "--output",
+    "review_status"
+)
+Require-Contains "labs/07-skill-generation/tests/test_skill_draft_builder.py" $lab07DraftBuilderTests @(
+    "test_builder_generates_required_draft_fields",
+    "test_skill_draft_markdown_contains_draft_marker",
+    "DRAFT"
+)
+Require-Contains "labs/07-skill-generation/tests/test_skill_safety_review.py" $lab07SafetyReviewTests @(
+    "test_review_requires_human_review_for_valid_draft",
+    "test_review_checks_disabled_scenarios_risk_disclosure_and_human_confirmation",
+    "test_review_detects_prohibited_output_keys"
+)
+Require-Contains "labs/07-skill-generation/tests/test_run_lab.py" $lab07RunLabTests @(
+    "test_normal_request_generates_draft_review",
+    "test_blocked_request_does_not_generate_activatable_skill",
+    "test_does_not_create_runtime_config_directories",
     "PROHIBITED_KEYS"
 )
 

@@ -47,7 +47,7 @@
 - [x] Lab 04: Research RAG Basic
 - [x] Lab 05: User Preference Memory
 - [x] Lab 06: Skill Registry
-- [ ] Lab 07: Skill Generation
+- [x] Lab 07: Skill Generation
 - [ ] Lab 08: MX Skills Adapter
 - [ ] Lab 09: Research Planner
 - [ ] Lab 10: Evidence Report
@@ -115,5 +115,6 @@
 - [x] 完成 Research RAG Basic Lab
 - [x] 完成 User Preference Memory Lab
 - [x] 完成 Skill Registry Lab
+- [x] 完成 Skill Generation Lab
 
 详见：[docs/series-plan.md](docs/series-plan.md)

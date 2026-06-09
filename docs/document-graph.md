@@ -182,6 +182,8 @@ flowchart TD
 | [../labs/05-user-preference-memory/AGENTS.md](../labs/05-user-preference-memory/AGENTS.md) | Lab 05 持久规则，约束 mock Memory、证据视图调整和禁止覆盖安全边界。 |
 | [../labs/06-skill-registry/README.md](../labs/06-skill-registry/README.md) | 第六个可运行 Lab，用本地 mock Skill 元数据展示 Skill Registry、`skill_selection_trace`、`selected_skills` 和 `disabled_skills`。 |
 | [../labs/06-skill-registry/AGENTS.md](../labs/06-skill-registry/AGENTS.md) | Lab 06 持久规则，约束 mock Skill Registry、禁用场景、人工确认边界和禁止真实 runtime 配置。 |
+| [../labs/07-skill-generation/README.md](../labs/07-skill-generation/README.md) | 第七个可运行 Lab，从 Lab 06 输出生成可审查 Skill draft、`skill_draft_markdown` 和 `draft_review`。 |
+| [../labs/07-skill-generation/AGENTS.md](../labs/07-skill-generation/AGENTS.md) | Lab 07 持久规则，约束 Skill draft 生成、人工 review、禁止自动启用和禁止写 runtime 配置。 |
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |
 | [../labs/shared/testing/README.md](../labs/shared/testing/README.md) | 统一 Lab 测试入口说明。 |
 | [../scripts/run-lab-demo.ps1](../scripts/run-lab-demo.ps1) | 统一 demo 运行封装。 |
