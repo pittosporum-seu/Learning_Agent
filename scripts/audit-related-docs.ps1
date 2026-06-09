@@ -151,6 +151,19 @@ $lab07Demo = Read-RepoFile "labs/07-skill-generation/demo/run_demo.py"
 $lab07DraftBuilderTests = Read-RepoFile "labs/07-skill-generation/tests/test_skill_draft_builder.py"
 $lab07SafetyReviewTests = Read-RepoFile "labs/07-skill-generation/tests/test_skill_safety_review.py"
 $lab07RunLabTests = Read-RepoFile "labs/07-skill-generation/tests/test_run_lab.py"
+$lab08Agents = Read-RepoFile "labs/08-mx-skills-adapter/AGENTS.md"
+$lab08Readme = Read-RepoFile "labs/08-mx-skills-adapter/README.md"
+$lab08Capabilities = Read-RepoFile "labs/08-mx-skills-adapter/data/adapter_capabilities.json"
+$lab08Contract = Read-RepoFile "labs/08-mx-skills-adapter/src/adapter_contract.py"
+$lab08MockAdapter = Read-RepoFile "labs/08-mx-skills-adapter/src/mock_mx_adapter.py"
+$lab08RealStub = Read-RepoFile "labs/08-mx-skills-adapter/src/real_mx_adapter_stub.py"
+$lab08Registry = Read-RepoFile "labs/08-mx-skills-adapter/src/adapter_registry.py"
+$lab08RunLab = Read-RepoFile "labs/08-mx-skills-adapter/src/run_lab.py"
+$lab08Demo = Read-RepoFile "labs/08-mx-skills-adapter/demo/run_demo.py"
+$lab08ContractTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_adapter_contract.py"
+$lab08MockAdapterTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_mock_mx_adapter.py"
+$lab08RealStubTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_real_mx_adapter_stub.py"
+$lab08RunLabTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_run_lab.py"
 
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
@@ -238,7 +251,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: MX Skills Adapter")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -252,6 +265,7 @@ $roadmapTokens = @(
     '[x] Lab 05: User Preference Memory',
     '[x] Lab 06: Skill Registry',
     '[x] Lab 07: Skill Generation',
+    '[x] Lab 08: MX Skills Adapter',
     'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -269,11 +283,14 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Lab 05",
     "Lab 06",
     "Lab 07",
+    "Lab 08",
     "routing_decision",
     "retrieved_context",
     "memory_trace",
     "skill_selection_trace",
     "draft_review",
+    "adapter_trace",
+    "safety_gate",
     "mock",
     "key",
     "run-lab-tests.ps1"
@@ -313,6 +330,8 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "preference_adjusted_evidence",
     "skill_selection_trace",
     "draft_review",
+    "adapter_trace",
+    "safety_gate",
     "Lab 03-12",
     "SKILL.md",
     "API key"
@@ -326,6 +345,7 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 5 User Preference Memory",
     "Part 6 Skill Registry",
     "Part 7 Skill Generation",
+    "Part 8 MX Skills Adapter",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
@@ -337,6 +357,8 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "skill_selection_trace",
     "skill_draft_markdown",
     "draft_review",
+    "adapter_trace",
+    "safety_gate",
     "SafetyDecision",
     "EvalResult",
     "required_human_confirmation",
@@ -362,6 +384,8 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "preference_adjusted_evidence",
     "skill_selection_trace",
     "draft_review",
+    "adapter_trace",
+    "safety_gate",
     "routing_decision",
     "OpenAI-compatible",
     "LLM_API_KEY",
@@ -423,6 +447,7 @@ Require-Contains "labs/README.md" $labsReadme @(
     "05-user-preference-memory/README.md",
     "06-skill-registry/README.md",
     "07-skill-generation/README.md",
+    "08-mx-skills-adapter/README.md",
     "12-evaluation-safety",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
@@ -968,6 +993,105 @@ Require-Contains "labs/07-skill-generation/tests/test_skill_safety_review.py" $l
 Require-Contains "labs/07-skill-generation/tests/test_run_lab.py" $lab07RunLabTests @(
     "test_normal_request_generates_draft_review",
     "test_blocked_request_does_not_generate_activatable_skill",
+    "test_does_not_create_runtime_config_directories",
+    "PROHIBITED_KEYS"
+)
+
+Require-Contains "labs/08-mx-skills-adapter/AGENTS.md" $lab08Agents @(
+    "MX Skills Adapter",
+    "AdapterResult",
+    "adapter_trace",
+    "safety_gate",
+    "risk_disclosure",
+    "Lab 09 Research Planner DAG"
+)
+Require-Contains "labs/08-mx-skills-adapter/README.md" $lab08Readme @(
+    "Adapter",
+    ".agents/",
+    ".codex",
+    "mock-mx",
+    "real-mx-stub",
+    "AdapterResult",
+    "adapter_trace",
+    "safety_gate",
+    "risk_disclosure",
+    "run-lab-demo.ps1",
+    "run-lab-tests.ps1"
+)
+Require-Contains "labs/08-mx-skills-adapter/data/adapter_capabilities.json" $lab08Capabilities @(
+    "mock-mx",
+    "real-mx-stub",
+    "mx-xuangu",
+    "mx-data",
+    "mx-search",
+    "requires_human_confirmation"
+)
+Require-Contains "labs/08-mx-skills-adapter/src/adapter_contract.py" $lab08Contract @(
+    "AdapterCapability",
+    "AdapterResult",
+    "adapter_name",
+    "provider_mode",
+    "requires_api_key",
+    "requires_human_confirmation"
+)
+Require-Contains "labs/08-mx-skills-adapter/src/mock_mx_adapter.py" $lab08MockAdapter @(
+    "MockMXAdapter",
+    "select_candidates",
+    "fetch_market_data",
+    "search_finance_news",
+    "mx-xuangu",
+    "mx-data",
+    "mx-search"
+)
+Require-Contains "labs/08-mx-skills-adapter/src/real_mx_adapter_stub.py" $lab08RealStub @(
+    "RealMXAdapterStub",
+    "REAL_PROVIDER_DISABLED_REASON",
+    "network_request_sent",
+    "api_key_read",
+    "blocked"
+)
+Require-Contains "labs/08-mx-skills-adapter/src/adapter_registry.py" $lab08Registry @(
+    "AdapterRegistry",
+    "list_adapters",
+    "get_adapter",
+    "call_adapter",
+    "DEFAULT_ADAPTER_NAME"
+)
+Require-Contains "labs/08-mx-skills-adapter/src/run_lab.py" $lab08RunLab @(
+    "run_mx_skills_adapter",
+    "run_skill_generation",
+    "registered_adapters",
+    "adapter_trace",
+    "safety_gate",
+    "real_provider_allowed",
+    "Lab 09 Research Planner DAG",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/08-mx-skills-adapter/demo/run_demo.py" $lab08Demo @(
+    "run_mx_skills_adapter",
+    "--adapter-mode",
+    "--output",
+    "real_provider_allowed"
+)
+Require-Contains "labs/08-mx-skills-adapter/tests/test_adapter_contract.py" $lab08ContractTests @(
+    "test_adapter_result_has_required_fields",
+    "test_registry_lists_mock_and_real_stub",
+    "validate_adapter_result"
+)
+Require-Contains "labs/08-mx-skills-adapter/tests/test_mock_mx_adapter.py" $lab08MockAdapterTests @(
+    "test_mock_adapter_calls_mx_xuangu",
+    "test_mock_adapter_calls_mx_data_and_mx_search",
+    "mx-search"
+)
+Require-Contains "labs/08-mx-skills-adapter/tests/test_real_mx_adapter_stub.py" $lab08RealStubTests @(
+    "test_real_adapter_stub_is_blocked_without_network_or_key",
+    "network_request_sent",
+    "api_key_read"
+)
+Require-Contains "labs/08-mx-skills-adapter/tests/test_run_lab.py" $lab08RunLabTests @(
+    "test_normal_request_generates_adapter_trace",
+    "test_blocked_request_does_not_call_adapter",
+    "test_real_stub_mode_is_blocked_by_safety_gate",
     "test_does_not_create_runtime_config_directories",
     "PROHIBITED_KEYS"
 )

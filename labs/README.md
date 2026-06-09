@@ -66,7 +66,11 @@ labs/
   - 从 Lab 06 的 mock Skill Registry 输出生成可审查 Skill draft。
   - 生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review`。
   - 草稿只进入人工 review，不自动启用，也不写入本地 runtime 配置目录。
-- [ ] Lab 08-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
+- [x] [Lab 08: MX Skills Adapter](08-mx-skills-adapter/README.md)
+  - 用统一 adapter contract 串起 Lab 03 mock tools 和未来真实东方财富妙想 Skills。
+  - 生成 `adapter_trace` 和 `safety_gate`。
+  - 默认只使用 mock adapter，real stub 不读取 key、不发请求，并被安全门阻断。
+- [ ] Lab 09-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试
 
@@ -124,6 +128,12 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 06-skill-
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 07-skill-generation
 ```
 
+运行 Lab 08 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 08-mx-skills-adapter
+```
+
 运行全部 Lab 测试：
 
 ```powershell
@@ -133,7 +143,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 只运行某个 Lab：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 07-skill-generation
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 08-mx-skills-adapter
 ```
 
 ## 统一要求

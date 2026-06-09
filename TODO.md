@@ -17,13 +17,13 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 设计 Lab 08 MX Skills Adapter | `labs/08-mx-skills-adapter/` | 明确 mock-first 到东方财富妙想 Skills 的适配边界、环境变量和人工确认要求 |
+| P0 | 设计 Lab 09 Research Planner DAG | `labs/09-research-planner/` | 明确投研 DAG 节点、依赖、状态、失败传播和人工确认边界 |
 
 ## Next
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 实现 Lab 08: MX Skills Adapter | `labs/08-mx-skills-adapter/` | 能在默认 mock 下运行，并说明真实妙想 Skills 的受控接入边界 |
+| P0 | 实现 Lab 09: Research Planner DAG | `labs/09-research-planner/` | 能把 adapter 能力编排成可观察、可测试、可失败关闭的研究计划 DAG |
 | P1 | 设计投研 Skill 示例 | `skills/investment-research-workflow/SKILL.md` | 包含触发场景、禁用场景、步骤、输出格式、风险提示和测试样例 |
 | P1 | 补工程化清单第一批 | `docs/engineering/permission-boundary.md`、`trace-and-logging.md`、`evaluation-checklist.md` | 每篇是短清单，包含上线前检查项，并覆盖财经输出边界 |
 | P1 | 给 Lab 01 增加可选手动集成测试 | `labs/01-strategy-intake/tests/` 或 `demo/` | 有真实 MiMo key 时可手动验证，但默认测试仍不消耗 token |
@@ -63,3 +63,4 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-09 | 实现 Lab 05: User Preference Memory | 本轮提交 |
 | 2026-06-09 | 实现 Lab 06: Skill Registry | 本轮提交 |
 | 2026-06-09 | 实现 Lab 07: Skill Generation | 本轮提交 |
+| 2026-06-09 | 实现 Lab 08: MX Skills Adapter | 本轮提交 |

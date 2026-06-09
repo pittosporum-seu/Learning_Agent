@@ -36,6 +36,8 @@ def discover_lab_suite(lab_dir: Path) -> unittest.TestSuite | None:
 
 def clear_lab_import_cache() -> None:
     lab_module_names = {
+        "adapter_contract",
+        "adapter_registry",
         "agent_loop",
         "document_loader",
         "evidence",
@@ -45,6 +47,7 @@ def clear_lab_import_cache() -> None:
         "mimo_strategy_intake",
         "preference_policy",
         "rag_context",
+        "real_mx_adapter_stub",
         "run_lab",
         "simple_retriever",
         "skill_draft_builder",
@@ -53,6 +56,7 @@ def clear_lab_import_cache() -> None:
         "skill_selector",
         "strategy_intake",
         "tool_registry",
+        "mock_mx_adapter",
     }
     for name in list(sys.modules):
         if name.startswith("test_") or name in lab_module_names or name.startswith("lab03_"):

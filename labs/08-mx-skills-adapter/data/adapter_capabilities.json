@@ -1,0 +1,50 @@
+[
+  {
+    "adapter_name": "mock-mx",
+    "provider_mode": "mock",
+    "capabilities": [
+      {
+        "name": "mx-xuangu",
+        "description": "Mock candidate selection adapter mapped to Lab 03 select_candidates.",
+        "requires_api_key": false,
+        "requires_human_confirmation": false
+      },
+      {
+        "name": "mx-data",
+        "description": "Mock market data adapter mapped to Lab 03 fetch_market_data.",
+        "requires_api_key": false,
+        "requires_human_confirmation": false
+      },
+      {
+        "name": "mx-search",
+        "description": "Mock finance news adapter mapped to Lab 03 search_finance_news.",
+        "requires_api_key": false,
+        "requires_human_confirmation": false
+      }
+    ]
+  },
+  {
+    "adapter_name": "real-mx-stub",
+    "provider_mode": "real_stub",
+    "capabilities": [
+      {
+        "name": "mx-xuangu",
+        "description": "Disabled real provider stub for future explicit integration.",
+        "requires_api_key": true,
+        "requires_human_confirmation": true
+      },
+      {
+        "name": "mx-data",
+        "description": "Disabled real provider stub for future explicit integration.",
+        "requires_api_key": true,
+        "requires_human_confirmation": true
+      },
+      {
+        "name": "mx-search",
+        "description": "Disabled real provider stub for future explicit integration.",
+        "requires_api_key": true,
+        "requires_human_confirmation": true
+      }
+    ]
+  }
+]

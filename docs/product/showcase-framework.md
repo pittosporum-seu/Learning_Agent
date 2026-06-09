@@ -40,7 +40,7 @@
 | Part 5 User Preference Memory | Lab 05 | 05 Memory | 用户风险偏好、排除条件和观察池偏好的记忆 | 已实现 |
 | Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明、选择机制和禁用边界 | 已实现 |
 | Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成可审查 `SKILL.md` 草稿 | 已实现 |
-| Part 8 MX Skills Adapter | Lab 08 | 06 MCP / 03 Tool Use | 东方财富妙想 Skills 的 mock-first 适配边界 | 计划中 |
+| Part 8 MX Skills Adapter | Lab 08 | 06 MCP / 03 Tool Use | 东方财富妙想 Skills 的 mock-first 适配边界 | 已实现 |
 | Part 9 Research Planner DAG | Lab 09 | 07 Agent Harness | 从线性计划升级到 DAG 研究计划 | 计划中 |
 | Part 10 Evidence Report | Lab 10 | 12 Evaluation / Trace / Safety | 带来源、时间、证据和限制条件的报告 | 计划中 |
 | Part 11 Simulation Portfolio & HITL | Lab 11 | 07 Agent Harness / 12 Evaluation | 模拟组合、人工确认、权限边界 | 计划中 |
@@ -122,12 +122,12 @@
 
 ### Part 8 MX Skills Adapter
 
-- 展示目标：展示如何把 mock 工具逐步适配到东方财富妙想 Skills，同时保持默认 mock 可跑。
-- 输入：mock 工具契约、环境变量占位、受控集成样例。
-- 核心输出：适配层设计、真实模式开关、工具调用 trace、错误和降级策略。
-- 读者应该观察什么：真实数据源只是在边界内替换 provider，不能改变风险和人工确认规则。
-- 不做什么：不提交真实 `MX_APIKEY`，不默认访问真实服务，不绕过 mock 测试。
-- 验收标准：无 key 环境下全量测试通过；有环境变量时可手动验证；输出保留来源、时间和风险提示。
+- 展示目标：展示如何把 mock 工具和未来真实东方财富妙想 Skills 放到统一 adapter contract 下，同时保持默认 mock 可跑。
+- 输入：Lab 07 输出、Lab 03 mock finance tools、adapter capabilities 和安全门规则。
+- 核心输出：`registered_adapters`、`adapter_mode`、`adapter_trace`、`safety_gate`。
+- 读者应该观察什么：真实数据源只是在边界内替换 provider，不能改变风险、人工确认和测试默认 mock 的规则。
+- 不做什么：不读取真实 `MX_APIKEY`，不默认访问真实服务，不发送网络请求，不绕过 mock 测试，不使用 `.agents/` 或 `.codex/`。
+- 验收标准：mock adapter 能调用 `mx-xuangu`、`mx-data`、`mx-search`；real adapter stub 调用时 blocked；`safety_gate.real_provider_allowed=false`；输出保留风险提示且测试无 key 通过。
 
 ### Part 9 Research Planner DAG
 

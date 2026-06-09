@@ -48,7 +48,7 @@
 - [x] Lab 05: User Preference Memory
 - [x] Lab 06: Skill Registry
 - [x] Lab 07: Skill Generation
-- [ ] Lab 08: MX Skills Adapter
+- [x] Lab 08: MX Skills Adapter
 - [ ] Lab 09: Research Planner
 - [ ] Lab 10: Evidence Report
 - [ ] Lab 11: Simulation Portfolio
@@ -116,5 +116,6 @@
 - [x] 完成 User Preference Memory Lab
 - [x] 完成 Skill Registry Lab
 - [x] 完成 Skill Generation Lab
+- [x] 完成 MX Skills Adapter Lab
 
 详见：[docs/series-plan.md](docs/series-plan.md)
