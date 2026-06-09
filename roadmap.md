@@ -43,7 +43,7 @@
 - [x] Lab 01: routing_decision 教学路由
 - [x] Lab 02: Strategy Agent Loop
 - [x] Lab 02: structured trace 教学补强
-- [ ] Lab 03: Finance Tool Use Mock
+- [x] Lab 03: Finance Tool Use Mock
 - [ ] Lab 04: Research RAG Basic
 - [ ] Lab 05: User Preference Memory
 - [ ] Lab 06: Skill Registry
@@ -111,6 +111,6 @@
 - [x] 补齐共享案例第一批策略材料
 - [x] 完成第一个可运行 Strategy Intake Lab
 - [x] 完成第二个可运行 Strategy Agent Loop Lab
-- [ ] 补齐共享行情、股票池和资讯 mock 数据
+- [x] 补齐共享行情、股票池和资讯 mock 数据
 
 详见：[docs/series-plan.md](docs/series-plan.md)

@@ -1,0 +1,6 @@
+candidate_id,candidate_name,market,theme,tags,trend_label,drawdown_label,negative_news,liquidity_level,notes
+MXGRID001,Mock Grid Transformer A,A股,电网设备,趋势较强;回撤较低;观察池候选,strong,low,false,high,虚构样本用于展示工具筛选
+MXGRID002,Mock Smart Grid B,A股,电网设备,趋势较强;公告正常;成交活跃,strong,medium_low,false,medium,虚构样本用于展示工具筛选
+MXGRID003,Mock Cable Equipment C,A股,电网设备,回撤较高;负面新闻,medium,high,true,medium,虚构样本用于展示风险过滤
+MXAI001,Mock AI Infra A,A股,人工智能,趋势较强;成交活跃,strong,medium,false,high,虚构样本用于跨主题过滤
+MXBANK001,Mock Bank Value A,A股,银行,市盈率小于20;低估值,stable,low,false,high,虚构样本用于 workflow 路径

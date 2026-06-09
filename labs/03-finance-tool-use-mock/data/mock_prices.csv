@@ -1,0 +1,6 @@
+candidate_id,trend_score,max_drawdown,turnover_level,valuation_note
+MXGRID001,86,0.08,high,估值处于 mock 行业中位附近
+MXGRID002,78,0.12,medium,估值略高但仍在 mock 可观察范围
+MXGRID003,55,0.24,medium,回撤偏高且风险事件较多
+MXAI001,82,0.15,high,估值分歧较大
+MXBANK001,61,0.06,high,低估值但趋势动量一般

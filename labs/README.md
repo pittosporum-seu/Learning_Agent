@@ -45,9 +45,12 @@ labs/
 - [x] [Lab 02: Strategy Agent Loop](02-strategy-agent-loop/README.md)
   - 最小 Observe-Decide-Act Loop。
   - 根据 `StrategySpec` 生成 mock 投研计划。
-  - 保留 trace、阻断和 max-turn 保护。
-- [ ] Lab 03: Finance Tool Use Mock
-- [ ] Lab 04-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进
+  - 保留 structured trace、阻断和 max-turn 保护。
+- [x] [Lab 03: Finance Tool Use Mock](03-finance-tool-use-mock/README.md)
+  - 注册 `select_candidates`、`fetch_market_data`、`search_finance_news` 三个 mock 工具。
+  - 展示工具选择、入参、返回、`tool_trace` 和 `candidate_evidence`。
+  - 只生成 mock 观察池证据，不生成投资建议。
+- [ ] Lab 04-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试
 
@@ -75,6 +78,12 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strate
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 02-strategy-agent-loop
 ```
 
+运行 Lab 03 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 03-finance-tool-use-mock
+```
+
 运行全部 Lab 测试：
 
 ```powershell
@@ -84,14 +93,14 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 只运行某个 Lab：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 01-strategy-intake
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 03-finance-tool-use-mock
 ```
 
 ## 统一要求
 
 - 每个 Lab 先支持 mock，真实 API 接入必须放在显式开关之后。
 - 真实模型解析可以用于语义补全，但测试必须能在无 key 情况下通过。
-- 所有候选股票输出都必须带风险提示。
+- 所有候选观察池输出都必须带风险提示。
 - 真实密钥只从环境变量读取，不写入仓库。
 - 涉及自选股、模拟组合、Skill 启用的动作必须保留人工确认。
 - 每个可运行 Lab 都应提供 demo 和 tests，并接入统一测试入口。

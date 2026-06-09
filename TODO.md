@@ -17,13 +17,13 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 准备 Lab 03 mock 财经数据 | `mock_universe.csv`、`mock_prices.csv`、`mock_news.md` | Lab 03 能用同一套 mock 数据模拟候选筛选、行情和资讯查询 |
+| P0 | 设计 Lab 04 Research RAG Basic | `labs/04-research-rag-basic/` | 明确要检索的策略规则、风险规则、报告模板和 EvidenceItem 字段 |
 
 ## Next
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 实现 Lab 03: Finance Tool Use Mock | `labs/03-finance-tool-use-mock/` | 能用 mock 工具完成候选筛选、行情和资讯查询 |
+| P0 | 实现 Lab 04: Research RAG Basic | `labs/04-research-rag-basic/` | 能从本地 mock 文档检索规则、资料片段和报告模板，并把引用写入证据 |
 | P1 | 设计投研 Skill 示例 | `skills/investment-research-workflow/SKILL.md` | 包含触发场景、禁用场景、步骤、输出格式、风险提示和测试样例 |
 | P1 | 补工程化清单第一批 | `docs/engineering/permission-boundary.md`、`trace-and-logging.md`、`evaluation-checklist.md` | 每篇是短清单，包含上线前检查项，并覆盖财经输出边界 |
 | P1 | 给 Lab 01 增加可选手动集成测试 | `labs/01-strategy-intake/tests/` 或 `demo/` | 有真实 MiMo key 时可手动验证，但默认测试仍不消耗 token |
@@ -57,3 +57,5 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-08 | 建立 Codex 持久规则层 | 本轮提交 |
 | 2026-06-08 | 固化展示框架文档 | 本轮提交 |
 | 2026-06-08 | 补强 Lab 02 structured trace | 本轮提交 |
+| 2026-06-09 | 准备 Lab 03 mock 财经数据 | 本轮提交 |
+| 2026-06-09 | 实现 Lab 03: Finance Tool Use Mock | 本轮提交 |

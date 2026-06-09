@@ -33,7 +33,7 @@
 | --- | --- | --- | --- | --- |
 | 01 | Strategy Intake + Workflow/Agent Router | 01 Workflow vs Agent | 自然语言策略转 `StrategySpec` 和 `routing_decision`，解释 workflow / agent / clarification / blocked 的路由原因 | 已实现 |
 | 02 | Strategy Agent Loop | 02 Agent Loop | Observe-Decide-Act 循环、trace、阻断、投研计划生成 | 已实现 |
-| 03 | Finance Tool Use Mock | 03 Tool Use | mock `mx-xuangu`、`mx-data`、`mx-search` 的工具调用 | 下一步 |
+| 03 | Finance Tool Use Mock | 03 Tool Use | mock `mx-xuangu`、`mx-data`、`mx-search` 的工具调用、`tool_trace` 和 `candidate_evidence` | 已实现 |
 | 04 | Research RAG Basic | 04 RAG | 检索策略规则、风险规则和报告模板 | 计划中 |
 | 05 | User Preference Memory | 05 Memory | 记住用户风险偏好、排除行业、候选数量 | 计划中 |
 | 06 | Skill Registry | 06 MCP / 10 Skills | 建立 Skill 注册表和能力选择机制 | 计划中 |
@@ -119,11 +119,13 @@ outputs/
 - `fetch_market_data()` 模拟 `mx-data`。
 - `search_finance_news()` 模拟 `mx-search`。
 - 工具返回结构化数据，不直接写最终结论。
+- 工具调用写入 `tool_trace`，工具结果先转成 `candidate_evidence`，不直接变成投资建议。
 
 验收标准：
 
 - 工具入参、出参稳定。
 - 工具失败能被 Agent 捕获。
+- 输出包含 `risk_disclosure`，不包含买卖动作、目标价或收益承诺。
 - 测试不依赖真实 API key。
 
 ## Lab 04: Research RAG Basic

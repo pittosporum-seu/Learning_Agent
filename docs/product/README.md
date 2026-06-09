@@ -31,7 +31,7 @@
 | --- | --- | --- |
 | [Lab 01: Strategy Intake + Workflow/Agent Router](../../labs/01-strategy-intake/README.md) | 已实现 | 把自然语言策略解析成 `StrategySpec` 和 `routing_decision`，支持规则基线和可配置模型语义补全。 |
 | [Lab 02: Strategy Agent Loop](../../labs/02-strategy-agent-loop/README.md) | 已实现 | 把 `StrategySpec` 放进最小 Agent Loop，生成 mock 投研计划并记录 trace。 |
-| Lab 03: Finance Tool Use Mock | Lab 02 trace 补强后进入 | 用 mock `mx-xuangu`、`mx-data`、`mx-search` 风格工具展示工具调用和证据收集。 |
+| [Lab 03: Finance Tool Use Mock](../../labs/03-finance-tool-use-mock/README.md) | 已实现 | 用 mock `mx-xuangu`、`mx-data`、`mx-search` 风格工具展示工具调用、`tool_trace` 和 `candidate_evidence`。 |
 
 ## Lab 03-12 简短路线
 

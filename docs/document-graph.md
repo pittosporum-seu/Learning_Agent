@@ -173,6 +173,8 @@ flowchart TD
 | [../labs/01-strategy-intake/AGENTS.md](../labs/01-strategy-intake/AGENTS.md) | Lab 01 持久规则，约束 `StrategySpec`、`routing_decision` 和四类样例。 |
 | [../labs/02-strategy-agent-loop/README.md](../labs/02-strategy-agent-loop/README.md) | 第二个可运行 Lab，把 `StrategySpec` 放进最小 Agent Loop，并用 structured trace 展示 observation、decision、why_this_action、result、guardrail 和 next_action_hint。 |
 | [../labs/02-strategy-agent-loop/AGENTS.md](../labs/02-strategy-agent-loop/AGENTS.md) | Lab 02 持久规则，约束 Agent Loop 和 structured trace。 |
+| [../labs/03-finance-tool-use-mock/README.md](../labs/03-finance-tool-use-mock/README.md) | 第三个可运行 Lab，用 mock 工具展示 Tool Use、`tool_trace` 和 `candidate_evidence`。 |
+| [../labs/03-finance-tool-use-mock/AGENTS.md](../labs/03-finance-tool-use-mock/AGENTS.md) | Lab 03 持久规则，约束 mock finance tools、证据化输出和禁止真实荐股。 |
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |
 | [../labs/shared/testing/README.md](../labs/shared/testing/README.md) | 统一 Lab 测试入口说明。 |
 | [../scripts/run-lab-demo.ps1](../scripts/run-lab-demo.ps1) | 统一 demo 运行封装。 |

@@ -35,7 +35,7 @@
 | Part 0 Showcase Overview | 产品文档 | `docs/product/showcase-framework.md` | 展示框架、仓库结构、统一契约 | 已固化 |
 | Part 1 Strategy Intake & Router | Lab 01 | 01 Workflow vs Agent | StrategySpec、Workflow/Agent Router、routing_decision | 已实现 |
 | Part 2 Agent Loop & Structured Trace | Lab 02 | 02 Agent Loop | observe -> decide -> act、structured trace、fail closed | 已补强 structured trace |
-| Part 3 Finance Tool Use Mock | Lab 03 | 03 Tool Use | mock 财经工具注册、选择、入参、返回和失败处理 | 计划中 |
+| Part 3 Finance Tool Use Mock | Lab 03 | 03 Tool Use | mock 财经工具注册、选择、入参、返回和失败处理 | 已实现 |
 | Part 4 Research RAG Basic | Lab 04 | 04 RAG | 从规则、资料片段和报告模板检索依据 | 计划中 |
 | Part 5 User Preference Memory | Lab 05 | 05 Memory | 用户风险偏好、排除条件和观察池偏好的记忆 | 计划中 |
 | Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明和选择机制 | 计划中 |

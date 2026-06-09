@@ -94,6 +94,19 @@ $lab02Readme = Read-RepoFile "labs/02-strategy-agent-loop/README.md"
 $lab02Source = Read-RepoFile "labs/02-strategy-agent-loop/src/agent_loop.py"
 $lab02Tests = Read-RepoFile "labs/02-strategy-agent-loop/tests/test_agent_loop.py"
 $lab02Demo = Read-RepoFile "labs/02-strategy-agent-loop/demo/run_demo.py"
+$lab03Agents = Read-RepoFile "labs/03-finance-tool-use-mock/AGENTS.md"
+$lab03Readme = Read-RepoFile "labs/03-finance-tool-use-mock/README.md"
+$lab03FinanceTools = Read-RepoFile "labs/03-finance-tool-use-mock/src/finance_tools.py"
+$lab03ToolRegistry = Read-RepoFile "labs/03-finance-tool-use-mock/src/tool_registry.py"
+$lab03Evidence = Read-RepoFile "labs/03-finance-tool-use-mock/src/evidence.py"
+$lab03RunLab = Read-RepoFile "labs/03-finance-tool-use-mock/src/run_lab.py"
+$lab03Demo = Read-RepoFile "labs/03-finance-tool-use-mock/demo/run_demo.py"
+$lab03FinanceToolTests = Read-RepoFile "labs/03-finance-tool-use-mock/tests/test_finance_tools.py"
+$lab03ToolRegistryTests = Read-RepoFile "labs/03-finance-tool-use-mock/tests/test_tool_registry.py"
+$lab03RunLabTests = Read-RepoFile "labs/03-finance-tool-use-mock/tests/test_run_lab.py"
+$lab03MockUniverse = Read-RepoFile "labs/03-finance-tool-use-mock/data/mock_universe.csv"
+$lab03MockPrices = Read-RepoFile "labs/03-finance-tool-use-mock/data/mock_prices.csv"
+$lab03MockNews = Read-RepoFile "labs/03-finance-tool-use-mock/data/mock_news.md"
 
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
@@ -134,6 +147,7 @@ Require-Contains "README.md" $readme @(
     "docs/product/security-and-secrets.md",
     "labs/01-strategy-intake/README.md",
     "labs/02-strategy-agent-loop/README.md",
+    "labs/03-finance-tool-use-mock/README.md",
     "AGENTS.md",
     ".agents/skills",
     "run-lab-web.ps1",
@@ -162,6 +176,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "product/showcase-framework.md",
     "labs/01-strategy-intake",
     "labs/02-strategy-agent-loop",
+    "labs/03-finance-tool-use-mock",
     "product/lab-plan.md",
     "product/security-and-secrets.md",
     "AGENTS.md",
@@ -183,7 +198,7 @@ $roadmapTokens = @(
     '[x] Lab 01:',
     'routing_decision',
     '[x] Lab 02: Strategy Agent Loop',
-    '[ ] Lab 03: Finance Tool Use Mock',
+    '[x] Lab 03: Finance Tool Use Mock',
     'Codex'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -230,6 +245,8 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "lab-plan.md",
     "security-and-secrets.md",
     "routing_decision",
+    "tool_trace",
+    "candidate_evidence",
     "Lab 03-12",
     "SKILL.md",
     "API key"
@@ -264,6 +281,8 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "Lab 01",
     "Lab 02",
     "Lab 12",
+    "tool_trace",
+    "candidate_evidence",
     "routing_decision",
     "OpenAI-compatible",
     "LLM_API_KEY",
@@ -307,7 +326,7 @@ Require-Contains "labs/README.md" $labsReadme @(
     "showcase-framework.md",
     "01-strategy-intake/README.md",
     "02-strategy-agent-loop/README.md",
-    "03-finance-tool-use-mock",
+    "03-finance-tool-use-mock/README.md",
     "12-evaluation-safety",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
@@ -476,6 +495,79 @@ Require-Contains "labs/02-strategy-agent-loop/tests/test_agent_loop.py" $lab02Te
     "test_max_turn_guardrail_can_fail_closed"
 )
 Require-Contains "labs/02-strategy-agent-loop/demo/run_demo.py" $lab02Demo @("run_strategy_agent_loop", "--request", "--output")
+
+Require-Contains "labs/03-finance-tool-use-mock/AGENTS.md" $lab03Agents @(
+    "Tool Use",
+    "mock finance tools",
+    "tool_trace",
+    "candidate_evidence",
+    "risk_disclosure"
+)
+Require-Contains "labs/03-finance-tool-use-mock/README.md" $lab03Readme @(
+    "Tool Use",
+    "select_candidates",
+    "fetch_market_data",
+    "search_finance_news",
+    "tool_trace",
+    "candidate_evidence",
+    "risk_disclosure",
+    "run-lab-demo.ps1",
+    "run-lab-tests.ps1"
+)
+Require-Contains "labs/03-finance-tool-use-mock/src/finance_tools.py" $lab03FinanceTools @(
+    "select_candidates",
+    "fetch_market_data",
+    "search_finance_news",
+    "mock_universe.csv",
+    "mock_prices.csv",
+    "mock_news.md"
+)
+Require-Contains "labs/03-finance-tool-use-mock/src/tool_registry.py" $lab03ToolRegistry @(
+    "ToolRegistry",
+    "ToolDefinition",
+    "select_candidates",
+    "fetch_market_data",
+    "search_finance_news"
+)
+Require-Contains "labs/03-finance-tool-use-mock/src/evidence.py" $lab03Evidence @(
+    "build_candidate_evidence",
+    "evidence_items",
+    "risk_flags"
+)
+Require-Contains "labs/03-finance-tool-use-mock/src/run_lab.py" $lab03RunLab @(
+    "run_finance_tool_use_mock",
+    "tool_trace",
+    "candidate_evidence",
+    "risk_disclosure",
+    "Lab 04 Research RAG Basic",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/03-finance-tool-use-mock/demo/run_demo.py" $lab03Demo @(
+    "run_finance_tool_use_mock",
+    "--request",
+    "--output",
+    "tool_trace"
+)
+Require-Contains "labs/03-finance-tool-use-mock/tests/test_finance_tools.py" $lab03FinanceToolTests @(
+    "test_select_candidates_filters_mock_grid_equipment",
+    "test_fetch_market_data_returns_trend_and_drawdown",
+    "test_search_finance_news_returns_risk_flags"
+)
+Require-Contains "labs/03-finance-tool-use-mock/tests/test_tool_registry.py" $lab03ToolRegistryTests @(
+    "test_registry_contains_three_mock_tools",
+    "select_candidates",
+    "fetch_market_data",
+    "search_finance_news"
+)
+Require-Contains "labs/03-finance-tool-use-mock/tests/test_run_lab.py" $lab03RunLabTests @(
+    "test_run_lab_generates_tool_trace_and_candidate_evidence",
+    "test_blocked_request_does_not_call_tools",
+    "risk_disclosure",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/03-finance-tool-use-mock/data/mock_universe.csv" $lab03MockUniverse @("MXGRID001", "theme")
+Require-Contains "labs/03-finance-tool-use-mock/data/mock_prices.csv" $lab03MockPrices @("trend_score", "max_drawdown")
+Require-Contains "labs/03-finance-tool-use-mock/data/mock_news.md" $lab03MockNews @("risk_flags", "MXGRID001")
 
 Require-Contains "labs/shared/testing/README.md" $sharedTestingReadme @("run_lab_tests.py")
 Require-Contains "labs/shared/testing/run_lab_tests.py" $sharedTestingRunner @("unittest", "--lab")

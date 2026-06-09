@@ -67,6 +67,10 @@
   - 最小 Observe-Decide-Act Loop。
   - mock 投研计划生成。
   - trace、阻断和 max-turn 保护。
+- [Lab 03: Finance Tool Use Mock](labs/03-finance-tool-use-mock/README.md)
+  - mock 财经工具注册、选择、入参和返回。
+  - `tool_trace` 和 `candidate_evidence`。
+  - 只生成 mock 观察池证据，不生成投资建议。
 
 完整设计：
 
