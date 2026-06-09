@@ -1,9 +1,11 @@
 ---
 name: docs-sync
-description: Synchronize Learning_Agent documentation structure. Use when Codex adds, moves, renames, or rewrites Product docs, Labs docs, Skills, Engineering docs, navigation, roadmap, TODO, resources, or maintenance rules.
+description: Template for synchronizing Learning_Agent documentation structure, navigation, roadmap, TODO, and audit checks.
 ---
 
-# Learning_Agent Docs Sync
+# Learning_Agent Docs Sync Template
+
+This file is a documentation template, not local runtime configuration.
 
 ## Read First
 

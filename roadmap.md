@@ -77,7 +77,7 @@
 - [x] 为 Lab 01 增加 demo
 - [x] 为 Lab 01 增加本地 web demo
 - [x] 建立统一 Lab 测试入口
-- [x] 为 `.agents/skills` 补 Lab 实现和文档同步 Skill
+- [x] 为维护流程补 Lab 实现和文档同步 Skill 模板
 - [ ] 为 `skills/` 示例目录补第一批 `SKILL.md`
 
 ## 6. 系列规划
@@ -99,7 +99,7 @@
 - [x] 新增密钥检查脚本
 - [x] 将密钥检查接入内容更新 hook
 - [x] 后续重写文章或 Product / Labs 文档时同步审核文档图、资源索引和所有导航文档
-- [x] 建立 Codex 持久规则层
+- [x] 建立仓库持久规则层
 
 ## 8. 产品主线：个性化投研 Agent
 

@@ -26,7 +26,7 @@
 | 概念文章层 | `docs/foundations/` | 解释 Workflow vs Agent、Agent Loop、Tool Use、RAG、Memory、MCP、Skills、Evaluation 等基础概念。 |
 | 贯穿案例层 | `docs/product/` | 固化个性化投研 Agent 的愿景、展示框架、Lab 计划和安全边界。 |
 | 可运行展示层 | `labs/` | 用 mock-first 的 Lab 把每个概念做成 demo、tests 和可观察输出。 |
-| 工程资产层 | `scripts/`, `hooks/`, `.agents/skills/`, `AGENTS.md` | 提供检查脚本、内容同步规则、Codex 持久规则和可复用工作流。 |
+| 工程资产层 | `scripts/`, `hooks/`, `docs/maintenance/`, `AGENTS.md` | 提供检查脚本、内容同步规则、仓库规则和可复用维护模板。 |
 
 ## 三、展示 Parts 总览
 

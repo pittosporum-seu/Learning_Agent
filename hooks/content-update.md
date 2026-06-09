@@ -32,6 +32,7 @@
    - `docs/product/lab-plan.md`
    - `docs/product/security-and-secrets.md`
    - `AGENTS.md`
+   - `docs/maintenance/codex-skill-templates/`
    - 相关目录的 `AGENTS.md`
    - `labs/README.md`
    - 新增目录对应的 README，例如 `docs/readings/README.md`、`docs/patterns/README.md`、`docs/engineering/README.md`、`skills/README.md`
@@ -81,4 +82,5 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 - 每次涉及 Product、Labs、Skills 或脚本变更，都要同步审核相关文档，并运行密钥检查。
 - 每个 Lab 的 demo 用于人工试跑，tests 用于自动回归；两者都应能在无真实 API key 的环境下运行。
 - Web demo 只作为本地实验入口，默认绑定 `127.0.0.1`。
+- `.agents/`、`.codex/` 和真实 provider 响应目录属于本地运行配置或生成痕迹，不进入仓库。
 - 自动检查只负责发现明显问题，最终仍要看一眼 diff。

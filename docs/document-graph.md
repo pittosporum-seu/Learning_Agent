@@ -153,8 +153,8 @@ flowchart TD
 | 产品设计 | [product/](product/) | 定义个性化投研 Agent 系统愿景、展示框架、Lab 总计划、密钥安全和财经输出边界。 |
 | 实践实验 | [../labs/](../labs/) | 承接基础文章，补最小可运行实验。 |
 | Skill 示例 | [../skills/](../skills/) | 把重复流程沉淀成 `SKILL.md` 示例。 |
-| Codex 规则 | [../AGENTS.md](../AGENTS.md) | 为后续 Codex 修改 Product、Labs、Skills 和文档结构提供持久规则。 |
-| Codex Skills | [../.agents/skills/](../.agents/skills/) | 提供 Lab 实现和文档同步的可复用 Codex 工作流。 |
+| 仓库规则 | [../AGENTS.md](../AGENTS.md) | 为后续修改 Product、Labs、Skills 和文档结构提供持久规则。 |
+| 维护模板 | [maintenance/codex-skill-templates/](maintenance/codex-skill-templates/README.md) | 保留 Lab 实现和文档同步的 Skill 模板资料，不是本地运行配置。 |
 | 待办机制 | [../TODO.md](../TODO.md) | 维护当前阶段任务、优先级、产出和验收标准。 |
 
 ## 产品主线映射

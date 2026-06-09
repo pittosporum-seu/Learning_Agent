@@ -1,9 +1,11 @@
 ---
 name: lab-implementation
-description: Implement or modify Learning_Agent Labs. Use when Codex changes any labs/* code, demos, tests, README, web demo, mock data, or Lab behavior in the Learning_Agent repository.
+description: Template for implementing or modifying Learning_Agent Labs while preserving mock-first behavior, tests, and documentation sync.
 ---
 
-# Learning_Agent Lab Implementation
+# Learning_Agent Lab Implementation Template
+
+This file is a documentation template, not local runtime configuration.
 
 ## Read First
 

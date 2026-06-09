@@ -76,9 +76,9 @@ $productAgents = Read-RepoFile "docs/product/AGENTS.md"
 $labsAgents = Read-RepoFile "labs/AGENTS.md"
 $lab01Agents = Read-RepoFile "labs/01-strategy-intake/AGENTS.md"
 $lab02Agents = Read-RepoFile "labs/02-strategy-agent-loop/AGENTS.md"
-$labImplementationSkill = Read-RepoFile ".agents/skills/lab-implementation/SKILL.md"
-$docsSyncSkill = Read-RepoFile ".agents/skills/docs-sync/SKILL.md"
-$codexRules = Read-RepoFile ".codex/rules/learning-agent.rules"
+$skillTemplateReadme = Read-RepoFile "docs/maintenance/codex-skill-templates/README.md"
+$labImplementationSkillTemplate = Read-RepoFile "docs/maintenance/codex-skill-templates/lab-implementation/SKILL.md"
+$docsSyncSkillTemplate = Read-RepoFile "docs/maintenance/codex-skill-templates/docs-sync/SKILL.md"
 
 $lab01Readme = Read-RepoFile "labs/01-strategy-intake/README.md"
 $lab01Source = Read-RepoFile "labs/01-strategy-intake/src/strategy_intake.py"
@@ -175,7 +175,7 @@ Require-Contains "README.md" $readme @(
     "labs/04-research-rag-basic/README.md",
     "labs/05-user-preference-memory/README.md",
     "AGENTS.md",
-    ".agents/skills",
+    "docs/maintenance/codex-skill-templates",
     "run-lab-web.ps1",
     "run-lab-tests.ps1"
 )
@@ -186,6 +186,7 @@ Require-Contains "hooks/content-update.md" $hook @(
     "docs/start-here.md",
     "docs/glossary.md",
     "docs/product/showcase-framework.md",
+    "docs/maintenance/codex-skill-templates/",
     "audit-related-docs.ps1",
     "check-secrets.ps1",
     "run-lab-tests.ps1",
@@ -208,7 +209,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "product/lab-plan.md",
     "product/security-and-secrets.md",
     "AGENTS.md",
-    ".agents/skills",
+    "maintenance/codex-skill-templates",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
     "run-lab-tests.ps1"
@@ -229,11 +230,11 @@ $roadmapTokens = @(
     '[x] Lab 03: Finance Tool Use Mock',
     '[x] Lab 04: Research RAG Basic',
     '[x] Lab 05: User Preference Memory',
-    'Codex'
+    'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
 
-Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/", "product/AGENTS.md")
+Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/", "product/AGENTS.md", "maintenance/codex-skill-templates")
 Require-Contains "docs/start-here.md" $startHere @(
     "Start Here",
     "Agent Loop",
@@ -357,7 +358,20 @@ Require-Contains ".env.example" $envExample @(
     "XIAOMI_MODEL=mimo-v2.5",
     "MX_APIKEY=your_mx_apikey_from_hermes"
 )
-Require-Contains ".gitignore" $gitignore @("!.env.example")
+Require-Contains ".gitignore" $gitignore @(
+    "!.env.example",
+    ".codex/",
+    ".agents/",
+    "*.local.json",
+    "*.local.yaml",
+    "*.local.yml",
+    "runtime_config.json",
+    "runtime_config.yaml",
+    "real_user_preferences.*",
+    "real_memory_events.*",
+    "provider_responses/",
+    "authenticated_responses/"
+)
 Require-Contains "scripts/check-secrets.ps1" $secretCheck @(
     "git ls-files --cached --others --exclude-standard",
     "LLM_API_KEY",
@@ -414,26 +428,28 @@ Require-Contains "labs/02-strategy-agent-loop/AGENTS.md" $lab02Agents @(
     "next_action_hint",
     "max_turns"
 )
-Require-Contains ".agents/skills/lab-implementation/SKILL.md" $labImplementationSkill @(
+Require-Contains "docs/maintenance/codex-skill-templates/README.md" $skillTemplateReadme @(
+    "documentation template",
+    "not local runtime configuration",
+    "Lab Implementation",
+    "Docs Sync"
+)
+Require-Contains "docs/maintenance/codex-skill-templates/lab-implementation/SKILL.md" $labImplementationSkillTemplate @(
     "name: lab-implementation",
     "description:",
+    "documentation template",
     "docs/product/lab-plan.md",
     "run-lab-tests.ps1 -Lab <lab-folder>",
     "check-secrets.ps1"
 )
-Require-Contains ".agents/skills/docs-sync/SKILL.md" $docsSyncSkill @(
+Require-Contains "docs/maintenance/codex-skill-templates/docs-sync/SKILL.md" $docsSyncSkillTemplate @(
     "name: docs-sync",
     "description:",
+    "documentation template",
     "docs/product/showcase-framework.md",
     "docs/document-graph.md",
     "resources/README.md",
     "audit-related-docs.ps1"
-)
-Require-Contains ".codex/rules/learning-agent.rules" $codexRules @(
-    "AGENTS.md",
-    "mock-first",
-    "environment-gated",
-    "run-lab-tests.ps1"
 )
 
 Require-Contains "labs/01-strategy-intake/README.md" $lab01Readme @(

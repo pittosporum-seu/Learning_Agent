@@ -16,6 +16,19 @@ build/
 .env
 .env.*
 !.env.example
+*.local.json
+*.local.yaml
+*.local.yml
+runtime_config.json
+runtime_config.yaml
+
+# Local agent/runtime configuration
+.codex/
+.agents/
+provider_responses/
+authenticated_responses/
+real_user_preferences.*
+real_memory_events.*
 
 # Obsidian local settings
 .obsidian/workspace.json
