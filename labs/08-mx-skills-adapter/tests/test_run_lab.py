@@ -12,10 +12,10 @@ SRC_DIR = LAB_ROOT / "src"
 sys.path.insert(0, str(SRC_DIR))
 
 from adapter_registry import AdapterRegistry  # noqa: E402
-from mock_mx_adapter import MockMXAdapter  # noqa: E402
-from real_mx_adapter import RealMXAdapter  # noqa: E402
-from real_mx_adapter_stub import RealMXAdapterStub  # noqa: E402
-from run_lab import run_mx_skills_adapter  # noqa: E402
+from mock_mx_adapter import MockFinanceAdapter  # noqa: E402
+from real_mx_adapter import ExternalFinanceAdapter  # noqa: E402
+from real_mx_adapter_stub import ExternalFinanceAdapterStub  # noqa: E402
+from run_lab import run_finance_provider_adapter  # noqa: E402
 
 
 NORMAL_REQUEST = "找最近 60 日趋势较强、回撤较低、没有明显负面新闻的电网设备方向股票，生成候选观察池。"
@@ -35,36 +35,36 @@ def collect_keys(value: Any) -> set[str]:
     return keys
 
 
-class RunMXSkillsAdapterTest(unittest.TestCase):
+class RunFinanceProviderAdapterTest(unittest.TestCase):
     def test_normal_request_generates_adapter_trace(self) -> None:
-        result = run_mx_skills_adapter(request=NORMAL_REQUEST, user_id="balanced_user")
+        result = run_finance_provider_adapter(request=NORMAL_REQUEST, user_id="balanced_user")
 
         self.assertEqual(result["status"], "completed")
-        self.assertEqual(result["adapter_mode"], "mock-mx")
-        self.assertEqual([event["capability"] for event in result["adapter_trace"]], ["mx-xuangu", "mx-data", "mx-search"])
+        self.assertEqual(result["adapter_mode"], "mock-finance")
+        self.assertEqual([event["capability"] for event in result["adapter_trace"]], ["candidate-screen", "market-data", "finance-news"])
         self.assertFalse(result["safety_gate"]["real_provider_allowed"])
         self.assertFalse(result["real_provider_attempted"])
         self.assertIn("risk_disclosure", result)
         self.assertIn("Lab 09", result["next_lab"])
 
     def test_blocked_request_does_not_call_adapter(self) -> None:
-        result = run_mx_skills_adapter(request=BLOCKED_REQUEST)
+        result = run_finance_provider_adapter(request=BLOCKED_REQUEST)
 
         self.assertEqual(result["status"], "blocked")
         self.assertEqual(result["adapter_trace"], [])
 
     def test_real_stub_mode_is_blocked_by_safety_gate(self) -> None:
-        result = run_mx_skills_adapter(request=NORMAL_REQUEST, adapter_mode="real-mx-stub")
+        result = run_finance_provider_adapter(request=NORMAL_REQUEST, adapter_mode="external-finance-stub")
 
         self.assertEqual(result["status"], "blocked")
         self.assertFalse(result["safety_gate"]["real_provider_allowed"])
         self.assertEqual(result["adapter_trace"][0]["status"], "blocked")
 
     def test_real_adapter_missing_allow_flag_is_blocked_without_network(self) -> None:
-        result = run_mx_skills_adapter(
+        result = run_finance_provider_adapter(
             request=NORMAL_REQUEST,
-            adapter_mode="real-mx",
-            env={"MX_ALLOW_REAL_PROVIDER": "true", "MX_APIKEY": "fake-key", "MX_SKILLS_BASE_URL": "https://example.invalid/mx"},
+            adapter_mode="external-finance",
+            env={"FINANCE_PROVIDER_ALLOW_REAL": "true", "FINANCE_PROVIDER_API_KEY": "fake-key", "FINANCE_PROVIDER_BASE_URL": "https://example.invalid/mx"},
         )
 
         self.assertEqual(result["status"], "blocked")
@@ -82,21 +82,21 @@ class RunMXSkillsAdapterTest(unittest.TestCase):
         env = {"MX_ALLOW_REAL_PROVIDER": "true", "MX_APIKEY": "fake-key", "MX_SKILLS_BASE_URL": "https://example.invalid/mx"}
         registry = AdapterRegistry(
             adapters={
-                "mock-mx": MockMXAdapter(),
-                "real-mx-stub": RealMXAdapterStub(),
-                "real-mx": RealMXAdapter(allow_real_provider=True, env=env, transport=fake_transport),
+                "mock-finance": MockFinanceAdapter(),
+                "external-finance-stub": ExternalFinanceAdapterStub(),
+                "external-finance": ExternalFinanceAdapter(allow_real_provider=True, env=env, transport=fake_transport),
             },
             capabilities=[
-                {"adapter_name": "mock-mx", "provider_mode": "mock", "capabilities": []},
-                {"adapter_name": "real-mx-stub", "provider_mode": "real_stub", "capabilities": []},
-                {"adapter_name": "real-mx", "provider_mode": "real", "capabilities": []},
+                {"adapter_name": "mock-finance", "provider_mode": "mock", "capabilities": []},
+                {"adapter_name": "external-finance-stub", "provider_mode": "external_stub", "capabilities": []},
+                {"adapter_name": "external-finance", "provider_mode": "external", "capabilities": []},
             ],
         )
-        result = run_mx_skills_adapter(
+        result = run_finance_provider_adapter(
             request=NORMAL_REQUEST,
-            adapter_mode="real-mx",
+            adapter_mode="external-finance",
             allow_real_provider=True,
-            capabilities=["mx-xuangu"],
+            capabilities=["candidate-screen"],
             registry=registry,
             env=env,
         )
@@ -108,15 +108,21 @@ class RunMXSkillsAdapterTest(unittest.TestCase):
         self.assertFalse(result["adapter_trace"][0]["raw_response_persisted"])
 
     def test_output_has_no_prohibited_keys(self) -> None:
-        result = run_mx_skills_adapter(request=NORMAL_REQUEST, user_id="balanced_user")
+        result = run_finance_provider_adapter(request=NORMAL_REQUEST, user_id="balanced_user")
 
         self.assertFalse(PROHIBITED_KEYS.intersection(collect_keys(result)))
 
     def test_does_not_create_runtime_config_directories(self) -> None:
-        run_mx_skills_adapter(request=NORMAL_REQUEST, user_id="balanced_user")
+        run_finance_provider_adapter(request=NORMAL_REQUEST, user_id="balanced_user")
 
         self.assertFalse((REPO_ROOT / ".agents").exists())
         self.assertFalse((REPO_ROOT / ".codex").exists())
+
+    def test_legacy_mx_adapter_mode_alias_is_normalized(self) -> None:
+        result = run_finance_provider_adapter(request=NORMAL_REQUEST, user_id="balanced_user", adapter_mode="mock-mx")
+
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(result["adapter_mode"], "mock-finance")
 
 
 if __name__ == "__main__":

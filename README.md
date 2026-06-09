@@ -87,10 +87,10 @@
   - 从稳定投研流程生成可审查的 `SKILL.md` 草稿。
   - 生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review`。
   - 草稿只用于人工 review，不自动启用，也不写入本地运行配置目录。
-- [Lab 08: MX Skills Adapter](labs/08-mx-skills-adapter/README.md)
-  - 用 mock-first 方式展示外部财经 Skills 适配层。
-  - 生成 `adapter_trace` 和 `safety_gate`，默认只调用 mock adapter。
-  - `real-mx` 必须由环境变量和 `--allow-real-provider` 手动启用，并提供 manual integration test。
+- [Lab 08: Finance Provider Adapter](labs/08-mx-skills-adapter/README.md)
+  - 用 mock-first 方式展示外部财经 provider 适配层。
+  - 生成 `adapter_trace` 和 `safety_gate`，默认只调用 `mock-finance`。
+  - `external-finance` 必须由环境变量和 `--allow-real-provider` 手动启用；MX Skills 只是 `mx-skills` provider profile。
 
 完整设计：
 

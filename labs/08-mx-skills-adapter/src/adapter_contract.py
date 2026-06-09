@@ -4,6 +4,31 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 
+CANONICAL_CAPABILITIES = {"candidate-screen", "market-data", "finance-news"}
+
+CAPABILITY_ALIASES = {
+    "mx-xuangu": "candidate-screen",
+    "mx-data": "market-data",
+    "mx-search": "finance-news",
+}
+
+CANONICAL_ADAPTER_NAMES = {"mock-finance", "external-finance-stub", "external-finance"}
+
+ADAPTER_ALIASES = {
+    "mock-mx": "mock-finance",
+    "real-mx-stub": "external-finance-stub",
+    "real-mx": "external-finance",
+}
+
+
+def normalize_capability(capability: str) -> str:
+    return CAPABILITY_ALIASES.get(capability, capability)
+
+
+def normalize_adapter_name(adapter_name: str) -> str:
+    return ADAPTER_ALIASES.get(adapter_name, adapter_name)
+
+
 @dataclass(frozen=True)
 class AdapterCapability:
     adapter_name: str

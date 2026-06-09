@@ -66,10 +66,10 @@ labs/
   - 从 Lab 06 的 mock Skill Registry 输出生成可审查 Skill draft。
   - 生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review`。
   - 草稿只进入人工 review，不自动启用，也不写入本地 runtime 配置目录。
-- [x] [Lab 08: MX Skills Adapter](08-mx-skills-adapter/README.md)
-  - 用统一 adapter contract 串起 Lab 03 mock tools 和未来真实东方财富妙想 Skills。
+- [x] [Lab 08: Finance Provider Adapter](08-mx-skills-adapter/README.md)
+  - 用统一 adapter contract 串起 Lab 03 mock tools 和可选外部财经 provider。
   - 生成 `adapter_trace` 和 `safety_gate`。
-  - 默认只使用 mock adapter；`real-mx` 必须由环境变量和 `--allow-real-provider` 手动启用，并提供 manual integration test。
+  - 默认只使用 `mock-finance`；`external-finance` 必须由环境变量和 `--allow-real-provider` 手动启用，MX Skills 只是 `mx-skills` provider profile。
 - [ ] Lab 09-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试

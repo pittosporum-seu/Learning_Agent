@@ -40,7 +40,7 @@
 | Part 5 User Preference Memory | Lab 05 | 05 Memory | 用户风险偏好、排除条件和观察池偏好的记忆 | 已实现 |
 | Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明、选择机制和禁用边界 | 已实现 |
 | Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成可审查 `SKILL.md` 草稿 | 已实现 |
-| Part 8 MX Skills Adapter | Lab 08 | 06 MCP / 03 Tool Use | 东方财富妙想 Skills 的 mock-first adapter、optional real provider 和 manual integration 边界 | 增强中 |
+| Part 8 Finance Provider Adapter | Lab 08 | 06 MCP / 03 Tool Use | 外部财经 provider 的 mock-first adapter、optional external provider 和 manual integration 边界 | 增强中 |
 | Part 9 Research Planner DAG | Lab 09 | 07 Agent Harness | 从线性计划升级到 DAG 研究计划 | 计划中 |
 | Part 10 Evidence Report | Lab 10 | 12 Evaluation / Trace / Safety | 带来源、时间、证据和限制条件的报告 | 计划中 |
 | Part 11 Simulation Portfolio & HITL | Lab 11 | 07 Agent Harness / 12 Evaluation | 模拟组合、人工确认、权限边界 | 计划中 |
@@ -120,14 +120,14 @@
 - 不做什么：不生成带真实 key、真实账户、自动交易权限的 Skill；不写入 `.agents/` 或 `.codex/`；不自动启用。
 - 验收标准：生成内容标记 `DRAFT` 且可审阅；包含触发场景、禁用场景、输入、输出、步骤、人工确认点、安全边界、风险提示和测试样例；blocked 请求不生成可启用 Skill。
 
-### Part 8 MX Skills Adapter
+### Part 8 Finance Provider Adapter
 
-- 展示目标：展示如何把 mock 工具和未来真实东方财富妙想 Skills 放到统一 adapter contract 下，同时保持默认 mock 可跑。
+- 展示目标：展示如何把 mock 工具和未来可选外部财经 provider 放到统一 adapter contract 下，同时保持默认 mock 可跑；MX Skills 只是 `mx-skills` provider profile。
 - 输入：Lab 07 输出、Lab 03 mock finance tools、adapter capabilities 和安全门规则。
 - 核心输出：`registered_adapters`、`adapter_mode`、`provider_mode`、`adapter_trace`、`safety_gate`、`real_provider_attempted`、`real_provider_allowed`。
 - 读者应该观察什么：真实数据源只是在边界内替换 provider，不能改变风险、人工确认和测试默认 mock 的规则。
-- 不做什么：不读取真实 `MX_APIKEY`，不默认访问真实服务，不发送网络请求，不绕过 mock 测试，不使用 `.agents/` 或 `.codex/`。
-- 验收标准：mock adapter 能调用 `mx-xuangu`、`mx-data`、`mx-search`；`real-mx-stub` 调用时 blocked；`real-mx` 缺少任一启用条件时 blocked 且不发请求；fake transport 能验证真实 provider 成功路径；manual integration test 默认跳过；输出保留风险提示且默认测试无 key 通过。
+- 不做什么：不读取真实 key，除非用户同时打开 CLI 和环境变量安全门；不默认访问真实服务，不发送网络请求，不绕过 mock 测试，不使用 `.agents/` 或 `.codex/`。
+- 验收标准：mock adapter 能调用 `candidate-screen`、`market-data`、`finance-news`；`external-finance-stub` 调用时 blocked；`external-finance` 缺少任一启用条件时 blocked 且不发请求；fake transport 能验证外部 provider 成功路径；manual integration test 默认跳过；输出保留风险提示且默认测试无 key 通过。
 
 ### Part 9 Research Planner DAG
 

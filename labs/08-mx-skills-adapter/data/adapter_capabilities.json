@@ -1,22 +1,23 @@
 [
   {
-    "adapter_name": "mock-mx",
+    "adapter_name": "mock-finance",
     "provider_mode": "mock",
+    "provider_profile": "local-fixture",
     "capabilities": [
       {
-        "name": "mx-xuangu",
-        "description": "Mock candidate selection adapter mapped to Lab 03 select_candidates.",
+        "name": "candidate-screen",
+        "description": "Mock candidate screening adapter mapped to Lab 03 select_candidates.",
         "requires_api_key": false,
         "requires_human_confirmation": false
       },
       {
-        "name": "mx-data",
+        "name": "market-data",
         "description": "Mock market data adapter mapped to Lab 03 fetch_market_data.",
         "requires_api_key": false,
         "requires_human_confirmation": false
       },
       {
-        "name": "mx-search",
+        "name": "finance-news",
         "description": "Mock finance news adapter mapped to Lab 03 search_finance_news.",
         "requires_api_key": false,
         "requires_human_confirmation": false
@@ -24,48 +25,51 @@
     ]
   },
   {
-    "adapter_name": "real-mx-stub",
-    "provider_mode": "real_stub",
+    "adapter_name": "external-finance-stub",
+    "provider_mode": "external_stub",
+    "provider_profile": "disabled",
     "capabilities": [
       {
-        "name": "mx-xuangu",
-        "description": "Disabled real provider stub for future explicit integration.",
+        "name": "candidate-screen",
+        "description": "Disabled external provider stub for future explicit integration.",
         "requires_api_key": true,
         "requires_human_confirmation": true
       },
       {
-        "name": "mx-data",
-        "description": "Disabled real provider stub for future explicit integration.",
+        "name": "market-data",
+        "description": "Disabled external provider stub for future explicit integration.",
         "requires_api_key": true,
         "requires_human_confirmation": true
       },
       {
-        "name": "mx-search",
-        "description": "Disabled real provider stub for future explicit integration.",
+        "name": "finance-news",
+        "description": "Disabled external provider stub for future explicit integration.",
         "requires_api_key": true,
         "requires_human_confirmation": true
       }
     ]
   },
   {
-    "adapter_name": "real-mx",
-    "provider_mode": "real",
+    "adapter_name": "external-finance",
+    "provider_mode": "external",
+    "provider_profile": "mx-skills",
+    "provider_download_url": "https://dl.dfcfs.com/m/itc4",
     "capabilities": [
       {
-        "name": "mx-xuangu",
-        "description": "Optional real MX Skills provider path; requires explicit CLI confirmation and environment variables.",
+        "name": "candidate-screen",
+        "description": "Optional external finance provider path. The mx-skills profile maps this to MX candidate screening and requires explicit confirmation plus environment variables.",
         "requires_api_key": true,
         "requires_human_confirmation": true
       },
       {
-        "name": "mx-data",
-        "description": "Optional real MX Skills provider path; requires explicit CLI confirmation and environment variables.",
+        "name": "market-data",
+        "description": "Optional external finance provider path. The mx-skills profile maps this to MX market data and requires explicit confirmation plus environment variables.",
         "requires_api_key": true,
         "requires_human_confirmation": true
       },
       {
-        "name": "mx-search",
-        "description": "Optional real MX Skills provider path; requires explicit CLI confirmation and environment variables.",
+        "name": "finance-news",
+        "description": "Optional external finance provider path. The mx-skills profile maps this to MX finance search and requires explicit confirmation plus environment variables.",
         "requires_api_key": true,
         "requires_human_confirmation": true
       }

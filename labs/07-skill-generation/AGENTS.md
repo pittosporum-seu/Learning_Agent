@@ -22,7 +22,7 @@ This Lab demonstrates Skill Generation for the Learning_Agent investment researc
 - `draft_review`
 - `final_output`
 - `risk_disclosure`
-- `next_lab: Lab 08 MX Skills Adapter`
+- `next_lab: Lab 08 Finance Provider Adapter`
 
 ## Draft Requirements
 

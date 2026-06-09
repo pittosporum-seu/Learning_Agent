@@ -20,12 +20,18 @@
 | `MIMO_CHAT_COMPLETIONS_URL` | 旧版兼容别名 | Hermes 或本地环境 |
 | `MIMO_BASE_URL` | 旧版兼容别名 | Hermes 或本地环境 |
 | `MIMO_MODEL` | 旧版兼容别名 | Hermes 或本地环境 |
-| `MX_APIKEY` | 调用东方财富妙想 Skills | Hermes |
-| `MX_API_URL` | 可选，妙想 API 基础地址 | Hermes 或本地环境 |
-| `MX_SKILLS_BASE_URL` | 可选真实 MX Skills provider 基础地址 | Hermes 或本地环境 |
+| `FINANCE_PROVIDER_PROFILE` | 可选外部财经 provider profile，当前示例为 `mx-skills` | 本地环境 |
+| `FINANCE_PROVIDER_API_KEY` | 可选外部财经 provider key | Hermes 或本地环境 |
+| `FINANCE_PROVIDER_BASE_URL` | 可选外部财经 provider 基础地址 | Hermes 或本地环境 |
+| `FINANCE_PROVIDER_ALLOW_REAL` | 手动允许外部 provider 的环境闸门，必须为 `true` 才能启用 | 本地环境 |
+| `FINANCE_PROVIDER_TIMEOUT_SECONDS` | 可选外部 provider 请求超时秒数 | 本地环境 |
+| `FINANCE_PROVIDER_API_KEY_HEADER` | 可选外部 provider key header 名称 | 本地环境 |
+| `MX_APIKEY` | `mx-skills` profile 的兼容 key 名 | Hermes 或本地环境 |
+| `MX_API_URL` | 可选，`mx-skills` profile 的 API 基础地址 | Hermes 或本地环境 |
+| `MX_SKILLS_BASE_URL` | 可选 `mx-skills` profile 基础地址 | Hermes 或本地环境 |
 | `MX_BASE_URL` | `MX_SKILLS_BASE_URL` 的兼容别名 | Hermes 或本地环境 |
-| `MX_ALLOW_REAL_PROVIDER` | 手动允许真实 MX provider 的环境闸门，必须为 `true` 才能启用 | 本地环境 |
-| `MX_TIMEOUT_SECONDS` | 可选真实 MX provider 请求超时秒数 | 本地环境 |
+| `MX_ALLOW_REAL_PROVIDER` | `FINANCE_PROVIDER_ALLOW_REAL` 的兼容别名 | 本地环境 |
+| `MX_TIMEOUT_SECONDS` | `FINANCE_PROVIDER_TIMEOUT_SECONDS` 的兼容别名 | 本地环境 |
 
 Lab 01 的本地启动脚本可以把 Hermes 中的 Xiaomi MiMo 配置映射到 `LLM_*`。示例 base URL：
 
@@ -103,15 +109,15 @@ powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 
 真实 API 只在手动集成测试或本地 Web demo 中使用，并且不把真实响应中的敏感信息写入仓库。
 
-## 真实 MX Provider 启用条件
+## 外部财经 Provider 启用条件
 
-Lab 08 默认只走 `mock-mx`。`real-mx` 真实 provider 路径必须同时满足：
+Lab 08 默认只走 `mock-finance`。`external-finance` 外部 provider 路径必须同时满足：
 
-- adapter mode 为 `real-mx`。
+- adapter mode 为 `external-finance`。
 - 命令行显式传入 `--allow-real-provider`。
-- `MX_ALLOW_REAL_PROVIDER=true`。
-- `MX_APIKEY` 存在。
-- `MX_SKILLS_BASE_URL` 或 `MX_BASE_URL` 存在。
+- `FINANCE_PROVIDER_ALLOW_REAL=true` 或 `MX_ALLOW_REAL_PROVIDER=true`。
+- `FINANCE_PROVIDER_API_KEY` 或 `MX_APIKEY` 存在。
+- 可选提供 `FINANCE_PROVIDER_BASE_URL`、`MX_SKILLS_BASE_URL`、`MX_BASE_URL` 或 `MX_API_URL`；`mx-skills` profile 未配置时使用默认公开 endpoint。
 
 任一条件不满足时，必须 fail closed：
 
@@ -121,4 +127,4 @@ Lab 08 默认只走 `mock-mx`。`real-mx` 真实 provider 路径必须同时满�
 - `api_key_present` 只表示 key 是否存在，不输出 key 内容。
 - `raw_response_persisted=false`。
 
-真实 provider 响应不能写入 tracked 文件，不能写入 `outputs/` 中除 `.gitkeep` 外的文件，不能提交到 `provider_responses/` 或 `authenticated_responses/`。`adapter_trace` 只能保存状态、字段名、计数和错误摘要，不能保存 raw authenticated response。
+真实 provider 响应不能写入 tracked 文件，不能写入 `outputs/` 中除 `.gitkeep` 外的文件，不能提交到 `provider_responses/` 或 `authenticated_responses/`。`adapter_trace` 只能保存状态、字段名、计数和错误摘要，不能保存 raw authenticated response。MX Skills 只是一个可选 provider profile，需要的人可自行安装或配置，不作为仓库本地 runtime 目录提交。

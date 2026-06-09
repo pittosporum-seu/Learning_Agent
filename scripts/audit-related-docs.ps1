@@ -267,7 +267,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: MX Skills Adapter")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -281,7 +281,7 @@ $roadmapTokens = @(
     '[x] Lab 05: User Preference Memory',
     '[x] Lab 06: Skill Registry',
     '[x] Lab 07: Skill Generation',
-    '[x] Lab 08: MX Skills Adapter',
+    '[x] Lab 08: Finance Provider Adapter',
     'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -361,7 +361,7 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 5 User Preference Memory",
     "Part 6 Skill Registry",
     "Part 7 Skill Generation",
-    "Part 8 MX Skills Adapter",
+    "Part 8 Finance Provider Adapter",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
@@ -405,8 +405,8 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "routing_decision",
     "OpenAI-compatible",
     "LLM_API_KEY",
-    "mx-xuangu",
-    "mx-search"
+    "candidate-screen",
+    "finance-news"
 )
 Require-Contains "docs/product/security-and-secrets.md" $securityPlan @(
     "LLM_API_KEY",
@@ -418,6 +418,10 @@ Require-Contains "docs/product/security-and-secrets.md" $securityPlan @(
     "XIAOMI_BASE_URL",
     "XIAOMI_MODEL",
     "MIMO_CHAT_COMPLETIONS_URL",
+    "FINANCE_PROVIDER_API_KEY",
+    "FINANCE_PROVIDER_ALLOW_REAL",
+    "FINANCE_PROVIDER_BASE_URL",
+    "FINANCE_PROVIDER_PROFILE",
     "MX_APIKEY",
     "MX_SKILLS_BASE_URL",
     "MX_BASE_URL",
@@ -435,7 +439,12 @@ Require-Contains ".env.example" $envExample @(
     "XIAOMI_API_KEY=your_mimo_api_key_from_hermes",
     "XIAOMI_BASE_URL=https://token-plan-sgp.xiaomimimo.com/v1",
     "XIAOMI_MODEL=mimo-v2.5",
-    "MX_APIKEY=your_mx_apikey_from_hermes",
+    "FINANCE_PROVIDER_PROFILE=mx-skills",
+    "FINANCE_PROVIDER_API_KEY=your_finance_provider_api_key_from_trusted_runtime",
+    "FINANCE_PROVIDER_BASE_URL=https://mkapi2.dfcfs.com/finskillshub/api/claw",
+    "FINANCE_PROVIDER_ALLOW_REAL=false",
+    "FINANCE_PROVIDER_DOWNLOAD_URL=https://dl.dfcfs.com/m/itc4",
+    "MX_APIKEY=your_mx_apikey_from_trusted_runtime",
     "MX_SKILLS_BASE_URL=https://mkapi2.dfcfs.com/finskillshub",
     "MX_ALLOW_REAL_PROVIDER=false",
     "MX_TIMEOUT_SECONDS=10"
@@ -965,7 +974,7 @@ Require-Contains "labs/07-skill-generation/AGENTS.md" $lab07Agents @(
     "skill_draft_markdown",
     "draft_review",
     "risk_disclosure",
-    "Lab 08 MX Skills Adapter"
+    "Lab 08 Finance Provider Adapter"
 )
 Require-Contains "labs/07-skill-generation/README.md" $lab07Readme @(
     "Skill Generation",
@@ -1010,7 +1019,7 @@ Require-Contains "labs/07-skill-generation/src/run_lab.py" $lab07RunLab @(
     "generated_skill_draft",
     "skill_draft_markdown",
     "draft_review",
-    "Lab 08 MX Skills Adapter",
+    "Lab 08 Finance Provider Adapter",
     "PROHIBITED_OUTPUT_KEYS"
 )
 Require-Contains "labs/07-skill-generation/demo/run_demo.py" $lab07Demo @(
@@ -1037,7 +1046,9 @@ Require-Contains "labs/07-skill-generation/tests/test_run_lab.py" $lab07RunLabTe
 )
 
 Require-Contains "labs/08-mx-skills-adapter/AGENTS.md" $lab08Agents @(
-    "MX Skills Adapter",
+    "Finance Provider Adapter",
+    "candidate-screen",
+    "external-finance",
     "AdapterResult",
     "adapter_trace",
     "safety_gate",
@@ -1050,11 +1061,16 @@ Require-Contains "labs/08-mx-skills-adapter/README.md" $lab08Readme @(
     "Adapter",
     ".agents/",
     ".codex",
-    "mock-mx",
-    "real-mx-stub",
-    "real-mx",
+    "mock-finance",
+    "external-finance-stub",
+    "external-finance",
+    "candidate-screen",
+    "market-data",
+    "finance-news",
+    "mx-skills",
+    "https://dl.dfcfs.com/m/itc4",
     "--allow-real-provider",
-    "MX_ALLOW_REAL_PROVIDER",
+    "FINANCE_PROVIDER_ALLOW_REAL",
     "manual_test_real_mx_adapter.py",
     "raw_response_persisted",
     "AdapterResult",
@@ -1065,17 +1081,23 @@ Require-Contains "labs/08-mx-skills-adapter/README.md" $lab08Readme @(
     "run-lab-tests.ps1"
 )
 Require-Contains "labs/08-mx-skills-adapter/data/adapter_capabilities.json" $lab08Capabilities @(
-    "mock-mx",
-    "real-mx-stub",
-    "real-mx",
-    "mx-xuangu",
-    "mx-data",
-    "mx-search",
+    "mock-finance",
+    "external-finance-stub",
+    "external-finance",
+    "candidate-screen",
+    "market-data",
+    "finance-news",
+    "mx-skills",
+    "https://dl.dfcfs.com/m/itc4",
     "requires_human_confirmation"
 )
 Require-Contains "labs/08-mx-skills-adapter/src/adapter_contract.py" $lab08Contract @(
     "AdapterCapability",
     "AdapterResult",
+    "normalize_capability",
+    "normalize_adapter_name",
+    "mx-xuangu",
+    "real-mx",
     "adapter_name",
     "provider_mode",
     "requires_api_key",
@@ -1085,20 +1107,23 @@ Require-Contains "labs/08-mx-skills-adapter/src/adapter_contract.py" $lab08Contr
     "raw_response_persisted"
 )
 Require-Contains "labs/08-mx-skills-adapter/src/mock_mx_adapter.py" $lab08MockAdapter @(
-    "MockMXAdapter",
+    "MockFinanceAdapter",
     "select_candidates",
     "fetch_market_data",
     "search_finance_news",
-    "mx-xuangu",
-    "mx-data",
-    "mx-search"
+    "candidate-screen",
+    "market-data",
+    "MockMXAdapter"
 )
 Require-Contains "labs/08-mx-skills-adapter/src/real_mx_adapter.py" $lab08RealAdapter @(
-    "RealMXAdapter",
+    "ExternalFinanceAdapter",
+    "FINANCE_PROVIDER_ALLOW_REAL",
+    "FINANCE_PROVIDER_API_KEY",
+    "FINANCE_PROVIDER_BASE_URL",
     "MX_ALLOW_REAL_PROVIDER",
     "MX_APIKEY",
-    "MX_SKILLS_BASE_URL",
-    "MX_BASE_URL",
+    "mx-skills",
+    "https://dl.dfcfs.com/m/itc4",
     "allow_real_provider",
     "network_request_sent",
     "api_key_present",
@@ -1106,8 +1131,8 @@ Require-Contains "labs/08-mx-skills-adapter/src/real_mx_adapter.py" $lab08RealAd
     "transport"
 )
 Require-Contains "labs/08-mx-skills-adapter/src/real_mx_adapter_stub.py" $lab08RealStub @(
-    "RealMXAdapterStub",
-    "REAL_PROVIDER_DISABLED_REASON",
+    "ExternalFinanceAdapterStub",
+    "EXTERNAL_PROVIDER_DISABLED_REASON",
     "network_request_sent",
     "api_key_read",
     "blocked"
@@ -1118,10 +1143,10 @@ Require-Contains "labs/08-mx-skills-adapter/src/adapter_registry.py" $lab08Regis
     "get_adapter",
     "call_adapter",
     "DEFAULT_ADAPTER_NAME",
-    "real-mx"
+    "external-finance"
 )
 Require-Contains "labs/08-mx-skills-adapter/src/run_lab.py" $lab08RunLab @(
-    "run_mx_skills_adapter",
+    "run_finance_provider_adapter",
     "run_skill_generation",
     "registered_adapters",
     "adapter_trace",
@@ -1129,12 +1154,12 @@ Require-Contains "labs/08-mx-skills-adapter/src/run_lab.py" $lab08RunLab @(
     "real_provider_allowed",
     "real_provider_attempted",
     "allow_real_provider",
-    "MX_ALLOW_REAL_PROVIDER",
+    "FINANCE_PROVIDER_ALLOW_REAL",
     "Lab 09 Research Planner DAG",
     "PROHIBITED_OUTPUT_KEYS"
 )
 Require-Contains "labs/08-mx-skills-adapter/demo/run_demo.py" $lab08Demo @(
-    "run_mx_skills_adapter",
+    "run_finance_provider_adapter",
     "--adapter-mode",
     "--allow-real-provider",
     "--output",
@@ -1146,9 +1171,9 @@ Require-Contains "labs/08-mx-skills-adapter/tests/test_adapter_contract.py" $lab
     "validate_adapter_result"
 )
 Require-Contains "labs/08-mx-skills-adapter/tests/test_mock_mx_adapter.py" $lab08MockAdapterTests @(
-    "test_mock_adapter_calls_mx_xuangu",
-    "test_mock_adapter_calls_mx_data_and_mx_search",
-    "mx-search"
+    "test_mock_adapter_calls_candidate_screen",
+    "test_mock_adapter_calls_market_data_and_finance_news",
+    "test_mock_adapter_accepts_legacy_mx_aliases"
 )
 Require-Contains "labs/08-mx-skills-adapter/tests/test_real_mx_adapter.py" $lab08RealAdapterTests @(
     "test_real_adapter_missing_key_is_blocked_without_network",
@@ -1158,7 +1183,7 @@ Require-Contains "labs/08-mx-skills-adapter/tests/test_real_mx_adapter.py" $lab0
     "raw_response_persisted"
 )
 Require-Contains "labs/08-mx-skills-adapter/tests/test_real_mx_adapter_stub.py" $lab08RealStubTests @(
-    "test_real_adapter_stub_is_blocked_without_network_or_key",
+    "test_external_adapter_stub_is_blocked_without_network_or_key",
     "network_request_sent",
     "api_key_read"
 )
@@ -1172,10 +1197,12 @@ Require-Contains "labs/08-mx-skills-adapter/tests/test_run_lab.py" $lab08RunLabT
     "PROHIBITED_KEYS"
 )
 Require-Contains "labs/08-mx-skills-adapter/tests/manual_test_real_mx_adapter.py" $lab08ManualRealAdapterTest @(
+    "RUN_REAL_FINANCE_INTEGRATION",
+    "FINANCE_PROVIDER_ALLOW_REAL",
+    "FINANCE_PROVIDER_API_KEY",
     "RUN_REAL_MX_INTEGRATION",
     "MX_ALLOW_REAL_PROVIDER",
     "MX_APIKEY",
-    "MX_SKILLS_BASE_URL",
     "raw_response_persisted"
 )
 

@@ -82,7 +82,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 10. [Lab 05: User Preference Memory](../labs/05-user-preference-memory/README.md)
 11. [Lab 06: Skill Registry](../labs/06-skill-registry/README.md)
 12. [Lab 07: Skill Generation](../labs/07-skill-generation/README.md)
-13. [Lab 08: MX Skills Adapter](../labs/08-mx-skills-adapter/README.md)
+13. [Lab 08: Finance Provider Adapter](../labs/08-mx-skills-adapter/README.md)
 
 启动 Lab 01 网页 demo：
 
@@ -106,7 +106,7 @@ http://127.0.0.1:8765/
 - Lab 05 用本地 mock 用户偏好展示 Memory，输出 `memory_trace` 和 `preference_adjusted_evidence`。
 - Lab 06 用本地 mock Skill 元数据展示 Skill Registry，输出 `skill_selection_trace`、`selected_skills` 和 `disabled_skills`。
 - Lab 07 用 Lab 06 输出展示 Skill Generation，输出 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review`。
-- Lab 08 用 mock-first adapter 展示 MX Skills Adapter，输出 `adapter_trace` 和 `safety_gate`；可在本地显式开启 optional real provider manual integration。
+- Lab 08 用 mock-first adapter 展示 Finance Provider Adapter，输出 `adapter_trace` 和 `safety_gate`；可在本地显式开启 optional external provider manual integration。
 
 ## 当前可运行
 
@@ -119,7 +119,7 @@ http://127.0.0.1:8765/
 | [Lab 05: User Preference Memory](../labs/05-user-preference-memory/README.md) | 本地 mock 用户偏好、`memory_trace`、`preference_adjusted_evidence` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 05-user-preference-memory` |
 | [Lab 06: Skill Registry](../labs/06-skill-registry/README.md) | 本地 mock Skill 元数据、`skill_selection_trace`、`selected_skills`、`disabled_skills` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 06-skill-registry` |
 | [Lab 07: Skill Generation](../labs/07-skill-generation/README.md) | 可审查 Skill draft、`skill_draft_markdown`、`draft_review` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 07-skill-generation` |
-| [Lab 08: MX Skills Adapter](../labs/08-mx-skills-adapter/README.md) | mock-first adapter、optional real provider、`adapter_trace`、`safety_gate` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 08-mx-skills-adapter` |
+| [Lab 08: Finance Provider Adapter](../labs/08-mx-skills-adapter/README.md) | mock-first adapter、optional external provider、`adapter_trace`、`safety_gate` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 08-mx-skills-adapter` |
 
 当前继续方向：
 

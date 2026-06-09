@@ -64,4 +64,4 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-09 | 实现 Lab 05: User Preference Memory | 本轮提交 |
 | 2026-06-09 | 实现 Lab 06: Skill Registry | 本轮提交 |
 | 2026-06-09 | 实现 Lab 07: Skill Generation | 本轮提交 |
-| 2026-06-09 | 实现 Lab 08: MX Skills Adapter | 本轮提交 |
+| 2026-06-09 | 实现 Lab 08: Finance Provider Adapter | 本轮提交 |

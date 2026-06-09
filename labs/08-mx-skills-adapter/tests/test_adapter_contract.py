@@ -16,9 +16,9 @@ from adapter_registry import build_default_registry  # noqa: E402
 class AdapterContractTest(unittest.TestCase):
     def test_adapter_result_has_required_fields(self) -> None:
         result = AdapterResult(
-            adapter_name="mock-mx",
+            adapter_name="mock-finance",
             provider_mode="mock",
-            capability="mx-data",
+            capability="market-data",
             input_summary={},
             output={},
             status="success",
@@ -36,7 +36,7 @@ class AdapterContractTest(unittest.TestCase):
         registry = build_default_registry()
         adapter_names = {adapter["adapter_name"] for adapter in registry.list_adapters()}
 
-        self.assertEqual(adapter_names, {"mock-mx", "real-mx-stub", "real-mx"})
+        self.assertEqual(adapter_names, {"mock-finance", "external-finance-stub", "external-finance"})
 
 
 if __name__ == "__main__":

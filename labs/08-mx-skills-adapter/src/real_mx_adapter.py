@@ -6,11 +6,18 @@ import urllib.error
 import urllib.request
 from typing import Any, Callable, Mapping
 
-from adapter_contract import AdapterResult
+from adapter_contract import AdapterResult, CANONICAL_CAPABILITIES, normalize_capability
 
 
-REAL_PROVIDER_BLOCKED_REASON = "real provider requires explicit CLI confirmation and environment configuration"
-REAL_PROVIDER_CAPABILITIES = {"mx-xuangu", "mx-data", "mx-search"}
+EXTERNAL_PROVIDER_BLOCKED_REASON = "external provider requires explicit CLI confirmation and environment configuration"
+DEFAULT_PROVIDER_PROFILE = "mx-skills"
+MX_PROVIDER_DOWNLOAD_URL = "https://dl.dfcfs.com/m/itc4"
+DEFAULT_MX_API_BASE_URL = "https://mkapi2.dfcfs.com/finskillshub/api/claw"
+CAPABILITY_ENDPOINTS = {
+    "candidate-screen": "stock-screen",
+    "market-data": "query",
+    "finance-news": "news-search",
+}
 
 
 Transport = Callable[[str, dict[str, str], dict[str, Any], int], dict[str, Any]]
@@ -20,10 +27,10 @@ def _env_flag_is_true(value: str | None) -> bool:
     return str(value or "").strip().lower() in {"1", "true", "yes", "on"}
 
 
-class RealMXAdapter:
-    adapter_name = "real-mx"
-    provider_mode = "real"
-    capabilities = REAL_PROVIDER_CAPABILITIES
+class ExternalFinanceAdapter:
+    adapter_name = "external-finance"
+    provider_mode = "external"
+    capabilities = CANONICAL_CAPABILITIES
 
     def __init__(
         self,
@@ -36,55 +43,57 @@ class RealMXAdapter:
         self.transport = transport or default_transport
 
     def call(self, capability: str, payload: dict[str, Any]) -> dict[str, Any]:
-        if capability not in self.capabilities:
+        canonical_capability = normalize_capability(capability)
+        if canonical_capability not in self.capabilities:
             return self._result(
-                capability=capability,
+                capability=canonical_capability,
                 input_summary={"payload_keys": sorted(payload)},
-                output={"disabled": True, "reason": f"Unsupported real capability: {capability}"},
+                output={"disabled": True, "reason": f"Unsupported external capability: {capability}"},
                 status="failed",
-                error=f"Unsupported real capability: {capability}",
+                error=f"Unsupported external capability: {capability}",
                 network_request_sent=False,
                 api_key_present=False,
             )
 
         gate = self.evaluate_gate()
         input_summary = summarize_payload(payload)
+        input_summary["provider_profile"] = gate["provider_profile"]
         if not gate["allowed"]:
             return self._result(
-                capability=capability,
+                capability=canonical_capability,
                 input_summary=input_summary,
                 output={
                     "disabled": True,
-                    "reason": REAL_PROVIDER_BLOCKED_REASON,
+                    "reason": EXTERNAL_PROVIDER_BLOCKED_REASON,
                     "missing_conditions": gate["missing_conditions"],
+                    "provider_profile": gate["provider_profile"],
+                    "provider_download_url": gate["provider_download_url"],
                     "network_request_sent": False,
                     "api_key_present": gate["api_key_present"],
                     "raw_response_persisted": False,
                 },
                 status="blocked",
-                error=REAL_PROVIDER_BLOCKED_REASON,
+                error=EXTERNAL_PROVIDER_BLOCKED_REASON,
                 network_request_sent=False,
                 api_key_present=gate["api_key_present"],
             )
 
-        api_key = self.env["MX_APIKEY"]
+        provider_secret = resolve_provider_api_key(self.env)
         base_url = gate["base_url"]
-        timeout_seconds = int(self.env.get("MX_TIMEOUT_SECONDS", "10") or "10")
-        url = f"{base_url.rstrip('/')}/{capability}"
-        request_payload = {"capability": capability, "input": payload}
-        headers = {
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        }
+        timeout_seconds = resolve_provider_timeout_seconds(self.env)
+        url = build_provider_url(base_url, canonical_capability, gate["provider_profile"])
+        request_payload = build_provider_payload(canonical_capability, payload, gate["provider_profile"])
+        headers = build_provider_headers(provider_secret, self.env, gate["provider_profile"])
 
         try:
             response = self.transport(url, headers, request_payload, timeout_seconds)
         except Exception as exc:  # pragma: no cover - exercised through fake transports in tests.
             return self._result(
-                capability=capability,
+                capability=canonical_capability,
                 input_summary=input_summary,
                 output={
                     "provider_status": "request_failed",
+                    "provider_profile": gate["provider_profile"],
                     "error_type": exc.__class__.__name__,
                     "raw_response_persisted": False,
                 },
@@ -95,9 +104,9 @@ class RealMXAdapter:
             )
 
         return self._result(
-            capability=capability,
+            capability=canonical_capability,
             input_summary=input_summary,
-            output=summarize_provider_response(response),
+            output=summarize_provider_response(response, gate["provider_profile"]),
             status=response.get("status", "success"),
             error=response.get("error"),
             network_request_sent=True,
@@ -106,22 +115,22 @@ class RealMXAdapter:
 
     def evaluate_gate(self) -> dict[str, Any]:
         missing_conditions: list[str] = []
-        env_allows_real = _env_flag_is_true(self.env.get("MX_ALLOW_REAL_PROVIDER"))
+        provider_profile = resolve_provider_profile(self.env)
+        env_allows_real = env_allows_external_provider(self.env)
 
         if not self.allow_real_provider:
             missing_conditions.append("--allow-real-provider")
         if not env_allows_real:
-            missing_conditions.append("MX_ALLOW_REAL_PROVIDER=true")
+            missing_conditions.append("FINANCE_PROVIDER_ALLOW_REAL=true or MX_ALLOW_REAL_PROVIDER=true")
 
         should_read_key_presence = self.allow_real_provider and env_allows_real
-        api_key_present = bool(self.env.get("MX_APIKEY")) if should_read_key_presence else False
+        api_key_present = has_provider_api_key(self.env) if should_read_key_presence else False
         base_url = ""
+        base_url_source = ""
         if should_read_key_presence:
-            base_url = self.env.get("MX_SKILLS_BASE_URL") or self.env.get("MX_BASE_URL") or ""
+            base_url, base_url_source = resolve_external_base_url(self.env, provider_profile)
             if not api_key_present:
-                missing_conditions.append("MX_APIKEY")
-            if not base_url:
-                missing_conditions.append("MX_SKILLS_BASE_URL or MX_BASE_URL")
+                missing_conditions.append("FINANCE_PROVIDER_API_KEY or MX_APIKEY")
 
         return {
             "allowed": self.allow_real_provider and env_allows_real and api_key_present and bool(base_url),
@@ -129,6 +138,9 @@ class RealMXAdapter:
             "api_key_present": api_key_present,
             "base_url_present": bool(base_url),
             "base_url": base_url,
+            "base_url_source": base_url_source,
+            "provider_profile": provider_profile,
+            "provider_download_url": MX_PROVIDER_DOWNLOAD_URL if provider_profile == "mx-skills" else "",
         }
 
     def _result(
@@ -157,6 +169,71 @@ class RealMXAdapter:
         ).to_dict()
 
 
+def resolve_provider_profile(env: Mapping[str, str]) -> str:
+    return str(env.get("FINANCE_PROVIDER_PROFILE") or DEFAULT_PROVIDER_PROFILE).strip() or DEFAULT_PROVIDER_PROFILE
+
+
+def env_allows_external_provider(env: Mapping[str, str]) -> bool:
+    return _env_flag_is_true(env.get("FINANCE_PROVIDER_ALLOW_REAL")) or _env_flag_is_true(env.get("MX_ALLOW_REAL_PROVIDER"))
+
+
+def has_provider_api_key(env: Mapping[str, str]) -> bool:
+    return bool(resolve_provider_api_key(env))
+
+
+def resolve_provider_api_key(env: Mapping[str, str]) -> str:
+    return str(env.get("FINANCE_PROVIDER_API_KEY") or env.get("MX_APIKEY") or "")
+
+
+def resolve_provider_timeout_seconds(env: Mapping[str, str]) -> int:
+    raw_value = env.get("FINANCE_PROVIDER_TIMEOUT_SECONDS") or env.get("MX_TIMEOUT_SECONDS") or "10"
+    try:
+        return max(1, int(str(raw_value)))
+    except ValueError:
+        return 10
+
+
+def resolve_external_base_url(env: Mapping[str, str], provider_profile: str | None = None) -> tuple[str, str]:
+    for name in ("FINANCE_PROVIDER_BASE_URL", "MX_SKILLS_BASE_URL", "MX_BASE_URL", "MX_API_URL"):
+        value = str(env.get(name) or "").strip()
+        if value:
+            return normalize_external_base_url(value, provider_profile or resolve_provider_profile(env)), name
+    if (provider_profile or resolve_provider_profile(env)) == "mx-skills":
+        return DEFAULT_MX_API_BASE_URL, "default_mx_api_base_url"
+    return "", ""
+
+
+def normalize_external_base_url(base_url: str, provider_profile: str) -> str:
+    normalized = base_url.rstrip("/")
+    if provider_profile == "mx-skills":
+        for endpoint in CAPABILITY_ENDPOINTS.values():
+            suffix = f"/{endpoint}"
+            if normalized.endswith(suffix):
+                normalized = normalized[: -len(suffix)]
+                break
+        if not normalized.endswith("/api/claw"):
+            normalized = f"{normalized}/api/claw"
+    return normalized
+
+
+def build_provider_url(base_url: str, capability: str, provider_profile: str) -> str:
+    if provider_profile == "mx-skills":
+        return f"{base_url.rstrip('/')}/{CAPABILITY_ENDPOINTS[capability]}"
+    return f"{base_url.rstrip('/')}/{capability}"
+
+
+def build_provider_headers(api_key: str, env: Mapping[str, str], provider_profile: str) -> dict[str, str]:
+    header_name = str(env.get("FINANCE_PROVIDER_API_KEY_HEADER") or "").strip()
+    headers = {"Content-Type": "application/json"}
+    if header_name:
+        headers[header_name] = api_key
+    elif provider_profile == "mx-skills":
+        headers["apikey"] = api_key
+    else:
+        headers["Authorization"] = f"Bearer {api_key}"
+    return headers
+
+
 def summarize_payload(payload: dict[str, Any]) -> dict[str, Any]:
     candidate_ids = payload.get("candidate_ids") or []
     strategy_spec = payload.get("strategy_spec") or {}
@@ -168,7 +245,30 @@ def summarize_payload(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def summarize_provider_response(response: dict[str, Any]) -> dict[str, Any]:
+def build_provider_payload(capability: str, payload: dict[str, Any], provider_profile: str = DEFAULT_PROVIDER_PROFILE) -> dict[str, Any]:
+    query = extract_provider_query(payload)
+    if provider_profile == "mx-skills":
+        if capability == "candidate-screen":
+            return {"keyword": query}
+        if capability == "market-data":
+            return {"toolQuery": query}
+        return {"query": query}
+    return {"capability": capability, "query": query}
+
+
+def extract_provider_query(payload: dict[str, Any]) -> str:
+    strategy_spec = payload.get("strategy_spec")
+    if isinstance(payload.get("request"), str) and payload["request"].strip():
+        return payload["request"].strip()
+    if isinstance(strategy_spec, dict) and isinstance(strategy_spec.get("original_request"), str):
+        return strategy_spec["original_request"].strip()
+    candidate_ids = payload.get("candidate_ids")
+    if isinstance(candidate_ids, list) and candidate_ids:
+        return " ".join(str(item) for item in candidate_ids)
+    return "Learning_Agent Lab 08 manual provider check"
+
+
+def summarize_provider_response(response: dict[str, Any], provider_profile: str) -> dict[str, Any]:
     body = response.get("body")
     body_summary: dict[str, Any] = {"body_type": type(body).__name__}
     if isinstance(body, dict):
@@ -179,6 +279,7 @@ def summarize_provider_response(response: dict[str, Any]) -> dict[str, Any]:
 
     return {
         "provider_status": response.get("status", "success"),
+        "provider_profile": provider_profile,
         "http_status": response.get("http_status"),
         "body_summary": body_summary,
         "raw_response_persisted": False,
@@ -207,3 +308,10 @@ def default_transport(url: str, headers: dict[str, str], payload: dict[str, Any]
             "body": {"error_type": "HTTPError"},
             "error": f"HTTP {exc.code}",
         }
+
+
+RealMXAdapter = ExternalFinanceAdapter
+REAL_PROVIDER_BLOCKED_REASON = EXTERNAL_PROVIDER_BLOCKED_REASON
+REAL_PROVIDER_CAPABILITIES = CANONICAL_CAPABILITIES
+resolve_mx_base_url = resolve_external_base_url
+normalize_mx_base_url = lambda base_url: normalize_external_base_url(base_url, DEFAULT_PROVIDER_PROFILE)

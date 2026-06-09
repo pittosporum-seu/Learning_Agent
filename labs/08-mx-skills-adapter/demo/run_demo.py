@@ -11,7 +11,7 @@ LAB_ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = LAB_ROOT / "src"
 sys.path.insert(0, str(SRC_DIR))
 
-from run_lab import run_mx_skills_adapter  # noqa: E402
+from run_lab import run_finance_provider_adapter  # noqa: E402
 
 
 DEFAULT_REQUESTS = [
@@ -33,7 +33,7 @@ def build_demo_results(
             "user_id": user_id,
             "adapter_mode": adapter_mode,
             "request": request,
-            "result": run_mx_skills_adapter(
+            "result": run_finance_provider_adapter(
                 request=request,
                 user_id=user_id,
                 adapter_mode=adapter_mode,
@@ -60,12 +60,17 @@ def print_summary(results: list[dict[str, Any]]) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the Lab 08 MX Skills Adapter demo.")
+    parser = argparse.ArgumentParser(description="Run the Lab 08 Finance Provider Adapter demo.")
     parser.add_argument("--request", action="append", help="Custom request. Can be passed more than once.")
     parser.add_argument("--user-id", default="conservative_user", help="Mock user id.")
-    parser.add_argument("--adapter-mode", choices=["mock-mx", "real-mx", "real-mx-stub"], default="mock-mx", help="Adapter name.")
-    parser.add_argument("--allow-real-provider", action="store_true", help="Allow real provider only when environment gates also pass.")
-    parser.add_argument("--capabilities", default="mx-xuangu,mx-data,mx-search", help="Comma-separated adapter capabilities to call.")
+    parser.add_argument(
+        "--adapter-mode",
+        choices=["mock-finance", "external-finance", "external-finance-stub", "mock-mx", "real-mx", "real-mx-stub"],
+        default="mock-finance",
+        help="Adapter name. Legacy mx names are accepted as aliases.",
+    )
+    parser.add_argument("--allow-real-provider", action="store_true", help="Allow external provider only when environment gates also pass.")
+    parser.add_argument("--capabilities", default="candidate-screen,market-data,finance-news", help="Comma-separated adapter capabilities to call.")
     parser.add_argument("--output", help="Optional JSON output path.")
     parser.add_argument("--json", action="store_true", help="Print full JSON instead of a compact summary.")
     args = parser.parse_args()

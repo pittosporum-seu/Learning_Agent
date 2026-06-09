@@ -100,4 +100,4 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 
 - Lab 06 负责 Skill Registry，选择或禁用 mock Skill。
 - Lab 07 负责 Skill Generation，把被选中的稳定能力生成可审查草稿。
-- Lab 08 会进入 MX Skills Adapter，讨论 mock-first 到真实财经 Skills 的受控适配边界。
+- Lab 08 会进入 Finance Provider Adapter，讨论 mock-first 到可选外部财经 provider 的受控适配边界。

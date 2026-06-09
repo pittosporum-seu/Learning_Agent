@@ -48,7 +48,7 @@
 - [x] Lab 05: User Preference Memory
 - [x] Lab 06: Skill Registry
 - [x] Lab 07: Skill Generation
-- [x] Lab 08: MX Skills Adapter
+- [x] Lab 08: Finance Provider Adapter
 - [ ] Lab 08: optional real provider manual integration
 - [ ] Lab 09: Research Planner
 - [ ] Lab 10: Evidence Report
@@ -117,6 +117,6 @@
 - [x] 完成 User Preference Memory Lab
 - [x] 完成 Skill Registry Lab
 - [x] 完成 Skill Generation Lab
-- [x] 完成 MX Skills Adapter Lab
+- [x] 完成 Finance Provider Adapter Lab
 
 详见：[docs/series-plan.md](docs/series-plan.md)

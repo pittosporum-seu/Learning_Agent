@@ -46,7 +46,7 @@ def run_skill_generation(request: str = DEFAULT_REQUEST, user_id: str = "conserv
         "draft_review": {},
         "final_output": {},
         "risk_disclosure": skill_registry_output.get("risk_disclosure", RISK_DISCLOSURE),
-        "next_lab": "Lab 08 MX Skills Adapter",
+        "next_lab": "Lab 08 Finance Provider Adapter",
     }
 
     if output["status"] != "completed":

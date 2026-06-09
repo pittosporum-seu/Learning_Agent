@@ -38,7 +38,7 @@
 | 05 | User Preference Memory | 05 Memory | 本地 mock 用户偏好、`memory_trace`、`preference_application` 和 `preference_adjusted_evidence` | 已实现 |
 | 06 | Skill Registry | 06 MCP / 10 Skills | 本地 mock Skill 元数据、`skill_selection_trace`、`selected_skills` 和 `disabled_skills` | 已实现 |
 | 07 | Skill Generation | 10 Skills | 从 Lab 06 输出生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review` | 已实现 |
-| 08 | MX Skills Adapter | 03 Tool Use / 06 MCP | mock-first adapter contract、`adapter_trace`、`safety_gate`、optional real provider 和 manual integration test | 增强中 |
+| 08 | Finance Provider Adapter | 03 Tool Use / 06 MCP | mock-first adapter contract、`adapter_trace`、`safety_gate`、optional external provider 和 manual integration test | 增强中 |
 | 09 | Research Planner | 07 Agent Harness | 生成投研 DAG 并管理步骤状态 | 计划中 |
 | 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成带来源、时间、证据和风险提示的报告 | 计划中 |
 | 11 | Simulation Portfolio | 11 Browser / Computer Use Agent / Safety | 用 mock 或 `mx-moni` 风格接口做模拟组合验证 | 计划中 |
@@ -201,15 +201,16 @@ outputs/
 - 输出包含 `risk_disclosure`，不生成投资建议、真实股票推荐或交易动作。
 - 测试不依赖真实模型、真实财经 API、真实用户数据或本地 runtime Skill 配置。
 
-## Lab 08: MX Skills Adapter
+## Lab 08: Finance Provider Adapter
 
-目标：把 Lab 03 的 mock finance tools 和未来真实东方财富妙想 Skills 放到同一 adapter contract 下。
+目标：把 Lab 03 的 mock finance tools 和未来可选外部财经 provider 放到同一 adapter contract 下；MX Skills 只是 `mx-skills` provider profile。
 
 关键点：
 
-- 默认使用 `mock-mx` adapter，复用本地 mock `mx-xuangu`、`mx-data`、`mx-search` 风格能力。
-- `real-mx-stub` 只返回 blocked / disabled，不读取真实 key，不发送网络请求。
-- `real-mx` 是可选真实 provider 路径，必须同时满足 `--allow-real-provider`、`MX_ALLOW_REAL_PROVIDER=true`、`MX_APIKEY` 和 `MX_SKILLS_BASE_URL` / `MX_BASE_URL`。
+- 默认使用 `mock-finance` adapter，复用 Lab 03 本地 mock 工具。
+- 统一 capability 名称为 `candidate-screen`、`market-data`、`finance-news`；`mx-xuangu`、`mx-data`、`mx-search` 只是兼容 alias。
+- `external-finance-stub` 只返回 blocked / disabled，不读取真实 key，不发送网络请求。
+- `external-finance` 是可选真实 provider 路径，必须同时满足 `--allow-real-provider`、`FINANCE_PROVIDER_ALLOW_REAL=true` 或 `MX_ALLOW_REAL_PROVIDER=true`、以及环境变量中的 `FINANCE_PROVIDER_API_KEY` 或 `MX_APIKEY`。
 - `safety_gate` 明确展示 `real_provider_attempted`、`real_provider_allowed`、`api_key_present`、`network_request_sent` 和 `raw_response_persisted=false`。
 - 每次 adapter 调用都生成统一 `AdapterResult`，写入 `adapter_trace`。
 - 真实 provider 响应只进入摘要字段，不能保存 raw authenticated response。
@@ -218,10 +219,10 @@ outputs/
 验收标准：
 
 - 无密钥时测试通过，默认 mock adapter 可跑。
-- mock adapter 能调用 `mx-xuangu`、`mx-data`、`mx-search` 三个能力。
-- real adapter stub 调用时 blocked，并说明启用条件。
-- real adapter 缺少任一启用条件时 blocked，且不发送网络请求。
-- real adapter 可以通过 fake transport 单测成功路径；真实 provider 只能通过手动 integration test 验证。
+- mock adapter 能调用 `candidate-screen`、`market-data`、`finance-news` 三个能力。
+- external adapter stub 调用时 blocked，并说明启用条件。
+- external adapter 缺少任一启用条件时 blocked，且不发送网络请求。
+- external adapter 可以通过 fake transport 单测成功路径；真实 provider 只能通过手动 integration test 验证。
 - 输出包含 `risk_disclosure` 和 `safety_gate`，不生成投资建议、真实股票推荐或交易动作。
 - blocked 请求不会调用 adapter。
 
