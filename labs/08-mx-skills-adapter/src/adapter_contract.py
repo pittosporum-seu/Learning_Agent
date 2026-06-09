@@ -28,6 +28,9 @@ class AdapterResult:
     error: str | None
     requires_api_key: bool
     requires_human_confirmation: bool
+    network_request_sent: bool = False
+    api_key_present: bool = False
+    raw_response_persisted: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -43,6 +46,9 @@ ADAPTER_RESULT_FIELDS = [
     "error",
     "requires_api_key",
     "requires_human_confirmation",
+    "network_request_sent",
+    "api_key_present",
+    "raw_response_persisted",
 ]
 
 

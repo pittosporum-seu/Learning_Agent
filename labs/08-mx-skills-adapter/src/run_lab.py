@@ -3,9 +3,10 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from adapter_registry import DEFAULT_ADAPTER_NAME, AdapterRegistry, build_default_registry
 
@@ -38,11 +39,16 @@ def run_mx_skills_adapter(
     request: str = DEFAULT_REQUEST,
     user_id: str = "conservative_user",
     adapter_mode: str = DEFAULT_ADAPTER_NAME,
+    allow_real_provider: bool = False,
+    capabilities: list[str] | None = None,
     registry: AdapterRegistry | None = None,
+    env: Mapping[str, str] | None = None,
 ) -> dict[str, Any]:
-    registry = registry or build_default_registry()
+    env = env if env is not None else os.environ
+    registry = registry or build_default_registry(allow_real_provider=allow_real_provider, env=env)
     skill_generation_output = run_skill_generation(request=request, user_id=user_id)
-    safety_gate = build_safety_gate(adapter_mode)
+    provider_mode = get_provider_mode(registry, adapter_mode)
+    safety_gate = build_safety_gate(adapter_mode, allow_real_provider=allow_real_provider, env=env)
     output: dict[str, Any] = {
         "request": request,
         "user_id": user_id,
@@ -50,8 +56,11 @@ def run_mx_skills_adapter(
         "skill_generation_output": skill_generation_output,
         "registered_adapters": registry.list_adapters(),
         "adapter_mode": adapter_mode,
+        "provider_mode": provider_mode,
         "adapter_trace": [],
         "safety_gate": safety_gate,
+        "real_provider_attempted": adapter_mode == "real-mx",
+        "real_provider_allowed": safety_gate["real_provider_allowed"],
         "final_output": {},
         "risk_disclosure": skill_generation_output.get("risk_disclosure", RISK_DISCLOSURE),
         "next_lab": "Lab 09 Research Planner DAG",
@@ -62,11 +71,13 @@ def run_mx_skills_adapter(
         assert_no_prohibited_output_keys(output)
         return output
 
-    if adapter_mode != DEFAULT_ADAPTER_NAME:
+    selected_capabilities = capabilities or ["mx-xuangu", "mx-data", "mx-search"]
+
+    if adapter_mode == "real-mx-stub":
         output["adapter_trace"] = [
             registry.call_adapter(
                 capability="mx-xuangu",
-                payload={"request": request, "reason": "real provider safety gate check"},
+                payload={"request": request, "reason": "real provider stub safety gate check"},
                 adapter_name=adapter_mode,
             )
         ]
@@ -74,6 +85,39 @@ def run_mx_skills_adapter(
         output["final_output"] = build_final_output(output)
         assert_no_prohibited_output_keys(output)
         return output
+
+    if adapter_mode == "real-mx":
+        strategy_spec = extract_strategy_spec(skill_generation_output)
+        if not safety_gate["real_provider_allowed"]:
+            output["adapter_trace"] = [
+                registry.call_adapter(
+                    capability="mx-xuangu",
+                    payload={"request": request, "strategy_spec": strategy_spec, "reason": "real provider safety gate check"},
+                    adapter_name=adapter_mode,
+                )
+            ]
+            output["status"] = "blocked"
+            output["final_output"] = build_final_output(output)
+            assert_no_prohibited_output_keys(output)
+            return output
+
+        trace: list[dict[str, Any]] = []
+        for capability in selected_capabilities:
+            trace.append(
+                registry.call_adapter(
+                    capability=capability,
+                    payload={"request": request, "strategy_spec": strategy_spec, "candidate_ids": []},
+                    adapter_name=adapter_mode,
+                )
+            )
+        output["adapter_trace"] = trace
+        output["status"] = "completed"
+        output["final_output"] = build_final_output(output)
+        assert_no_prohibited_output_keys(output)
+        return output
+
+    if adapter_mode != DEFAULT_ADAPTER_NAME:
+        raise KeyError(f"Unknown adapter mode: {adapter_mode}")
 
     strategy_spec = extract_strategy_spec(skill_generation_output)
     xuangu_result = registry.call_adapter("mx-xuangu", {"strategy_spec": strategy_spec}, adapter_name=adapter_mode)
@@ -95,16 +139,50 @@ def extract_strategy_spec(skill_generation_output: dict[str, Any]) -> dict[str, 
     )
 
 
-def build_safety_gate(adapter_mode: str) -> dict[str, Any]:
+def get_provider_mode(registry: AdapterRegistry, adapter_mode: str) -> str:
+    return getattr(registry.get_adapter(adapter_mode), "provider_mode", "unknown")
+
+
+def build_safety_gate(adapter_mode: str, allow_real_provider: bool = False, env: Mapping[str, str] | None = None) -> dict[str, Any]:
+    env = env if env is not None else os.environ
+    real_provider_attempted = adapter_mode == "real-mx"
+    env_allows_real = str(env.get("MX_ALLOW_REAL_PROVIDER", "")).strip().lower() in {"1", "true", "yes", "on"}
+    should_check_secret_presence = real_provider_attempted and allow_real_provider and env_allows_real
+    api_key_present = bool(env.get("MX_APIKEY")) if should_check_secret_presence else False
+    base_url_present = bool(env.get("MX_SKILLS_BASE_URL") or env.get("MX_BASE_URL")) if should_check_secret_presence else False
+    missing_conditions: list[str] = []
+
+    if real_provider_attempted:
+        if not allow_real_provider:
+            missing_conditions.append("--allow-real-provider")
+        if not env_allows_real:
+            missing_conditions.append("MX_ALLOW_REAL_PROVIDER=true")
+        if should_check_secret_presence and not api_key_present:
+            missing_conditions.append("MX_APIKEY")
+        if should_check_secret_presence and not base_url_present:
+            missing_conditions.append("MX_SKILLS_BASE_URL or MX_BASE_URL")
+
+    real_provider_allowed = real_provider_attempted and allow_real_provider and env_allows_real and api_key_present and base_url_present
     return {
-        "real_provider_allowed": False,
+        "real_provider_allowed": real_provider_allowed,
+        "real_provider_attempted": real_provider_attempted,
         "active_adapter_mode": adapter_mode,
         "default_adapter_mode": DEFAULT_ADAPTER_NAME,
-        "reason": "real provider requires future explicit confirmation and environment key",
+        "reason": (
+            "real provider allowed by explicit CLI flag and environment gate"
+            if real_provider_allowed
+            else "real provider requires explicit CLI confirmation and environment configuration"
+        ),
+        "missing_conditions": missing_conditions,
+        "api_key_present": api_key_present,
+        "base_url_present": base_url_present,
+        "raw_response_persisted": False,
         "required_conditions_for_real_provider": [
-            "explicit human confirmation",
+            "adapter_mode=real-mx",
+            "--allow-real-provider",
+            "MX_ALLOW_REAL_PROVIDER=true",
             "environment-provided MX_APIKEY",
-            "manual integration test plan",
+            "MX_SKILLS_BASE_URL or MX_BASE_URL",
             "no persistence of authenticated responses",
         ],
     }
@@ -121,6 +199,8 @@ def build_final_output(output: dict[str, Any]) -> dict[str, Any]:
         "adapter_mode": output["adapter_mode"],
         "adapter_call_count": len(output.get("adapter_trace", [])),
         "adapter_statuses": adapter_statuses,
+        "provider_mode": output["provider_mode"],
+        "real_provider_attempted": output["real_provider_attempted"],
         "real_provider_allowed": output["safety_gate"]["real_provider_allowed"],
         "next_lab": output["next_lab"],
         "risk_disclosure": output["risk_disclosure"],
@@ -143,7 +223,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run Lab 08 MX Skills Adapter.")
     parser.add_argument("request", nargs="*", help="Natural-language investment research request.")
     parser.add_argument("--user-id", default="conservative_user", help="Mock user id.")
-    parser.add_argument("--adapter-mode", default=DEFAULT_ADAPTER_NAME, help="Adapter name; defaults to mock-mx.")
+    parser.add_argument("--adapter-mode", choices=["mock-mx", "real-mx", "real-mx-stub"], default=DEFAULT_ADAPTER_NAME, help="Adapter name; defaults to mock-mx.")
+    parser.add_argument("--allow-real-provider", action="store_true", help="Allow the real provider path when environment gates also pass.")
+    parser.add_argument("--capabilities", default="mx-xuangu,mx-data,mx-search", help="Comma-separated adapter capabilities to call.")
     parser.add_argument("--input-file", help="Read request text from a UTF-8 file.")
     parser.add_argument("--indent", type=int, default=2, help="JSON indentation.")
     args = parser.parse_args()
@@ -157,7 +239,13 @@ def main() -> None:
 
     print(
         json.dumps(
-            run_mx_skills_adapter(request=request, user_id=args.user_id, adapter_mode=args.adapter_mode),
+            run_mx_skills_adapter(
+                request=request,
+                user_id=args.user_id,
+                adapter_mode=args.adapter_mode,
+                allow_real_provider=args.allow_real_provider,
+                capabilities=[item.strip() for item in args.capabilities.split(",") if item.strip()],
+            ),
             ensure_ascii=False,
             indent=args.indent,
         )

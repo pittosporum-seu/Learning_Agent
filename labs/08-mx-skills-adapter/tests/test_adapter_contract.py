@@ -28,12 +28,15 @@ class AdapterContractTest(unittest.TestCase):
         ).to_dict()
 
         self.assertTrue(validate_adapter_result(result))
+        self.assertFalse(result["network_request_sent"])
+        self.assertFalse(result["api_key_present"])
+        self.assertFalse(result["raw_response_persisted"])
 
-    def test_registry_lists_mock_and_real_stub(self) -> None:
+    def test_registry_lists_mock_real_stub_and_real_provider(self) -> None:
         registry = build_default_registry()
         adapter_names = {adapter["adapter_name"] for adapter in registry.list_adapters()}
 
-        self.assertEqual(adapter_names, {"mock-mx", "real-mx-stub"})
+        self.assertEqual(adapter_names, {"mock-mx", "real-mx-stub", "real-mx"})
 
 
 if __name__ == "__main__":

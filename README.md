@@ -90,7 +90,7 @@
 - [Lab 08: MX Skills Adapter](labs/08-mx-skills-adapter/README.md)
   - 用 mock-first 方式展示外部财经 Skills 适配层。
   - 生成 `adapter_trace` 和 `safety_gate`，默认只调用 mock adapter。
-  - real adapter 仅为 stub，不读取真实 key，不发送网络请求。
+  - `real-mx` 必须由环境变量和 `--allow-real-provider` 手动启用，并提供 manual integration test。
 
 完整设计：
 

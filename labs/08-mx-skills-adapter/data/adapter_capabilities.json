@@ -46,5 +46,29 @@
         "requires_human_confirmation": true
       }
     ]
+  },
+  {
+    "adapter_name": "real-mx",
+    "provider_mode": "real",
+    "capabilities": [
+      {
+        "name": "mx-xuangu",
+        "description": "Optional real MX Skills provider path; requires explicit CLI confirmation and environment variables.",
+        "requires_api_key": true,
+        "requires_human_confirmation": true
+      },
+      {
+        "name": "mx-data",
+        "description": "Optional real MX Skills provider path; requires explicit CLI confirmation and environment variables.",
+        "requires_api_key": true,
+        "requires_human_confirmation": true
+      },
+      {
+        "name": "mx-search",
+        "description": "Optional real MX Skills provider path; requires explicit CLI confirmation and environment variables.",
+        "requires_api_key": true,
+        "requires_human_confirmation": true
+      }
+    ]
   }
 ]

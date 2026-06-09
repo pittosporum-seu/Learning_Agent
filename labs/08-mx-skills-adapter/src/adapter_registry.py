@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from adapter_contract import AdapterCapability
 from mock_mx_adapter import MockMXAdapter
+from real_mx_adapter import RealMXAdapter
 from real_mx_adapter_stub import RealMXAdapterStub
 
 
@@ -20,11 +21,12 @@ class AdapterRegistry:
         self._capability_docs = capabilities
 
     @classmethod
-    def build_default(cls) -> "AdapterRegistry":
+    def build_default(cls, allow_real_provider: bool = False, env: Mapping[str, str] | None = None) -> "AdapterRegistry":
         capabilities = json.loads(CAPABILITIES_PATH.read_text(encoding="utf-8"))
         adapters = {
             "mock-mx": MockMXAdapter(),
             "real-mx-stub": RealMXAdapterStub(),
+            "real-mx": RealMXAdapter(allow_real_provider=allow_real_provider, env=env),
         }
         return cls(adapters=adapters, capabilities=capabilities)
 
@@ -58,5 +60,5 @@ class AdapterRegistry:
         return adapter.call(capability=capability, payload=payload)
 
 
-def build_default_registry() -> AdapterRegistry:
-    return AdapterRegistry.build_default()
+def build_default_registry(allow_real_provider: bool = False, env: Mapping[str, str] | None = None) -> AdapterRegistry:
+    return AdapterRegistry.build_default(allow_real_provider=allow_real_provider, env=env)

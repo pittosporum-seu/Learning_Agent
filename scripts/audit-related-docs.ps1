@@ -169,14 +169,17 @@ $lab08Readme = Read-RepoFile "labs/08-mx-skills-adapter/README.md"
 $lab08Capabilities = Read-RepoFile "labs/08-mx-skills-adapter/data/adapter_capabilities.json"
 $lab08Contract = Read-RepoFile "labs/08-mx-skills-adapter/src/adapter_contract.py"
 $lab08MockAdapter = Read-RepoFile "labs/08-mx-skills-adapter/src/mock_mx_adapter.py"
+$lab08RealAdapter = Read-RepoFile "labs/08-mx-skills-adapter/src/real_mx_adapter.py"
 $lab08RealStub = Read-RepoFile "labs/08-mx-skills-adapter/src/real_mx_adapter_stub.py"
 $lab08Registry = Read-RepoFile "labs/08-mx-skills-adapter/src/adapter_registry.py"
 $lab08RunLab = Read-RepoFile "labs/08-mx-skills-adapter/src/run_lab.py"
 $lab08Demo = Read-RepoFile "labs/08-mx-skills-adapter/demo/run_demo.py"
 $lab08ContractTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_adapter_contract.py"
 $lab08MockAdapterTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_mock_mx_adapter.py"
+$lab08RealAdapterTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_real_mx_adapter.py"
 $lab08RealStubTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_real_mx_adapter_stub.py"
 $lab08RunLabTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_run_lab.py"
+$lab08ManualRealAdapterTest = Read-RepoFile "labs/08-mx-skills-adapter/tests/manual_test_real_mx_adapter.py"
 
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
@@ -416,6 +419,10 @@ Require-Contains "docs/product/security-and-secrets.md" $securityPlan @(
     "XIAOMI_MODEL",
     "MIMO_CHAT_COMPLETIONS_URL",
     "MX_APIKEY",
+    "MX_SKILLS_BASE_URL",
+    "MX_BASE_URL",
+    "MX_ALLOW_REAL_PROVIDER",
+    "raw_response_persisted=false",
     "check-secrets.ps1",
     ".env.example"
 )
@@ -428,7 +435,10 @@ Require-Contains ".env.example" $envExample @(
     "XIAOMI_API_KEY=your_mimo_api_key_from_hermes",
     "XIAOMI_BASE_URL=https://token-plan-sgp.xiaomimimo.com/v1",
     "XIAOMI_MODEL=mimo-v2.5",
-    "MX_APIKEY=your_mx_apikey_from_hermes"
+    "MX_APIKEY=your_mx_apikey_from_hermes",
+    "MX_SKILLS_BASE_URL=https://mkapi2.dfcfs.com/finskillshub",
+    "MX_ALLOW_REAL_PROVIDER=false",
+    "MX_TIMEOUT_SECONDS=10"
 )
 Require-Contains ".gitignore" $gitignore @(
     "!.env.example",
@@ -439,15 +449,22 @@ Require-Contains ".gitignore" $gitignore @(
     "*.local.yml",
     "runtime_config.json",
     "runtime_config.yaml",
+    "runtime_config.*",
     "real_user_preferences.*",
     "real_memory_events.*",
     "provider_responses/",
-    "authenticated_responses/"
+    "authenticated_responses/",
+    "labs/**/outputs/*",
+    "!labs/**/outputs/.gitkeep"
 )
 
 $trackedFiles = & git -C $root ls-files
 $trackedLocalRuntimeFiles = $trackedFiles | Where-Object {
-    $_ -like ".agents/*" -or $_ -like ".codex/*"
+    $_ -like ".agents/*" -or
+    $_ -like ".codex/*" -or
+    $_ -like "provider_responses/*" -or
+    $_ -like "authenticated_responses/*" -or
+    (($_ -like "labs/*/outputs/*") -and ($_ -notlike "labs/*/outputs/.gitkeep"))
 }
 foreach ($trackedLocalRuntimeFile in $trackedLocalRuntimeFiles) {
     Add-Failure "Tracked local runtime config must not be committed: $trackedLocalRuntimeFile"
@@ -1024,6 +1041,8 @@ Require-Contains "labs/08-mx-skills-adapter/AGENTS.md" $lab08Agents @(
     "AdapterResult",
     "adapter_trace",
     "safety_gate",
+    "real_provider_allowed",
+    "raw_response_persisted",
     "risk_disclosure",
     "Lab 09 Research Planner DAG"
 )
@@ -1033,6 +1052,11 @@ Require-Contains "labs/08-mx-skills-adapter/README.md" $lab08Readme @(
     ".codex",
     "mock-mx",
     "real-mx-stub",
+    "real-mx",
+    "--allow-real-provider",
+    "MX_ALLOW_REAL_PROVIDER",
+    "manual_test_real_mx_adapter.py",
+    "raw_response_persisted",
     "AdapterResult",
     "adapter_trace",
     "safety_gate",
@@ -1043,6 +1067,7 @@ Require-Contains "labs/08-mx-skills-adapter/README.md" $lab08Readme @(
 Require-Contains "labs/08-mx-skills-adapter/data/adapter_capabilities.json" $lab08Capabilities @(
     "mock-mx",
     "real-mx-stub",
+    "real-mx",
     "mx-xuangu",
     "mx-data",
     "mx-search",
@@ -1054,7 +1079,10 @@ Require-Contains "labs/08-mx-skills-adapter/src/adapter_contract.py" $lab08Contr
     "adapter_name",
     "provider_mode",
     "requires_api_key",
-    "requires_human_confirmation"
+    "requires_human_confirmation",
+    "network_request_sent",
+    "api_key_present",
+    "raw_response_persisted"
 )
 Require-Contains "labs/08-mx-skills-adapter/src/mock_mx_adapter.py" $lab08MockAdapter @(
     "MockMXAdapter",
@@ -1064,6 +1092,18 @@ Require-Contains "labs/08-mx-skills-adapter/src/mock_mx_adapter.py" $lab08MockAd
     "mx-xuangu",
     "mx-data",
     "mx-search"
+)
+Require-Contains "labs/08-mx-skills-adapter/src/real_mx_adapter.py" $lab08RealAdapter @(
+    "RealMXAdapter",
+    "MX_ALLOW_REAL_PROVIDER",
+    "MX_APIKEY",
+    "MX_SKILLS_BASE_URL",
+    "MX_BASE_URL",
+    "allow_real_provider",
+    "network_request_sent",
+    "api_key_present",
+    "raw_response_persisted",
+    "transport"
 )
 Require-Contains "labs/08-mx-skills-adapter/src/real_mx_adapter_stub.py" $lab08RealStub @(
     "RealMXAdapterStub",
@@ -1077,7 +1117,8 @@ Require-Contains "labs/08-mx-skills-adapter/src/adapter_registry.py" $lab08Regis
     "list_adapters",
     "get_adapter",
     "call_adapter",
-    "DEFAULT_ADAPTER_NAME"
+    "DEFAULT_ADAPTER_NAME",
+    "real-mx"
 )
 Require-Contains "labs/08-mx-skills-adapter/src/run_lab.py" $lab08RunLab @(
     "run_mx_skills_adapter",
@@ -1086,24 +1127,35 @@ Require-Contains "labs/08-mx-skills-adapter/src/run_lab.py" $lab08RunLab @(
     "adapter_trace",
     "safety_gate",
     "real_provider_allowed",
+    "real_provider_attempted",
+    "allow_real_provider",
+    "MX_ALLOW_REAL_PROVIDER",
     "Lab 09 Research Planner DAG",
     "PROHIBITED_OUTPUT_KEYS"
 )
 Require-Contains "labs/08-mx-skills-adapter/demo/run_demo.py" $lab08Demo @(
     "run_mx_skills_adapter",
     "--adapter-mode",
+    "--allow-real-provider",
     "--output",
     "real_provider_allowed"
 )
 Require-Contains "labs/08-mx-skills-adapter/tests/test_adapter_contract.py" $lab08ContractTests @(
     "test_adapter_result_has_required_fields",
-    "test_registry_lists_mock_and_real_stub",
+    "test_registry_lists_mock_real_stub_and_real_provider",
     "validate_adapter_result"
 )
 Require-Contains "labs/08-mx-skills-adapter/tests/test_mock_mx_adapter.py" $lab08MockAdapterTests @(
     "test_mock_adapter_calls_mx_xuangu",
     "test_mock_adapter_calls_mx_data_and_mx_search",
     "mx-search"
+)
+Require-Contains "labs/08-mx-skills-adapter/tests/test_real_mx_adapter.py" $lab08RealAdapterTests @(
+    "test_real_adapter_missing_key_is_blocked_without_network",
+    "test_real_adapter_missing_cli_allow_is_blocked_without_reading_key",
+    "test_real_adapter_success_path_uses_fake_transport",
+    "fake_transport",
+    "raw_response_persisted"
 )
 Require-Contains "labs/08-mx-skills-adapter/tests/test_real_mx_adapter_stub.py" $lab08RealStubTests @(
     "test_real_adapter_stub_is_blocked_without_network_or_key",
@@ -1114,8 +1166,17 @@ Require-Contains "labs/08-mx-skills-adapter/tests/test_run_lab.py" $lab08RunLabT
     "test_normal_request_generates_adapter_trace",
     "test_blocked_request_does_not_call_adapter",
     "test_real_stub_mode_is_blocked_by_safety_gate",
+    "test_real_adapter_missing_allow_flag_is_blocked_without_network",
+    "test_real_adapter_can_use_fake_transport_success_path",
     "test_does_not_create_runtime_config_directories",
     "PROHIBITED_KEYS"
+)
+Require-Contains "labs/08-mx-skills-adapter/tests/manual_test_real_mx_adapter.py" $lab08ManualRealAdapterTest @(
+    "RUN_REAL_MX_INTEGRATION",
+    "MX_ALLOW_REAL_PROVIDER",
+    "MX_APIKEY",
+    "MX_SKILLS_BASE_URL",
+    "raw_response_persisted"
 )
 
 Require-Contains "labs/shared/testing/README.md" $sharedTestingReadme @("run_lab_tests.py")

@@ -69,7 +69,7 @@ labs/
 - [x] [Lab 08: MX Skills Adapter](08-mx-skills-adapter/README.md)
   - 用统一 adapter contract 串起 Lab 03 mock tools 和未来真实东方财富妙想 Skills。
   - 生成 `adapter_trace` 和 `safety_gate`。
-  - 默认只使用 mock adapter，real stub 不读取 key、不发请求，并被安全门阻断。
+  - 默认只使用 mock adapter；`real-mx` 必须由环境变量和 `--allow-real-provider` 手动启用，并提供 manual integration test。
 - [ ] Lab 09-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试

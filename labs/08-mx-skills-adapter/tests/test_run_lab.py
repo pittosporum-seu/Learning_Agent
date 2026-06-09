@@ -11,6 +11,10 @@ REPO_ROOT = LAB_ROOT.parents[1]
 SRC_DIR = LAB_ROOT / "src"
 sys.path.insert(0, str(SRC_DIR))
 
+from adapter_registry import AdapterRegistry  # noqa: E402
+from mock_mx_adapter import MockMXAdapter  # noqa: E402
+from real_mx_adapter import RealMXAdapter  # noqa: E402
+from real_mx_adapter_stub import RealMXAdapterStub  # noqa: E402
 from run_lab import run_mx_skills_adapter  # noqa: E402
 
 
@@ -39,6 +43,7 @@ class RunMXSkillsAdapterTest(unittest.TestCase):
         self.assertEqual(result["adapter_mode"], "mock-mx")
         self.assertEqual([event["capability"] for event in result["adapter_trace"]], ["mx-xuangu", "mx-data", "mx-search"])
         self.assertFalse(result["safety_gate"]["real_provider_allowed"])
+        self.assertFalse(result["real_provider_attempted"])
         self.assertIn("risk_disclosure", result)
         self.assertIn("Lab 09", result["next_lab"])
 
@@ -54,6 +59,53 @@ class RunMXSkillsAdapterTest(unittest.TestCase):
         self.assertEqual(result["status"], "blocked")
         self.assertFalse(result["safety_gate"]["real_provider_allowed"])
         self.assertEqual(result["adapter_trace"][0]["status"], "blocked")
+
+    def test_real_adapter_missing_allow_flag_is_blocked_without_network(self) -> None:
+        result = run_mx_skills_adapter(
+            request=NORMAL_REQUEST,
+            adapter_mode="real-mx",
+            env={"MX_ALLOW_REAL_PROVIDER": "true", "MX_APIKEY": "fake-key", "MX_SKILLS_BASE_URL": "https://example.invalid/mx"},
+        )
+
+        self.assertEqual(result["status"], "blocked")
+        self.assertTrue(result["real_provider_attempted"])
+        self.assertFalse(result["real_provider_allowed"])
+        self.assertFalse(result["adapter_trace"][0]["network_request_sent"])
+
+    def test_real_adapter_can_use_fake_transport_success_path(self) -> None:
+        calls: list[dict[str, Any]] = []
+
+        def fake_transport(url: str, headers: dict[str, str], payload: dict[str, Any], timeout_seconds: int) -> dict[str, Any]:
+            calls.append({"url": url, "headers": headers, "payload": payload, "timeout_seconds": timeout_seconds})
+            return {"status": "success", "http_status": 200, "body": {"ok": True, "items": []}, "error": None}
+
+        env = {"MX_ALLOW_REAL_PROVIDER": "true", "MX_APIKEY": "fake-key", "MX_SKILLS_BASE_URL": "https://example.invalid/mx"}
+        registry = AdapterRegistry(
+            adapters={
+                "mock-mx": MockMXAdapter(),
+                "real-mx-stub": RealMXAdapterStub(),
+                "real-mx": RealMXAdapter(allow_real_provider=True, env=env, transport=fake_transport),
+            },
+            capabilities=[
+                {"adapter_name": "mock-mx", "provider_mode": "mock", "capabilities": []},
+                {"adapter_name": "real-mx-stub", "provider_mode": "real_stub", "capabilities": []},
+                {"adapter_name": "real-mx", "provider_mode": "real", "capabilities": []},
+            ],
+        )
+        result = run_mx_skills_adapter(
+            request=NORMAL_REQUEST,
+            adapter_mode="real-mx",
+            allow_real_provider=True,
+            capabilities=["mx-xuangu"],
+            registry=registry,
+            env=env,
+        )
+
+        self.assertEqual(result["status"], "completed")
+        self.assertTrue(result["real_provider_allowed"])
+        self.assertEqual(len(calls), 1)
+        self.assertTrue(result["adapter_trace"][0]["network_request_sent"])
+        self.assertFalse(result["adapter_trace"][0]["raw_response_persisted"])
 
     def test_output_has_no_prohibited_keys(self) -> None:
         result = run_mx_skills_adapter(request=NORMAL_REQUEST, user_id="balanced_user")

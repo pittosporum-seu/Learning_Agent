@@ -17,13 +17,14 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 设计 Lab 09 Research Planner DAG | `labs/09-research-planner/` | 明确投研 DAG 节点、依赖、状态、失败传播和人工确认边界 |
+| P0 | 增强 Lab 08 optional real provider integration | `labs/08-mx-skills-adapter/` | 默认 mock 仍可跑，真实 provider 仅在环境变量和 `--allow-real-provider` 同时满足时手动启用，并提供 manual integration test |
 
 ## Next
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
 | P0 | 实现 Lab 09: Research Planner DAG | `labs/09-research-planner/` | 能把 adapter 能力编排成可观察、可测试、可失败关闭的研究计划 DAG |
+| P0 | 设计 Lab 09 Research Planner DAG | `labs/09-research-planner/` | 明确投研 DAG 节点、依赖、状态、失败传播和人工确认边界 |
 | P1 | 设计投研 Skill 示例 | `skills/investment-research-workflow/SKILL.md` | 包含触发场景、禁用场景、步骤、输出格式、风险提示和测试样例 |
 | P1 | 补工程化清单第一批 | `docs/engineering/permission-boundary.md`、`trace-and-logging.md`、`evaluation-checklist.md` | 每篇是短清单，包含上线前检查项，并覆盖财经输出边界 |
 | P1 | 给 Lab 01 增加可选手动集成测试 | `labs/01-strategy-intake/tests/` 或 `demo/` | 有真实 MiMo key 时可手动验证，但默认测试仍不消耗 token |
@@ -35,7 +36,7 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | P1 | 建立链接检查机制 | `scripts/check-links.ps1` | 先检查 Markdown 中的明显坏链接和路径参数 |
 | P2 | 做 GitHub Issues 迁移 | GitHub Issues | 将 `TODO.md` 中长期任务迁到 Issues |
 | P2 | 补更多 benchmark 阅读笔记 | `docs/readings/` | SWE-bench、WebArena、AgentBench、OSWorld 等 |
-| P2 | 接入真实 MiMo 和东方财富妙想集成测试 | `labs/08-mx-skills-adapter/`、集成测试说明 | 默认 mock 仍可运行，有环境变量时才切换真实数据源 |
+| P2 | 接入真实 MiMo 手动集成测试 | `labs/01-strategy-intake/`、集成测试说明 | 默认 mock 仍可运行，有环境变量时才切换真实模型源 |
 
 ## Done
 

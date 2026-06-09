@@ -22,6 +22,10 @@
 | `MIMO_MODEL` | 旧版兼容别名 | Hermes 或本地环境 |
 | `MX_APIKEY` | 调用东方财富妙想 Skills | Hermes |
 | `MX_API_URL` | 可选，妙想 API 基础地址 | Hermes 或本地环境 |
+| `MX_SKILLS_BASE_URL` | 可选真实 MX Skills provider 基础地址 | Hermes 或本地环境 |
+| `MX_BASE_URL` | `MX_SKILLS_BASE_URL` 的兼容别名 | Hermes 或本地环境 |
+| `MX_ALLOW_REAL_PROVIDER` | 手动允许真实 MX provider 的环境闸门，必须为 `true` 才能启用 | 本地环境 |
+| `MX_TIMEOUT_SECONDS` | 可选真实 MX provider 请求超时秒数 | 本地环境 |
 
 Lab 01 的本地启动脚本可以把 Hermes 中的 Xiaomi MiMo 配置映射到 `LLM_*`。示例 base URL：
 
@@ -98,3 +102,23 @@ powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 - mock 新闻、公告、行情和财务数据。
 
 真实 API 只在手动集成测试或本地 Web demo 中使用，并且不把真实响应中的敏感信息写入仓库。
+
+## 真实 MX Provider 启用条件
+
+Lab 08 默认只走 `mock-mx`。`real-mx` 真实 provider 路径必须同时满足：
+
+- adapter mode 为 `real-mx`。
+- 命令行显式传入 `--allow-real-provider`。
+- `MX_ALLOW_REAL_PROVIDER=true`。
+- `MX_APIKEY` 存在。
+- `MX_SKILLS_BASE_URL` 或 `MX_BASE_URL` 存在。
+
+任一条件不满足时，必须 fail closed：
+
+- 不发送网络请求。
+- `status=blocked`。
+- `network_request_sent=false`。
+- `api_key_present` 只表示 key 是否存在，不输出 key 内容。
+- `raw_response_persisted=false`。
+
+真实 provider 响应不能写入 tracked 文件，不能写入 `outputs/` 中除 `.gitkeep` 外的文件，不能提交到 `provider_responses/` 或 `authenticated_responses/`。`adapter_trace` 只能保存状态、字段名、计数和错误摘要，不能保存 raw authenticated response。

@@ -20,14 +20,26 @@ DEFAULT_REQUESTS = [
 ]
 
 
-def build_demo_results(requests: list[str], user_id: str, adapter_mode: str) -> list[dict[str, Any]]:
+def build_demo_results(
+    requests: list[str],
+    user_id: str,
+    adapter_mode: str,
+    allow_real_provider: bool,
+    capabilities: list[str],
+) -> list[dict[str, Any]]:
     return [
         {
             "case_id": f"case-{index:02d}",
             "user_id": user_id,
             "adapter_mode": adapter_mode,
             "request": request,
-            "result": run_mx_skills_adapter(request=request, user_id=user_id, adapter_mode=adapter_mode),
+            "result": run_mx_skills_adapter(
+                request=request,
+                user_id=user_id,
+                adapter_mode=adapter_mode,
+                allow_real_provider=allow_real_provider,
+                capabilities=capabilities,
+            ),
         }
         for index, request in enumerate(requests, start=1)
     ]
@@ -42,6 +54,7 @@ def print_summary(results: list[dict[str, Any]]) -> None:
         print(f"status: {result['status']}")
         print(f"adapter_trace_count: {len(result['adapter_trace'])}")
         print(f"adapter_statuses: {', '.join(event['status'] for event in result['adapter_trace']) or 'none'}")
+        print(f"real_provider_attempted: {result['real_provider_attempted']}")
         print(f"real_provider_allowed: {result['safety_gate']['real_provider_allowed']}")
         print(f"next_lab: {result['next_lab']}")
 
@@ -50,13 +63,16 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run the Lab 08 MX Skills Adapter demo.")
     parser.add_argument("--request", action="append", help="Custom request. Can be passed more than once.")
     parser.add_argument("--user-id", default="conservative_user", help="Mock user id.")
-    parser.add_argument("--adapter-mode", default="mock-mx", help="Adapter name.")
+    parser.add_argument("--adapter-mode", choices=["mock-mx", "real-mx", "real-mx-stub"], default="mock-mx", help="Adapter name.")
+    parser.add_argument("--allow-real-provider", action="store_true", help="Allow real provider only when environment gates also pass.")
+    parser.add_argument("--capabilities", default="mx-xuangu,mx-data,mx-search", help="Comma-separated adapter capabilities to call.")
     parser.add_argument("--output", help="Optional JSON output path.")
     parser.add_argument("--json", action="store_true", help="Print full JSON instead of a compact summary.")
     args = parser.parse_args()
 
     requests = args.request if args.request else DEFAULT_REQUESTS
-    results = build_demo_results(requests, args.user_id, args.adapter_mode)
+    capabilities = [item.strip() for item in args.capabilities.split(",") if item.strip()]
+    results = build_demo_results(requests, args.user_id, args.adapter_mode, args.allow_real_provider, capabilities)
 
     if args.output:
         output_path = Path(args.output)

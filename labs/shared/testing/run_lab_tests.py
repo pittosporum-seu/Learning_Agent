@@ -57,6 +57,7 @@ def clear_lab_import_cache() -> None:
         "strategy_intake",
         "tool_registry",
         "mock_mx_adapter",
+        "real_mx_adapter",
     }
     for name in list(sys.modules):
         if name.startswith("test_") or name in lab_module_names or name.startswith("lab03_"):

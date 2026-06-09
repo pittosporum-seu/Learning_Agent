@@ -21,6 +21,7 @@ build/
 *.local.yml
 runtime_config.json
 runtime_config.yaml
+runtime_config.*
 
 # Local agent/runtime configuration
 .codex/
@@ -29,6 +30,8 @@ provider_responses/
 authenticated_responses/
 real_user_preferences.*
 real_memory_events.*
+labs/**/outputs/*
+!labs/**/outputs/.gitkeep
 
 # Obsidian local settings
 .obsidian/workspace.json
