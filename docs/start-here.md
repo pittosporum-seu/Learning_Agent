@@ -80,6 +80,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 8. [Lab 03: Finance Tool Use Mock](../labs/03-finance-tool-use-mock/README.md)
 9. [Lab 04: Research RAG Basic](../labs/04-research-rag-basic/README.md)
 10. [Lab 05: User Preference Memory](../labs/05-user-preference-memory/README.md)
+11. [Lab 06: Skill Registry](../labs/06-skill-registry/README.md)
 
 启动 Lab 01 网页 demo：
 
@@ -97,10 +98,11 @@ http://127.0.0.1:8765/
 
 - 投研只是贯穿案例，核心是学习 Agent 的任务理解、循环执行、工具调用、证据收集、记忆、Skill 固化和安全评测。
 - 展示框架把 Parts 0-12 统一起来，说明每个 Lab 的输入、输出、观察点、边界和验收标准。
-- Lab 01 / Lab 02 / Lab 03 / Lab 04 / Lab 05 不生成真实股票名单，也不执行交易。
+- Lab 01 / Lab 02 / Lab 03 / Lab 04 / Lab 05 / Lab 06 不生成真实股票名单，也不执行交易。
 - Lab 03 用 mock 工具展示工具注册、入参、返回、失败、`tool_trace` 和 `candidate_evidence`。
 - Lab 04 用本地 markdown 知识库展示 RAG，输出 `retrieval_trace` 和 `retrieved_context`。
 - Lab 05 用本地 mock 用户偏好展示 Memory，输出 `memory_trace` 和 `preference_adjusted_evidence`。
+- Lab 06 用本地 mock Skill 元数据展示 Skill Registry，输出 `skill_selection_trace`、`selected_skills` 和 `disabled_skills`。
 
 ## 当前可运行
 
@@ -111,10 +113,11 @@ http://127.0.0.1:8765/
 | [Lab 03: Finance Tool Use Mock](../labs/03-finance-tool-use-mock/README.md) | mock 工具注册、工具选择、`tool_trace`、`candidate_evidence` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 03-finance-tool-use-mock` |
 | [Lab 04: Research RAG Basic](../labs/04-research-rag-basic/README.md) | 本地 mock 知识库、关键词检索、`retrieval_trace`、`retrieved_context` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 04-research-rag-basic` |
 | [Lab 05: User Preference Memory](../labs/05-user-preference-memory/README.md) | 本地 mock 用户偏好、`memory_trace`、`preference_adjusted_evidence` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 05-user-preference-memory` |
+| [Lab 06: Skill Registry](../labs/06-skill-registry/README.md) | 本地 mock Skill 元数据、`skill_selection_trace`、`selected_skills`、`disabled_skills` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 06-skill-registry` |
 
 当前继续方向：
 
-- 进入 Lab 06: Skill Registry，把稳定能力注册成可选择、可审查的 Skill。
+- 进入 Lab 07: Skill Generation，把稳定流程生成可审查的 Skill 草稿。
 - 默认测试不依赖真实 key。
 
 ## 安全边界

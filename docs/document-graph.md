@@ -64,6 +64,7 @@ flowchart LR
     D05 --> L05["labs/05-user-preference-memory"]
     D06 --> L08["labs/08-mx-skills-adapter"]
     D07 --> L09["labs/09-research-planner"]
+    D10 --> L06["labs/06-skill-registry"]
     D10 --> L07["labs/07-skill-generation"]
     D12 --> L12["labs/12-evaluation-safety"]
 ```
@@ -179,6 +180,8 @@ flowchart TD
 | [../labs/04-research-rag-basic/AGENTS.md](../labs/04-research-rag-basic/AGENTS.md) | Lab 04 持久规则，约束本地 mock RAG、来源字段和禁止真实投资建议。 |
 | [../labs/05-user-preference-memory/README.md](../labs/05-user-preference-memory/README.md) | 第五个可运行 Lab，用本地 mock 用户偏好展示 Memory、`memory_trace` 和 `preference_adjusted_evidence`。 |
 | [../labs/05-user-preference-memory/AGENTS.md](../labs/05-user-preference-memory/AGENTS.md) | Lab 05 持久规则，约束 mock Memory、证据视图调整和禁止覆盖安全边界。 |
+| [../labs/06-skill-registry/README.md](../labs/06-skill-registry/README.md) | 第六个可运行 Lab，用本地 mock Skill 元数据展示 Skill Registry、`skill_selection_trace`、`selected_skills` 和 `disabled_skills`。 |
+| [../labs/06-skill-registry/AGENTS.md](../labs/06-skill-registry/AGENTS.md) | Lab 06 持久规则，约束 mock Skill Registry、禁用场景、人工确认边界和禁止真实 runtime 配置。 |
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |
 | [../labs/shared/testing/README.md](../labs/shared/testing/README.md) | 统一 Lab 测试入口说明。 |
 | [../scripts/run-lab-demo.ps1](../scripts/run-lab-demo.ps1) | 统一 demo 运行封装。 |

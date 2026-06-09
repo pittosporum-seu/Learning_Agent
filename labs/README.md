@@ -58,7 +58,11 @@ labs/
   - 用本地 mock 偏好展示 Memory。
   - 生成 `memory_snapshot`、`memory_trace` 和 `preference_adjusted_evidence`。
   - Memory 只调整候选证据视图，不覆盖原始证据、来源或风险提示。
-- [ ] Lab 06-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
+- [x] [Lab 06: Skill Registry](06-skill-registry/README.md)
+  - 用本地 mock Skill 元数据展示 Skill Registry。
+  - 生成 `skill_selection_trace`、`selected_skills` 和 `disabled_skills`。
+  - 高风险、证据不足、缺少风险提示或需要人工确认时禁用 Skill。
+- [ ] Lab 07-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试
 
@@ -104,6 +108,12 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 04-resear
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 05-user-preference-memory
 ```
 
+运行 Lab 06 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 06-skill-registry
+```
+
 运行全部 Lab 测试：
 
 ```powershell
@@ -113,7 +123,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 只运行某个 Lab：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 05-user-preference-memory
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 06-skill-registry
 ```
 
 ## 统一要求

@@ -47,6 +47,8 @@ def clear_lab_import_cache() -> None:
         "rag_context",
         "run_lab",
         "simple_retriever",
+        "skill_registry",
+        "skill_selector",
         "strategy_intake",
         "tool_registry",
     }

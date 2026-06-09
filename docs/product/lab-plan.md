@@ -36,7 +36,7 @@
 | 03 | Finance Tool Use Mock | 03 Tool Use | mock `mx-xuangu`、`mx-data`、`mx-search` 的工具调用、`tool_trace` 和 `candidate_evidence` | 已实现 |
 | 04 | Research RAG Basic | 04 RAG | 本地 markdown 知识库检索、`retrieval_trace`、`retrieved_context` 和 `augmented_evidence` | 已实现 |
 | 05 | User Preference Memory | 05 Memory | 本地 mock 用户偏好、`memory_trace`、`preference_application` 和 `preference_adjusted_evidence` | 已实现 |
-| 06 | Skill Registry | 06 MCP / 10 Skills | 建立 Skill 注册表和能力选择机制 | 计划中 |
+| 06 | Skill Registry | 06 MCP / 10 Skills | 本地 mock Skill 元数据、`skill_selection_trace`、`selected_skills` 和 `disabled_skills` | 已实现 |
 | 07 | Skill Generation | 10 Skills | 把稳定投研流程生成 `SKILL.md` 草稿 | 计划中 |
 | 08 | MX Skills Adapter | 03 Tool Use / 06 MCP | mock 与真实东方财富妙想 Skills 适配 | 计划中 |
 | 09 | Research Planner | 07 Agent Harness | 生成投研 DAG 并管理步骤状态 | 计划中 |
@@ -164,18 +164,22 @@ outputs/
 
 ## Lab 06: Skill Registry
 
-目标：建立可复用 Skill 的注册表，让系统知道什么时候调用哪个能力。
+目标：建立可复用 Skill 的注册表，让系统知道什么时候选择哪个能力，以及什么时候必须禁用。
 
 关键点：
 
-- Skill 元数据包含名称、触发条件、输入、输出、禁用场景。
-- 投研系统先注册 mock Skill，再映射到东方财富妙想 Skills。
-- 不把所有事情都塞进一个大 prompt。
+- Skill 元数据包含名称、描述、触发条件、输入、输出、禁用场景和人工确认要求。
+- 根据 Lab 05 的 Memory + RAG + Evidence 输出构造 selection context。
+- 输出 `skill_selection_trace`、`selected_skills` 和 `disabled_skills`，解释每个 Skill 的选择或禁用原因。
+- 本 Lab 只使用本地 mock Skill 元数据，不使用 `.agents/` 或 `.codex/` 本地运行配置。
+- blocked、证据不足、缺少风险提示或需要人工确认的场景会禁用相应 Skill。
 
 验收标准：
 
-- 系统能根据任务选择合适 Skill。
-- 禁用场景能阻止不合适调用。
+- 系统能根据任务和证据选择合适 mock Skill。
+- 禁用场景能阻止不合适调用，并保留可复盘原因。
+- 输出包含 `risk_disclosure`，不生成投资建议、真实股票推荐或交易动作。
+- 测试不依赖真实模型、真实财经 API、真实用户数据或本地 runtime Skill 配置。
 
 ## Lab 07: Skill Generation
 

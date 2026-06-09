@@ -131,6 +131,16 @@ $lab05PreferencePolicyTests = Read-RepoFile "labs/05-user-preference-memory/test
 $lab05RunLabTests = Read-RepoFile "labs/05-user-preference-memory/tests/test_run_lab.py"
 $lab05MockPreferences = Read-RepoFile "labs/05-user-preference-memory/data/mock_user_preferences.json"
 $lab05MemoryEvents = Read-RepoFile "labs/05-user-preference-memory/data/memory_events.jsonl"
+$lab06Agents = Read-RepoFile "labs/06-skill-registry/AGENTS.md"
+$lab06Readme = Read-RepoFile "labs/06-skill-registry/README.md"
+$lab06MockSkills = Read-RepoFile "labs/06-skill-registry/data/mock_skills.json"
+$lab06SkillRegistry = Read-RepoFile "labs/06-skill-registry/src/skill_registry.py"
+$lab06SkillSelector = Read-RepoFile "labs/06-skill-registry/src/skill_selector.py"
+$lab06RunLab = Read-RepoFile "labs/06-skill-registry/src/run_lab.py"
+$lab06Demo = Read-RepoFile "labs/06-skill-registry/demo/run_demo.py"
+$lab06SkillRegistryTests = Read-RepoFile "labs/06-skill-registry/tests/test_skill_registry.py"
+$lab06SkillSelectorTests = Read-RepoFile "labs/06-skill-registry/tests/test_skill_selector.py"
+$lab06RunLabTests = Read-RepoFile "labs/06-skill-registry/tests/test_run_lab.py"
 
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
@@ -218,7 +228,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -230,6 +240,7 @@ $roadmapTokens = @(
     '[x] Lab 03: Finance Tool Use Mock',
     '[x] Lab 04: Research RAG Basic',
     '[x] Lab 05: User Preference Memory',
+    '[x] Lab 06: Skill Registry',
     'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -245,9 +256,11 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Lab 03",
     "Lab 04",
     "Lab 05",
+    "Lab 06",
     "routing_decision",
     "retrieved_context",
     "memory_trace",
+    "skill_selection_trace",
     "mock",
     "key",
     "run-lab-tests.ps1"
@@ -285,6 +298,7 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "retrieved_context",
     "memory_trace",
     "preference_adjusted_evidence",
+    "skill_selection_trace",
     "Lab 03-12",
     "SKILL.md",
     "API key"
@@ -296,6 +310,7 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 3 Finance Tool Use Mock",
     "Part 4 Research RAG Basic",
     "Part 5 User Preference Memory",
+    "Part 6 Skill Registry",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
@@ -304,6 +319,7 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "EvidenceItem",
     "retrieved_context",
     "preference_adjusted_evidence",
+    "skill_selection_trace",
     "SafetyDecision",
     "EvalResult",
     "required_human_confirmation",
@@ -327,6 +343,7 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "candidate_evidence",
     "retrieved_context",
     "preference_adjusted_evidence",
+    "skill_selection_trace",
     "routing_decision",
     "OpenAI-compatible",
     "LLM_API_KEY",
@@ -386,6 +403,7 @@ Require-Contains "labs/README.md" $labsReadme @(
     "03-finance-tool-use-mock/README.md",
     "04-research-rag-basic/README.md",
     "05-user-preference-memory/README.md",
+    "06-skill-registry/README.md",
     "12-evaluation-safety",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
@@ -781,6 +799,81 @@ Require-Contains "labs/05-user-preference-memory/data/memory_events.jsonl" $lab0
     "preference_update",
     "unsafe_preference_attempt",
     "risk_disclosure"
+)
+
+Require-Contains "labs/06-skill-registry/AGENTS.md" $lab06Agents @(
+    "Skill Registry",
+    "mock Skill",
+    "skill_selection_trace",
+    "selected_skills",
+    "disabled_skills",
+    "risk_disclosure"
+)
+Require-Contains "labs/06-skill-registry/README.md" $lab06Readme @(
+    "Skill Registry",
+    ".agents/",
+    ".codex/",
+    "skill_selection_trace",
+    "selected_skills",
+    "disabled_skills",
+    "requires_human_confirmation",
+    "risk_disclosure",
+    "run-lab-demo.ps1",
+    "run-lab-tests.ps1"
+)
+Require-Contains "labs/06-skill-registry/data/mock_skills.json" $lab06MockSkills @(
+    "candidate-evidence-summary",
+    "negative-news-risk-review",
+    "watchlist-handoff",
+    "simulation-portfolio-plan",
+    "requires_human_confirmation"
+)
+Require-Contains "labs/06-skill-registry/src/skill_registry.py" $lab06SkillRegistry @(
+    "SkillDefinition",
+    "SkillRegistry",
+    "list_skills",
+    "get_skill",
+    "mock_skills.json"
+)
+Require-Contains "labs/06-skill-registry/src/skill_selector.py" $lab06SkillSelector @(
+    "build_selection_context",
+    "select_skills",
+    "matched_triggers",
+    "disabled_reasons",
+    "missing_risk_disclosure",
+    "requires_human_confirmation"
+)
+Require-Contains "labs/06-skill-registry/src/run_lab.py" $lab06RunLab @(
+    "run_skill_registry",
+    "run_user_preference_memory",
+    "registered_skills",
+    "skill_selection_trace",
+    "selected_skills",
+    "disabled_skills",
+    "Lab 07 Skill Generation",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/06-skill-registry/demo/run_demo.py" $lab06Demo @(
+    "run_skill_registry",
+    "--user-id",
+    "--output",
+    "selected_skills",
+    "disabled_skills"
+)
+Require-Contains "labs/06-skill-registry/tests/test_skill_registry.py" $lab06SkillRegistryTests @(
+    "test_registry_loads_four_mock_skills",
+    "test_get_skill_finds_candidate_evidence_summary",
+    "candidate-evidence-summary"
+)
+Require-Contains "labs/06-skill-registry/tests/test_skill_selector.py" $lab06SkillSelectorTests @(
+    "test_normal_request_selects_summary_and_risk_review",
+    "test_blocked_request_does_not_select_execution_skills",
+    "test_missing_risk_disclosure_disables_handoff_and_simulation"
+)
+Require-Contains "labs/06-skill-registry/tests/test_run_lab.py" $lab06RunLabTests @(
+    "test_normal_request_generates_selection_outputs",
+    "test_blocked_request_does_not_select_execution_skills",
+    "PROHIBITED_KEYS"
 )
 
 Require-Contains "labs/shared/testing/README.md" $sharedTestingReadme @("run_lab_tests.py")

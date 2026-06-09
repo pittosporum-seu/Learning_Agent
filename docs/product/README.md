@@ -34,6 +34,7 @@
 | [Lab 03: Finance Tool Use Mock](../../labs/03-finance-tool-use-mock/README.md) | 已实现 | 用 mock `mx-xuangu`、`mx-data`、`mx-search` 风格工具展示工具调用、`tool_trace` 和 `candidate_evidence`。 |
 | [Lab 04: Research RAG Basic](../../labs/04-research-rag-basic/README.md) | 已实现 | 用本地 markdown 知识库展示 RAG，生成 `retrieval_trace`、`retrieved_context` 和 `augmented_evidence`。 |
 | [Lab 05: User Preference Memory](../../labs/05-user-preference-memory/README.md) | 已实现 | 用本地 mock 用户偏好展示 Memory，生成 `memory_trace` 和 `preference_adjusted_evidence`。 |
+| [Lab 06: Skill Registry](../../labs/06-skill-registry/README.md) | 已实现 | 用本地 mock Skill 元数据展示 Skill 注册、`skill_selection_trace`、选择、禁用和人工确认边界。 |
 
 ## Lab 03-12 简短路线
 
@@ -66,7 +67,7 @@
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-web.ps1 -Lab 01-strategy-intake -Port 8765
 ```
 
-运行 Lab 01 / Lab 02 / Lab 03 / Lab 04 / Lab 05 demo：
+运行 Lab 01 / Lab 02 / Lab 03 / Lab 04 / Lab 05 / Lab 06 demo：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake
@@ -74,6 +75,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 02-strate
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 03-finance-tool-use-mock
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 04-research-rag-basic
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 05-user-preference-memory
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 06-skill-registry
 ```
 
 运行全部 Lab 测试：

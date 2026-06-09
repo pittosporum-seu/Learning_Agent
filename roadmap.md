@@ -46,7 +46,7 @@
 - [x] Lab 03: Finance Tool Use Mock
 - [x] Lab 04: Research RAG Basic
 - [x] Lab 05: User Preference Memory
-- [ ] Lab 06: Skill Registry
+- [x] Lab 06: Skill Registry
 - [ ] Lab 07: Skill Generation
 - [ ] Lab 08: MX Skills Adapter
 - [ ] Lab 09: Research Planner
@@ -114,5 +114,6 @@
 - [x] 补齐共享行情、股票池和资讯 mock 数据
 - [x] 完成 Research RAG Basic Lab
 - [x] 完成 User Preference Memory Lab
+- [x] 完成 Skill Registry Lab
 
 详见：[docs/series-plan.md](docs/series-plan.md)

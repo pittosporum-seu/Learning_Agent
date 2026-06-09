@@ -1,0 +1,42 @@
+[
+  {
+    "name": "candidate-evidence-summary",
+    "description": "Summarize mock candidate evidence into a source-aware observation-pool brief.",
+    "skill_type": "analysis",
+    "triggers": ["candidate_evidence", "evidence_items", "observation_pool", "risk_disclosure"],
+    "disabled_when": ["upstream_blocked", "missing_candidate_evidence", "missing_risk_disclosure"],
+    "inputs": ["strategy_spec", "candidate_evidence", "retrieved_context", "risk_disclosure"],
+    "outputs": ["evidence_summary", "source_refs", "limitations"],
+    "requires_human_confirmation": false
+  },
+  {
+    "name": "negative-news-risk-review",
+    "description": "Review mock risk flags and retrieved risk context before any observation-pool handoff.",
+    "skill_type": "analysis",
+    "triggers": ["risk_flags", "negative_news", "valuation_watch", "retrieved_context", "risk_boundary"],
+    "disabled_when": ["upstream_blocked", "missing_candidate_evidence", "missing_risk_disclosure"],
+    "inputs": ["candidate_evidence", "preference_adjusted_evidence", "retrieved_context", "risk_disclosure"],
+    "outputs": ["risk_review", "risk_flags", "follow_up_questions"],
+    "requires_human_confirmation": false
+  },
+  {
+    "name": "watchlist-handoff",
+    "description": "Prepare a mock watchlist handoff for human review without changing any real watchlist.",
+    "skill_type": "handoff",
+    "triggers": ["observation_pool", "preference_adjusted_evidence", "watchlist", "human_confirmation"],
+    "disabled_when": ["upstream_blocked", "missing_preference_adjusted_evidence", "missing_risk_disclosure", "requires_human_confirmation"],
+    "inputs": ["preference_adjusted_evidence", "risk_disclosure", "memory_snapshot"],
+    "outputs": ["watchlist_handoff_draft", "human_confirmation_required"],
+    "requires_human_confirmation": true
+  },
+  {
+    "name": "simulation-portfolio-plan",
+    "description": "Draft a mock simulation portfolio plan that cannot execute until a human confirms.",
+    "skill_type": "execution_plan",
+    "triggers": ["simulation_portfolio", "preference_adjusted_evidence", "human_confirmation", "risk_disclosure"],
+    "disabled_when": ["upstream_blocked", "missing_preference_adjusted_evidence", "missing_risk_disclosure", "requires_human_confirmation"],
+    "inputs": ["preference_adjusted_evidence", "risk_disclosure", "memory_snapshot"],
+    "outputs": ["simulation_plan_draft", "human_confirmation_required"],
+    "requires_human_confirmation": true
+  }
+]

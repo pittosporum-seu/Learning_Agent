@@ -38,7 +38,7 @@
 | Part 3 Finance Tool Use Mock | Lab 03 | 03 Tool Use | mock 财经工具注册、选择、入参、返回和失败处理 | 已实现 |
 | Part 4 Research RAG Basic | Lab 04 | 04 RAG | 从规则、资料片段和报告模板检索依据 | 已实现 |
 | Part 5 User Preference Memory | Lab 05 | 05 Memory | 用户风险偏好、排除条件和观察池偏好的记忆 | 已实现 |
-| Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明和选择机制 | 计划中 |
+| Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明、选择机制和禁用边界 | 已实现 |
 | Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成 `SKILL.md` 草稿 | 计划中 |
 | Part 8 MX Skills Adapter | Lab 08 | 06 MCP / 03 Tool Use | 东方财富妙想 Skills 的 mock-first 适配边界 | 计划中 |
 | Part 9 Research Planner DAG | Lab 09 | 07 Agent Harness | 从线性计划升级到 DAG 研究计划 | 计划中 |
@@ -104,12 +104,12 @@
 
 ### Part 6 Skill Registry
 
-- 展示目标：展示如何把稳定能力注册为 Skill，并用元数据描述触发场景、输入、输出和禁用场景。
-- 输入：已有 Lab 流程、Skill 元数据、用户任务。
-- 核心输出：Skill registry、Skill 选择结果、未选择原因。
-- 读者应该观察什么：Skill 是可复用能力的边界说明，不是把所有提示词堆在一起。
-- 不做什么：不自动启用高风险 Skill，不把真实 key 写进 Skill。
-- 验收标准：每个 Skill 有 name、description、inputs、outputs、guardrails、tests；选择过程可追踪。
+- 展示目标：展示如何把稳定能力注册为 Skill，并用元数据描述触发场景、输入、输出、禁用场景和人工确认边界。
+- 输入：Lab 05 的 Memory + RAG + Evidence 输出、本地 mock Skill 元数据、用户任务。
+- 核心输出：`registered_skills`、`skill_selection_trace`、`selected_skills`、`disabled_skills`。
+- 读者应该观察什么：Skill 是可复用能力的边界说明，不是把所有提示词堆在一起；选择和禁用都需要可解释。
+- 不做什么：不使用 `.agents/` 或 `.codex/` 作为仓库内容，不自动启用高风险 Skill，不把真实 key 写进 Skill，不执行交易动作。
+- 验收标准：每个 mock Skill 有 name、description、triggers、disabled_when、inputs、outputs、requires_human_confirmation；blocked、证据不足、缺少风险提示或需要人工确认时禁用相应 Skill；选择过程可追踪且测试可复现。
 
 ### Part 7 Skill Generation
 
