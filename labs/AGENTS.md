@@ -31,6 +31,7 @@ Before modifying any Lab, read:
 - Real model or finance provider paths must be optional, environment-gated, and safe when keys are missing.
 - Do not write real provider responses or secrets into `outputs/`, fixtures, docs, or logs.
 - When a Lab changes, sync its README, `labs/README.md`, `docs/product/lab-plan.md`, `TODO.md`, `roadmap.md`, and `docs/document-graph.md` if behavior, status, or structure changes.
+- When adding, completing, or changing Lab status, also sync `README.md`, `docs/start-here.md`, `docs/product/README.md`, `docs/product/showcase-framework.md`, and ensure `scripts/audit-related-docs.ps1` passes its dynamic Lab navigation audit.
 
 ## Checks
 

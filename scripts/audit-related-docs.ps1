@@ -33,6 +33,19 @@ function Require-Contains {
     }
 }
 
+function Test-TextHasLabReference {
+    param(
+        [string]$Content,
+        [string]$LabFolder,
+        [string]$LabNumber
+    )
+
+    return $Content.Contains($LabFolder) -or
+        $Content.Contains("Lab $LabNumber") -or
+        $Content.Contains("Lab$LabNumber") -or
+        $Content.Contains("Part $([int]$LabNumber)")
+}
+
 $foundationDocs = @(
     "docs/foundations/01-workflow-vs-agent.md",
     "docs/foundations/02-agent-loop.md",
@@ -431,6 +444,15 @@ Require-Contains ".gitignore" $gitignore @(
     "provider_responses/",
     "authenticated_responses/"
 )
+
+$trackedFiles = & git -C $root ls-files
+$trackedLocalRuntimeFiles = $trackedFiles | Where-Object {
+    $_ -like ".agents/*" -or $_ -like ".codex/*"
+}
+foreach ($trackedLocalRuntimeFile in $trackedLocalRuntimeFiles) {
+    Add-Failure "Tracked local runtime config must not be committed: $trackedLocalRuntimeFile"
+}
+
 Require-Contains "scripts/check-secrets.ps1" $secretCheck @(
     "git ls-files --cached --others --exclude-standard",
     "LLM_API_KEY",
@@ -1111,6 +1133,51 @@ Require-Contains "labs/shared/investment_research_case/strategy_request.md" $sha
 Require-Contains "labs/shared/investment_research_case/strategy_policy.md" $sharedStrategyPolicy @("StrategySpec")
 Require-Contains "labs/shared/investment_research_case/risk_policy.md" $sharedRiskPolicy @("API Key")
 Require-Contains "labs/shared/investment_research_case/user_profile.md" $sharedUserProfile @("risk_level")
+
+$dynamicLabDirs = Get-ChildItem -LiteralPath (Join-Path $root "labs") -Directory |
+    Where-Object { $_.Name -match '^\d{2}-' } |
+    Sort-Object Name
+
+$requiredLabFiles = @(
+    "AGENTS.md",
+    "README.md",
+    "demo/run_demo.py",
+    "outputs/.gitkeep"
+)
+
+$labNavigationDocs = @(
+    @{ Name = "README.md"; Content = $readme },
+    @{ Name = "labs/README.md"; Content = $labsReadme },
+    @{ Name = "docs/start-here.md"; Content = $startHere },
+    @{ Name = "docs/product/README.md"; Content = $productReadme },
+    @{ Name = "docs/product/lab-plan.md"; Content = $labPlan },
+    @{ Name = "docs/product/showcase-framework.md"; Content = $showcaseFramework },
+    @{ Name = "docs/document-graph.md"; Content = $documentGraph },
+    @{ Name = "roadmap.md"; Content = $roadmap }
+)
+
+foreach ($labDir in $dynamicLabDirs) {
+    $labFolder = $labDir.Name
+    $labNumber = $labFolder.Substring(0, 2)
+
+    foreach ($relativeFile in $requiredLabFiles) {
+        $requiredPath = Join-Path $labDir.FullName $relativeFile
+        if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) {
+            Add-Failure "Lab $labFolder missing required file: $relativeFile"
+        }
+    }
+
+    $testsPath = Join-Path $labDir.FullName "tests"
+    if (-not (Test-Path -LiteralPath $testsPath -PathType Container)) {
+        Add-Failure "Lab $labFolder missing required directory: tests/"
+    }
+
+    foreach ($navDoc in $labNavigationDocs) {
+        if (-not (Test-TextHasLabReference $navDoc["Content"] $labFolder $labNumber)) {
+            Add-Failure "$($navDoc["Name"]) missing navigation reference for Lab $labNumber ($labFolder)"
+        }
+    }
+}
 
 if ($failures.Count -gt 0) {
     $failures | ForEach-Object { Write-Output $_ }

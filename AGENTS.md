@@ -38,6 +38,7 @@ Also read the nearest `AGENTS.md` in the target directory and the target README.
 - Keep each Lab focused on one Agent concept.
 - Prefer mock-first implementations; real providers must be optional and environment-gated.
 - When changing Product, Labs, Skills, or docs structure, sync relevant navigation and status files: `README.md`, `docs/README.md`, `docs/document-graph.md`, `roadmap.md`, `TODO.md`, and affected READMEs.
+- When adding, completing, or changing Lab status, sync every Lab navigation surface: `README.md`, `labs/README.md`, `docs/start-here.md`, `docs/product/README.md`, `docs/product/lab-plan.md`, `docs/product/showcase-framework.md`, `docs/document-graph.md`, `roadmap.md`, and `TODO.md`; the dynamic audit must pass.
 - Use `hooks/content-update.md` as the maintenance checklist for docs and Lab changes.
 - Preserve formal docs only; do not commit writing prompts, self-check notes, chat traces, or scratch content.
 

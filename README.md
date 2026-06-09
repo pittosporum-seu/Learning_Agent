@@ -79,6 +79,18 @@
   - 用本地 mock 偏好展示 Memory。
   - 生成 `memory_snapshot`、`memory_trace` 和 `preference_adjusted_evidence`。
   - Memory 只调整证据视图，不覆盖原始证据或风险提示。
+- [Lab 06: Skill Registry](labs/06-skill-registry/README.md)
+  - 用本地 mock Skill 元数据展示 Skill Registry。
+  - 生成 `skill_selection_trace`、`selected_skills` 和 `disabled_skills`。
+  - blocked、证据不足、缺少风险提示或需要人工确认时禁用相应 Skill。
+- [Lab 07: Skill Generation](labs/07-skill-generation/README.md)
+  - 从稳定投研流程生成可审查的 `SKILL.md` 草稿。
+  - 生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review`。
+  - 草稿只用于人工 review，不自动启用，也不写入本地运行配置目录。
+- [Lab 08: MX Skills Adapter](labs/08-mx-skills-adapter/README.md)
+  - 用 mock-first 方式展示外部财经 Skills 适配层。
+  - 生成 `adapter_trace` 和 `safety_gate`，默认只调用 mock adapter。
+  - real adapter 仅为 stub，不读取真实 key，不发送网络请求。
 
 完整设计：
 

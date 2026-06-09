@@ -36,14 +36,15 @@
    - 相关目录的 `AGENTS.md`
    - `labs/README.md`
    - 新增目录对应的 README，例如 `docs/readings/README.md`、`docs/patterns/README.md`、`docs/engineering/README.md`、`skills/README.md`
-6. 如果新增了维护流程、脚本或目录，同步更新根 README 的仓库结构。
-7. 如果涉及真实 API、模型 key、财经数据源或模拟组合，确认：
+6. 如果新增、完成或调整 Lab 状态，必须同步 `README.md`、`labs/README.md`、`docs/start-here.md`、`docs/product/README.md`、`docs/product/lab-plan.md`、`docs/product/showcase-framework.md`、`docs/document-graph.md`、`roadmap.md` 和 `TODO.md`。
+7. 如果新增了维护流程、脚本或目录，同步更新根 README 的仓库结构。
+8. 如果涉及真实 API、模型 key、财经数据源或模拟组合，确认：
    - 真实 key 只从环境变量读取。
    - `LLM_API_KEY`、`MIMO_API_KEY`、`XIAOMI_API_KEY`、`MX_APIKEY` 只能出现在说明文档或 `.env.example` 占位中，不能提交真实值。
    - `.env.example` 只保留占位。
    - 测试默认 mock，不依赖真实 key。
    - UI 或报告里有风险提示和人工确认边界。
-8. 运行检查：
+9. 运行检查：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/check-content.ps1
@@ -52,9 +53,11 @@ powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 ```
 
-9. 根据审核结果回看相关文档，修正遗漏的导航、文档图、资源索引或路线状态。
-10. 看一眼 `git diff`，确认没有真实密钥、过程性内容或无关改动。
-11. 提交并推送到 GitHub。
+`audit-related-docs.ps1` 会动态扫描所有 `labs/NN-*` 目录，检查 Lab 必需文件和导航文档引用完整性。
+
+10. 根据审核结果回看相关文档，修正遗漏的导航、文档图、资源索引或路线状态。
+11. 看一眼 `git diff`，确认没有真实密钥、过程性内容或无关改动。
+12. 提交并推送到 GitHub。
 
 ## 检查重点
 
@@ -66,6 +69,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 - `resources/README.md` 中是否补充重要来源。
 - `roadmap.md` 中对应任务是否勾选。
 - `TODO.md` 中当前任务状态是否同步。
+- 新增、完成或调整 Lab 状态时，根 README、Labs README、Start Here、Product README、lab-plan、showcase-framework、document-graph、roadmap 和 TODO 是否全部同步。
 - 是否误把写作提示、自检表、聊天痕迹放进正式文章。
 - 参考链接是否去掉跟踪参数。
 - 是否误提交真实 API key、token、cookie、session、password 或真实环境文件。
@@ -80,6 +84,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 - 草稿生成过程可以在本地存在，但不进入正式文章。
 - 每次新增或重写文章都要同步导航、文档图、资源索引和待办状态。
 - 每次涉及 Product、Labs、Skills 或脚本变更，都要同步审核相关文档，并运行密钥检查。
+- 每次新增、完成或调整 Lab 状态，都要运行 `audit-related-docs.ps1`，让动态 Lab 导航检查兜底。
 - 每个 Lab 的 demo 用于人工试跑，tests 用于自动回归；两者都应能在无真实 API key 的环境下运行。
 - Web demo 只作为本地实验入口，默认绑定 `127.0.0.1`。
 - `.agents/`、`.codex/` 和真实 provider 响应目录属于本地运行配置或生成痕迹，不进入仓库。

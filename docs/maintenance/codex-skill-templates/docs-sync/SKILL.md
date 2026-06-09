@@ -40,6 +40,24 @@ When docs structure or long-lived content changes, update relevant files among:
 - affected directory READMEs
 - `scripts/audit-related-docs.ps1`, when a durable invariant should be checked
 
+## Dynamic Lab Sync
+
+This file is a template reference under `docs/maintenance/`; it is not a local `.agents/` or `.codex/` runtime configuration.
+
+When a Lab is added, completed, renamed, or moved to a new status, make sure every Lab navigation surface references that Lab:
+
+- `README.md`
+- `labs/README.md`
+- `docs/start-here.md`
+- `docs/product/README.md`
+- `docs/product/lab-plan.md`
+- `docs/product/showcase-framework.md`
+- `docs/document-graph.md`
+- `roadmap.md`
+- `TODO.md`
+
+Run `scripts/audit-related-docs.ps1`. The audit dynamically scans `labs/NN-*` directories, checks required Lab files, and fails when any navigation surface misses an existing Lab.
+
 ## Content Rules
 
 - Keep formal docs free of writing prompts, self-check notes, chat traces, and scratch text.
