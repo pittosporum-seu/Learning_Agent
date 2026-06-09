@@ -71,6 +71,10 @@
   - mock 财经工具注册、选择、入参和返回。
   - `tool_trace` 和 `candidate_evidence`。
   - 只生成 mock 观察池证据，不生成投资建议。
+- [Lab 04: Research RAG Basic](labs/04-research-rag-basic/README.md)
+  - 用本地 markdown 知识库展示 RAG。
+  - 检索策略规则、风险规则和报告模板。
+  - 生成 `retrieval_trace`、`retrieved_context` 和 `augmented_evidence`。
 
 完整设计：
 

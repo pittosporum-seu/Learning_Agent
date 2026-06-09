@@ -50,7 +50,11 @@ labs/
   - 注册 `select_candidates`、`fetch_market_data`、`search_finance_news` 三个 mock 工具。
   - 展示工具选择、入参、返回、`tool_trace` 和 `candidate_evidence`。
   - 只生成 mock 观察池证据，不生成投资建议。
-- [ ] Lab 04-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
+- [x] [Lab 04: Research RAG Basic](04-research-rag-basic/README.md)
+  - 用本地 markdown 知识库展示 RAG。
+  - 生成 `retrieval_trace`、`retrieved_context` 和 `augmented_evidence`。
+  - 将策略规则、风险规则和报告模板挂回 Lab 03 的 mock 证据。
+- [ ] Lab 05-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试
 
@@ -84,6 +88,12 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 02-strate
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 03-finance-tool-use-mock
 ```
 
+运行 Lab 04 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 04-research-rag-basic
+```
+
 运行全部 Lab 测试：
 
 ```powershell
@@ -93,7 +103,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 只运行某个 Lab：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 03-finance-tool-use-mock
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 04-research-rag-basic
 ```
 
 ## 统一要求

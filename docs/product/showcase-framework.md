@@ -36,7 +36,7 @@
 | Part 1 Strategy Intake & Router | Lab 01 | 01 Workflow vs Agent | StrategySpec、Workflow/Agent Router、routing_decision | 已实现 |
 | Part 2 Agent Loop & Structured Trace | Lab 02 | 02 Agent Loop | observe -> decide -> act、structured trace、fail closed | 已补强 structured trace |
 | Part 3 Finance Tool Use Mock | Lab 03 | 03 Tool Use | mock 财经工具注册、选择、入参、返回和失败处理 | 已实现 |
-| Part 4 Research RAG Basic | Lab 04 | 04 RAG | 从规则、资料片段和报告模板检索依据 | 计划中 |
+| Part 4 Research RAG Basic | Lab 04 | 04 RAG | 从规则、资料片段和报告模板检索依据 | 已实现 |
 | Part 5 User Preference Memory | Lab 05 | 05 Memory | 用户风险偏好、排除条件和观察池偏好的记忆 | 计划中 |
 | Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明和选择机制 | 计划中 |
 | Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成 `SKILL.md` 草稿 | 计划中 |
@@ -88,10 +88,10 @@
 
 - 展示目标：展示系统如何从策略规则、风险规则、报告模板和资料片段中检索依据。
 - 输入：`StrategySpec`、查询意图、mock 文档库。
-- 核心输出：检索片段、`EvidenceItem`、引用路径、缺口说明。
+- 核心输出：`retrieval_trace`、`retrieved_context`、带引用的 `augmented_evidence`、缺口说明。
 - 读者应该观察什么：RAG 的价值是把回答锚定到资料，而不是让模型凭感觉补全。
 - 不做什么：不把检索片段当作绝对事实，不引用无来源材料，不抓取未声明的数据源。
-- 验收标准：每条结论可追溯到证据；无证据时明确说明不足；测试覆盖命中、未命中和冲突证据。
+- 验收标准：每条检索片段都有 `source`、`chunk_id`、`matched_terms` 和 `used_for`；上游 blocked 时不进入正常检索；测试覆盖文档加载、关键词命中和输出边界。
 
 ### Part 5 User Preference Memory
 

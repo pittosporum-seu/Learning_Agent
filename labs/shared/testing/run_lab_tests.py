@@ -29,8 +29,28 @@ def discover_lab_suite(lab_dir: Path) -> unittest.TestSuite | None:
     if not tests_dir.exists():
         return None
 
+    clear_lab_import_cache()
     loader = unittest.TestLoader()
     return loader.discover(start_dir=str(tests_dir), pattern="test*.py")
+
+
+def clear_lab_import_cache() -> None:
+    lab_module_names = {
+        "agent_loop",
+        "document_loader",
+        "evidence",
+        "finance_tools",
+        "llm_strategy_intake",
+        "mimo_strategy_intake",
+        "rag_context",
+        "run_lab",
+        "simple_retriever",
+        "strategy_intake",
+        "tool_registry",
+    }
+    for name in list(sys.modules):
+        if name.startswith("test_") or name in lab_module_names or name.startswith("lab03_"):
+            sys.modules.pop(name, None)
 
 
 def build_suite(selected_lab: str | None) -> tuple[unittest.TestSuite, list[str]]:

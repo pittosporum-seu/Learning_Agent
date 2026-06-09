@@ -78,6 +78,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 6. [Lab 01: Strategy Intake + Workflow/Agent Router](../labs/01-strategy-intake/README.md)
 7. [Lab 02: Strategy Agent Loop](../labs/02-strategy-agent-loop/README.md)
 8. [Lab 03: Finance Tool Use Mock](../labs/03-finance-tool-use-mock/README.md)
+9. [Lab 04: Research RAG Basic](../labs/04-research-rag-basic/README.md)
 
 启动 Lab 01 网页 demo：
 
@@ -95,8 +96,9 @@ http://127.0.0.1:8765/
 
 - 投研只是贯穿案例，核心是学习 Agent 的任务理解、循环执行、工具调用、证据收集、记忆、Skill 固化和安全评测。
 - 展示框架把 Parts 0-12 统一起来，说明每个 Lab 的输入、输出、观察点、边界和验收标准。
-- Lab 01 / Lab 02 / Lab 03 不生成真实股票名单，也不执行交易。
+- Lab 01 / Lab 02 / Lab 03 / Lab 04 不生成真实股票名单，也不执行交易。
 - Lab 03 用 mock 工具展示工具注册、入参、返回、失败、`tool_trace` 和 `candidate_evidence`。
+- Lab 04 用本地 markdown 知识库展示 RAG，输出 `retrieval_trace` 和 `retrieved_context`。
 
 ## 当前可运行
 
@@ -105,10 +107,11 @@ http://127.0.0.1:8765/
 | [Lab 01: Strategy Intake + Workflow/Agent Router](../labs/01-strategy-intake/README.md) | 自然语言策略解析、`routing_decision`、规则基线、可配置模型语义补全、安全边界 | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake` |
 | [Lab 02: Strategy Agent Loop](../labs/02-strategy-agent-loop/README.md) | 最小 Agent Loop、trace、阻断、max-turn 保护 | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 02-strategy-agent-loop` |
 | [Lab 03: Finance Tool Use Mock](../labs/03-finance-tool-use-mock/README.md) | mock 工具注册、工具选择、`tool_trace`、`candidate_evidence` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 03-finance-tool-use-mock` |
+| [Lab 04: Research RAG Basic](../labs/04-research-rag-basic/README.md) | 本地 mock 知识库、关键词检索、`retrieval_trace`、`retrieved_context` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 04-research-rag-basic` |
 
 当前继续方向：
 
-- 进入 Lab 04: Research RAG Basic，把 Lab 03 的 mock evidence 接入本地资料检索、规则片段和报告模板。
+- 进入 Lab 05: User Preference Memory，让用户风险偏好、排除条件和报告风格进入上下文。
 - 默认测试不依赖真实 key。
 
 ## 安全边界

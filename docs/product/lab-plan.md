@@ -34,7 +34,7 @@
 | 01 | Strategy Intake + Workflow/Agent Router | 01 Workflow vs Agent | 自然语言策略转 `StrategySpec` 和 `routing_decision`，解释 workflow / agent / clarification / blocked 的路由原因 | 已实现 |
 | 02 | Strategy Agent Loop | 02 Agent Loop | Observe-Decide-Act 循环、trace、阻断、投研计划生成 | 已实现 |
 | 03 | Finance Tool Use Mock | 03 Tool Use | mock `mx-xuangu`、`mx-data`、`mx-search` 的工具调用、`tool_trace` 和 `candidate_evidence` | 已实现 |
-| 04 | Research RAG Basic | 04 RAG | 检索策略规则、风险规则和报告模板 | 计划中 |
+| 04 | Research RAG Basic | 04 RAG | 本地 markdown 知识库检索、`retrieval_trace`、`retrieved_context` 和 `augmented_evidence` | 已实现 |
 | 05 | User Preference Memory | 05 Memory | 记住用户风险偏好、排除行业、候选数量 | 计划中 |
 | 06 | Skill Registry | 06 MCP / 10 Skills | 建立 Skill 注册表和能力选择机制 | 计划中 |
 | 07 | Skill Generation | 10 Skills | 把稳定投研流程生成 `SKILL.md` 草稿 | 计划中 |
@@ -130,18 +130,20 @@ outputs/
 
 ## Lab 04: Research RAG Basic
 
-目标：让系统能从策略规则、风险规则、报告模板中检索相关片段。
+目标：让系统能从策略规则、风险规则、报告模板中检索相关片段，并把这些片段接入 Lab 03 的 `candidate_evidence`。
 
 关键点：
 
-- 先用本地文本和简单检索实现。
-- 报告必须引用检索到的规则。
-- 资料不足时输出“证据不足”，不补脑。
+- 先用本地 markdown 文档和简单关键词检索实现。
+- `retrieved_context` 必须包含 `source`、`chunk_id`、`matched_terms` 和 `used_for`。
+- 上游 Lab 03 blocked 时，本 Lab 不进入正常检索。
+- 检索片段只能作为 mock 依据，不生成真实投资建议。
 
 验收标准：
 
 - 报告能列出引用来源。
-- 风险规则能被检索并参与输出。
+- 风险规则和报告模板能被检索并参与输出。
+- 测试不依赖真实模型、真实向量库或真实财经 API。
 
 ## Lab 05: User Preference Memory
 

@@ -107,6 +107,19 @@ $lab03RunLabTests = Read-RepoFile "labs/03-finance-tool-use-mock/tests/test_run_
 $lab03MockUniverse = Read-RepoFile "labs/03-finance-tool-use-mock/data/mock_universe.csv"
 $lab03MockPrices = Read-RepoFile "labs/03-finance-tool-use-mock/data/mock_prices.csv"
 $lab03MockNews = Read-RepoFile "labs/03-finance-tool-use-mock/data/mock_news.md"
+$lab04Agents = Read-RepoFile "labs/04-research-rag-basic/AGENTS.md"
+$lab04Readme = Read-RepoFile "labs/04-research-rag-basic/README.md"
+$lab04DocumentLoader = Read-RepoFile "labs/04-research-rag-basic/src/document_loader.py"
+$lab04SimpleRetriever = Read-RepoFile "labs/04-research-rag-basic/src/simple_retriever.py"
+$lab04RagContext = Read-RepoFile "labs/04-research-rag-basic/src/rag_context.py"
+$lab04RunLab = Read-RepoFile "labs/04-research-rag-basic/src/run_lab.py"
+$lab04Demo = Read-RepoFile "labs/04-research-rag-basic/demo/run_demo.py"
+$lab04DocumentLoaderTests = Read-RepoFile "labs/04-research-rag-basic/tests/test_document_loader.py"
+$lab04SimpleRetrieverTests = Read-RepoFile "labs/04-research-rag-basic/tests/test_simple_retriever.py"
+$lab04RunLabTests = Read-RepoFile "labs/04-research-rag-basic/tests/test_run_lab.py"
+$lab04StrategyPolicy = Read-RepoFile "labs/04-research-rag-basic/data/strategy_policy.md"
+$lab04RiskPolicy = Read-RepoFile "labs/04-research-rag-basic/data/risk_policy.md"
+$lab04ReportTemplate = Read-RepoFile "labs/04-research-rag-basic/data/report_template.md"
 
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
@@ -148,6 +161,7 @@ Require-Contains "README.md" $readme @(
     "labs/01-strategy-intake/README.md",
     "labs/02-strategy-agent-loop/README.md",
     "labs/03-finance-tool-use-mock/README.md",
+    "labs/04-research-rag-basic/README.md",
     "AGENTS.md",
     ".agents/skills",
     "run-lab-web.ps1",
@@ -177,6 +191,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "labs/01-strategy-intake",
     "labs/02-strategy-agent-loop",
     "labs/03-finance-tool-use-mock",
+    "labs/04-research-rag-basic",
     "product/lab-plan.md",
     "product/security-and-secrets.md",
     "AGENTS.md",
@@ -189,7 +204,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -199,6 +214,7 @@ $roadmapTokens = @(
     'routing_decision',
     '[x] Lab 02: Strategy Agent Loop',
     '[x] Lab 03: Finance Tool Use Mock',
+    '[x] Lab 04: Research RAG Basic',
     'Codex'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -212,7 +228,9 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Lab 01",
     "Lab 02",
     "Lab 03",
+    "Lab 04",
     "routing_decision",
+    "retrieved_context",
     "mock",
     "key",
     "run-lab-tests.ps1"
@@ -247,6 +265,7 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "routing_decision",
     "tool_trace",
     "candidate_evidence",
+    "retrieved_context",
     "Lab 03-12",
     "SKILL.md",
     "API key"
@@ -256,12 +275,14 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 1 Strategy Intake & Router",
     "Part 2 Agent Loop & Structured Trace",
     "Part 3 Finance Tool Use Mock",
+    "Part 4 Research RAG Basic",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
     "TraceEvent",
     "ToolCall",
     "EvidenceItem",
+    "retrieved_context",
     "SafetyDecision",
     "EvalResult",
     "required_human_confirmation",
@@ -283,6 +304,7 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "Lab 12",
     "tool_trace",
     "candidate_evidence",
+    "retrieved_context",
     "routing_decision",
     "OpenAI-compatible",
     "LLM_API_KEY",
@@ -327,6 +349,7 @@ Require-Contains "labs/README.md" $labsReadme @(
     "01-strategy-intake/README.md",
     "02-strategy-agent-loop/README.md",
     "03-finance-tool-use-mock/README.md",
+    "04-research-rag-basic/README.md",
     "12-evaluation-safety",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
@@ -568,6 +591,78 @@ Require-Contains "labs/03-finance-tool-use-mock/tests/test_run_lab.py" $lab03Run
 Require-Contains "labs/03-finance-tool-use-mock/data/mock_universe.csv" $lab03MockUniverse @("MXGRID001", "theme")
 Require-Contains "labs/03-finance-tool-use-mock/data/mock_prices.csv" $lab03MockPrices @("trend_score", "max_drawdown")
 Require-Contains "labs/03-finance-tool-use-mock/data/mock_news.md" $lab03MockNews @("risk_flags", "MXGRID001")
+
+Require-Contains "labs/04-research-rag-basic/AGENTS.md" $lab04Agents @(
+    "Research RAG Basic",
+    "local mock documents",
+    "retrieval_trace",
+    "retrieved_context",
+    "risk_disclosure"
+)
+Require-Contains "labs/04-research-rag-basic/README.md" $lab04Readme @(
+    "RAG",
+    "candidate_evidence",
+    "retrieval_trace",
+    "retrieved_context",
+    "augmented_evidence",
+    "risk_disclosure",
+    "run-lab-demo.ps1",
+    "run-lab-tests.ps1"
+)
+Require-Contains "labs/04-research-rag-basic/src/document_loader.py" $lab04DocumentLoader @(
+    "load_documents",
+    "load_markdown_chunks",
+    "chunk_id",
+    "source",
+    "keywords"
+)
+Require-Contains "labs/04-research-rag-basic/src/simple_retriever.py" $lab04SimpleRetriever @(
+    "retrieve",
+    "matched_terms",
+    "score",
+    "top_k"
+)
+Require-Contains "labs/04-research-rag-basic/src/rag_context.py" $lab04RagContext @(
+    "build_rag_context",
+    "build_retrieval_query",
+    "retrieval_trace",
+    "retrieved_context",
+    "used_for",
+    "augmented_evidence"
+)
+Require-Contains "labs/04-research-rag-basic/src/run_lab.py" $lab04RunLab @(
+    "run_research_rag_basic",
+    "run_finance_tool_use_mock",
+    "retrieval_trace",
+    "retrieved_context",
+    "Lab 05 User Preference Memory",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/04-research-rag-basic/demo/run_demo.py" $lab04Demo @(
+    "run_research_rag_basic",
+    "--request",
+    "--output",
+    "retrieved_context"
+)
+Require-Contains "labs/04-research-rag-basic/tests/test_document_loader.py" $lab04DocumentLoaderTests @(
+    "test_load_documents_splits_markdown_into_chunks",
+    "risk_policy.md",
+    "report_template.md"
+)
+Require-Contains "labs/04-research-rag-basic/tests/test_simple_retriever.py" $lab04SimpleRetrieverTests @(
+    "test_retriever_can_hit_risk_policy_and_report_template",
+    "risk_policy.md",
+    "report_template.md"
+)
+Require-Contains "labs/04-research-rag-basic/tests/test_run_lab.py" $lab04RunLabTests @(
+    "test_run_lab_generates_retrieved_context_and_trace",
+    "test_each_retrieved_context_has_required_fields",
+    "test_blocked_request_skips_normal_retrieval",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/04-research-rag-basic/data/strategy_policy.md" $lab04StrategyPolicy @("StrategySpec", "candidate_evidence", "retrieved_context")
+Require-Contains "labs/04-research-rag-basic/data/risk_policy.md" $lab04RiskPolicy @("risk_disclosure", "negative_news", "human_confirmation")
+Require-Contains "labs/04-research-rag-basic/data/report_template.md" $lab04ReportTemplate @("report_template", "source", "chunk_id", "used_for")
 
 Require-Contains "labs/shared/testing/README.md" $sharedTestingReadme @("run_lab_tests.py")
 Require-Contains "labs/shared/testing/run_lab_tests.py" $sharedTestingRunner @("unittest", "--lab")
