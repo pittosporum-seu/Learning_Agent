@@ -22,8 +22,9 @@
 2. [个性化投资调研 Agent 系统愿景](personalized-investment-research-agent.md): 理解系统想做什么、边界在哪里。
 3. [Agent 学习展示框架](showcase-framework.md): 理解 Parts 0-12 如何把 Agent 概念串成可运行展示系统。
 4. [Lab 总计划](lab-plan.md): 看 12 篇基础文章如何映射到 12 个 Labs。
-5. [密钥、安全与合规边界](security-and-secrets.md): 先明确真实 key、财经输出和人工确认规则。
-6. [Labs 入口](../../labs/README.md): 进入当前可运行实验。
+5. [Lab 09: Research Planner DAG 设计](lab09-research-planner-dag-design.md): 理解下一阶段 Planner 如何组织 adapter、证据、Skill 和安全边界。
+6. [密钥、安全与合规边界](security-and-secrets.md): 先明确真实 key、财经输出和人工确认规则。
+7. [Labs 入口](../../labs/README.md): 进入当前可运行实验。
 
 ## 当前做到哪里
 
@@ -37,6 +38,7 @@
 | [Lab 06: Skill Registry](../../labs/06-skill-registry/README.md) | 已实现 | 用本地 mock Skill 元数据展示 Skill 注册、`skill_selection_trace`、选择、禁用和人工确认边界。 |
 | [Lab 07: Skill Generation](../../labs/07-skill-generation/README.md) | 已实现 | 从 Lab 06 输出生成可审查 Skill draft，保留 `skill_draft_markdown` 和 `draft_review`。 |
 | [Lab 08: Finance Provider Adapter](../../labs/08-mx-skills-adapter/README.md) | 已实现 | 用 mock-first adapter contract 展示 `adapter_trace`、`safety_gate`，并支持 optional external provider manual integration。 |
+| [Lab 09: Research Planner DAG 设计](lab09-research-planner-dag-design.md) | 设计已完成 | 明确 DAG 节点、依赖、状态流转、失败传播、人工确认边界和后续实现结构。 |
 
 ## Lab 03-12 简短路线
 
@@ -48,7 +50,7 @@
 | 06 | Skill Registry | 建立 Skill 元数据和选择机制。 |
 | 07 | Skill Generation | 从稳定流程生成可审查 `SKILL.md` 草稿。 |
 | 08 | Finance Provider Adapter | 将 mock 工具和未来可选外部财经 provider 放到统一 adapter contract 下；MX Skills 是一个 provider profile。 |
-| 09 | Research Planner | 将线性计划升级成有状态 DAG。 |
+| 09 | Research Planner DAG | 将 adapter、证据、Memory、Skill 和安全边界编排成有状态 DAG；设计文档见 [Lab 09: Research Planner DAG 设计](lab09-research-planner-dag-design.md)。 |
 | 10 | Evidence Report | 生成带来源、时间、证据和风险提示的报告。 |
 | 11 | Simulation Portfolio | 用 mock 或模拟组合接口验证流程，保留人工确认。 |
 | 12 | Evaluation & Safety | 自动检查密钥、证据、风险提示和越权动作。 |

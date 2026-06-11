@@ -12,6 +12,8 @@ Lab 状态变更时，除了导航链接，还必须同步 `TODO.md`、`roadmap.
 - 新增或调整 Product、Labs、Skills、Engineering 等长期维护文档。
 - 新增真实 API 适配、密钥环境变量或安全边界。
 - 新增可运行 demo、测试框架或脚本。
+- 新增 Product / Lab 设计文档，例如 Planner DAG、Evidence Report 或 Evaluation 方案。
+- 当前 Planner DAG 设计文档路径是 `docs/product/lab09-research-planner-dag-design.md`。
 
 ## 执行步骤
 
@@ -72,6 +74,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 - `roadmap.md` 中对应任务是否勾选。
 - `TODO.md` 中当前任务状态是否同步。
 - 新增、完成或调整 Lab 状态时，根 README、Labs README、Start Here、Product README、lab-plan、showcase-framework、document-graph、roadmap 和 TODO 是否全部同步。
+- 新增 Product / Lab 设计文档时，Product README、lab-plan、showcase-framework、document-graph、roadmap 和 TODO 是否全部同步。
 - 是否误把写作提示、自检表、聊天痕迹放进正式文章。
 - 参考链接是否去掉跟踪参数。
 - 是否误提交真实 API key、token、cookie、session、password 或真实环境文件。

@@ -50,6 +50,7 @@
 - [x] Lab 07: Skill Generation
 - [x] Lab 08: Finance Provider Adapter
 - [x] Lab 08: optional external provider manual integration
+- [x] 设计 Lab 09 Research Planner DAG
 - [ ] Lab 09: Research Planner
 - [ ] Lab 10: Evidence Report
 - [ ] Lab 11: Simulation Portfolio
@@ -118,5 +119,6 @@
 - [x] 完成 Skill Registry Lab
 - [x] 完成 Skill Generation Lab
 - [x] 完成 Finance Provider Adapter Lab
+- [x] 设计 Research Planner DAG Lab
 
 详见：[docs/series-plan.md](docs/series-plan.md)

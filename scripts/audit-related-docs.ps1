@@ -123,6 +123,7 @@ $productReadme = Read-RepoFile "docs/product/README.md"
 $productVision = Read-RepoFile "docs/product/personalized-investment-research-agent.md"
 $showcaseFramework = Read-RepoFile "docs/product/showcase-framework.md"
 $labPlan = Read-RepoFile "docs/product/lab-plan.md"
+$lab09Design = Read-RepoFile "docs/product/lab09-research-planner-dag-design.md"
 $securityPlan = Read-RepoFile "docs/product/security-and-secrets.md"
 $envExample = Read-RepoFile ".env.example"
 $gitignore = Read-RepoFile ".gitignore"
@@ -263,6 +264,7 @@ Require-Contains "README.md" $readme @(
     "docs/product/personalized-investment-research-agent.md",
     "docs/product/showcase-framework.md",
     "docs/product/lab-plan.md",
+    "docs/product/lab09-research-planner-dag-design.md",
     "docs/product/security-and-secrets.md",
     "labs/01-strategy-intake/README.md",
     "labs/02-strategy-agent-loop/README.md",
@@ -281,6 +283,7 @@ Require-Contains "hooks/content-update.md" $hook @(
     "docs/start-here.md",
     "docs/glossary.md",
     "docs/product/showcase-framework.md",
+    "docs/product/lab09-research-planner-dag-design.md",
     "docs/maintenance/codex-skill-templates/",
     "audit-related-docs.ps1",
     "check-secrets.ps1",
@@ -296,6 +299,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "TODO.md",
     "product/README.md",
     "product/showcase-framework.md",
+    "product/lab09-research-planner-dag-design.md",
     "labs/01-strategy-intake",
     "labs/02-strategy-agent-loop",
     "labs/03-finance-tool-use-mock",
@@ -353,7 +357,7 @@ foreach ($index in 1..12) {
     }
 }
 
-Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/", "product/AGENTS.md", "maintenance/codex-skill-templates")
+Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/lab09-research-planner-dag-design.md", "product/", "product/AGENTS.md", "maintenance/codex-skill-templates")
 Require-Contains "docs/start-here.md" $startHere @(
     "Start Here",
     "Agent Loop",
@@ -367,6 +371,8 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Lab 06",
     "Lab 07",
     "Lab 08",
+    "Lab 09",
+    "lab09-research-planner-dag-design.md",
     "routing_decision",
     "retrieved_context",
     "memory_trace",
@@ -404,6 +410,7 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "personalized-investment-research-agent.md",
     "showcase-framework.md",
     "lab-plan.md",
+    "lab09-research-planner-dag-design.md",
     "security-and-secrets.md",
     "routing_decision",
     "tool_trace",
@@ -429,6 +436,8 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 6 Skill Registry",
     "Part 7 Skill Generation",
     "Part 8 Finance Provider Adapter",
+    "Part 9 Research Planner DAG",
+    "lab09-research-planner-dag-design.md",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
@@ -473,7 +482,33 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "OpenAI-compatible",
     "LLM_API_KEY",
     "candidate-screen",
-    "finance-news"
+    "finance-news",
+    "lab09-research-planner-dag-design.md"
+)
+Require-Contains "docs/product/lab09-research-planner-dag-design.md" $lab09Design @(
+    "Research Planner DAG",
+    "parse_and_route",
+    "adapter_capability_check",
+    "candidate_generation",
+    "market_data_check",
+    "news_risk_check",
+    "evidence_context_attach",
+    "memory_preference_adjustment",
+    "skill_selection",
+    "human_review_gate",
+    "ResearchDagNode",
+    "PlannerTraceEvent",
+    "PlannerRunState",
+    "HumanReviewGate",
+    "PlannerFinalOutput",
+    "planner_trace",
+    "risk_disclosure",
+    "safety_gate",
+    "Lab 10 Evidence Report",
+    "buy",
+    "sell",
+    "recommendation",
+    "target_price"
 )
 Require-Contains "docs/product/security-and-secrets.md" $securityPlan @(
     "LLM_API_KEY",

@@ -17,7 +17,7 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 设计 Lab 09 Research Planner DAG | `labs/09-research-planner/` | 明确投研 DAG 节点、依赖、状态、失败传播和人工确认边界 |
+| P0 | 实现 Lab 09: Research Planner DAG | `labs/09-research-planner/` | 能把 adapter 能力编排成可观察、可测试、可失败关闭的研究计划 DAG |
 
 ## Next
 
@@ -65,3 +65,4 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-09 | 实现 Lab 07: Skill Generation | 本轮提交 |
 | 2026-06-09 | 实现 Lab 08: Finance Provider Adapter | 本轮提交 |
 | 2026-06-11 | 完成 Lab 08 optional external provider integration | 本轮提交 |
+| 2026-06-11 | 完成 Lab 09 Research Planner DAG 设计 | 本轮提交 |

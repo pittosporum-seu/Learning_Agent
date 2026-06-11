@@ -41,7 +41,7 @@
 | Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明、选择机制和禁用边界 | 已实现 |
 | Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成可审查 `SKILL.md` 草稿 | 已实现 |
 | Part 8 Finance Provider Adapter | Lab 08 | 06 MCP / 03 Tool Use | 外部财经 provider 的 mock-first adapter、optional external provider 和 manual integration 边界 | 已实现 |
-| Part 9 Research Planner DAG | Lab 09 | 07 Agent Harness | 从线性计划升级到 DAG 研究计划 | 计划中 |
+| Part 9 Research Planner DAG | Lab 09 | 07 Agent Harness | 从线性计划升级到 DAG 研究计划，设计文档已固化 | 计划中 |
 | Part 10 Evidence Report | Lab 10 | 12 Evaluation / Trace / Safety | 带来源、时间、证据和限制条件的报告 | 计划中 |
 | Part 11 Simulation Portfolio & HITL | Lab 11 | 07 Agent Harness / 12 Evaluation | 模拟组合、人工确认、权限边界 | 计划中 |
 | Part 12 Evaluation & Safety | Lab 12 | 12 Evaluation / Trace / Safety | 回归评测、密钥检查、风险边界和越权检测 | 计划中 |
@@ -131,12 +131,13 @@
 
 ### Part 9 Research Planner DAG
 
-- 展示目标：把线性投研计划升级为 DAG，展示任务依赖、并行分支、失败传播和重试边界。
-- 输入：`StrategySpec`、可用工具、检索能力、用户偏好。
-- 核心输出：Research Planner DAG、节点状态、依赖关系、跳过原因。
+- 设计文档：[Lab 09: Research Planner DAG 设计](lab09-research-planner-dag-design.md)。
+- 展示目标：把线性投研计划升级为 DAG，展示任务依赖、并行分支、失败传播、人工确认边界和 fail-closed 执行。
+- 输入：Lab 08 的 `adapter_trace`、`safety_gate`、`registered_adapters`，以及前序 Labs 的 `StrategySpec`、证据、Memory 和 Skill 状态。
+- 核心输出：Research Planner DAG、节点状态、依赖关系、失败传播 trace、人工确认节点和跳过原因。
 - 读者应该观察什么：Planner 不是简单待办列表，而是带依赖、状态和退出条件的执行图。
-- 不做什么：不让计划绕过安全节点，不把失败节点静默忽略。
-- 验收标准：DAG 可视化；节点状态可追踪；阻断、重试和跳过都有原因。
+- 不做什么：不让计划绕过安全节点，不把失败节点静默忽略，不自动完成需要人工确认的节点。
+- 验收标准：DAG 可视化；节点状态可追踪；阻断、等待人工确认和跳过都有原因；输出保留 `risk_disclosure`。
 
 ### Part 10 Evidence Report
 

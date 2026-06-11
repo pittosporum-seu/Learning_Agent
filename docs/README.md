@@ -10,6 +10,7 @@
 - [`series-plan.md`](series-plan.md): Agent 基础知识系列的 12 篇写作规划。
 - [`product/README.md`](product/README.md): 个性化投研 Agent 产品案例入口。
 - [`product/showcase-framework.md`](product/showcase-framework.md): Learning_Agent 可运行展示系统的 Parts、数据契约和实现顺序。
+- [`product/lab09-research-planner-dag-design.md`](product/lab09-research-planner-dag-design.md): Lab 09 Research Planner DAG 的设计文档。
 - [`product/AGENTS.md`](product/AGENTS.md): 产品文档的持久规则。
 - [`maintenance/codex-skill-templates/`](maintenance/codex-skill-templates/README.md): 仓库维护 Skill 模板资料，不是本地运行配置。
 - `product/`: 个性化投研 Agent 系统的产品愿景、展示框架、Lab 总计划和安全边界。

@@ -39,7 +39,7 @@
 | 06 | Skill Registry | 06 MCP / 10 Skills | 本地 mock Skill 元数据、`skill_selection_trace`、`selected_skills` 和 `disabled_skills` | 已实现 |
 | 07 | Skill Generation | 10 Skills | 从 Lab 06 输出生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review` | 已实现 |
 | 08 | Finance Provider Adapter | 03 Tool Use / 06 MCP | mock-first adapter contract、`adapter_trace`、`safety_gate`、optional external provider 和 manual integration test | 已实现 |
-| 09 | Research Planner | 07 Agent Harness | 生成投研 DAG 并管理步骤状态 | 计划中 |
+| 09 | Research Planner DAG | 07 Agent Harness | DAG 设计已明确；下一步生成投研 DAG 并管理节点依赖、状态、失败传播和人工确认边界 | 计划中 |
 | 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成带来源、时间、证据和风险提示的报告 | 计划中 |
 | 11 | Simulation Portfolio | 11 Browser / Computer Use Agent / Safety | 用 mock 或 `mx-moni` 风格接口做模拟组合验证 | 计划中 |
 | 12 | Evaluation & Safety | 12 Evaluation / Trace / Safety | 检查密钥泄露、无证据推荐、风险提示缺失 | 计划中 |
@@ -226,20 +226,26 @@ outputs/
 - 输出包含 `risk_disclosure` 和 `safety_gate`，不生成投资建议、真实股票推荐或交易动作。
 - blocked 请求不会调用 adapter。
 
-## Lab 09: Research Planner
+## Lab 09: Research Planner DAG
 
-目标：把投研流程变成有状态的 DAG。
+设计文档：[Lab 09: Research Planner DAG 设计](lab09-research-planner-dag-design.md)。
+
+目标：把 Lab 08 的 adapter 能力、证据链、Skill 状态和安全边界编排成有状态的研究计划 DAG。
 
 关键点：
 
-- 候选池生成、行情核验、资讯核验、风险审查、报告生成之间有明确依赖。
-- 每个节点有输入、输出、状态和错误处理。
-- Planner 可以暂停等待人工确认。
+- DAG 至少包含 `parse_and_route`、`adapter_capability_check`、`candidate_generation`、`market_data_check`、`news_risk_check`、`evidence_context_attach`、`memory_preference_adjustment`、`skill_selection` 和 `human_review_gate`。
+- 每个节点有输入、输出、依赖、状态、失败传播和人工确认边界。
+- Planner trace 记录每个节点为什么 ready、completed、blocked、skipped 或 waiting_human_confirmation。
+- 上游 blocked 时下游必须 skipped 或 blocked，不能静默继续。
+- `human_review_gate` 不自动 completed，正常终态是等待人工确认。
 
 验收标准：
 
-- 同一策略能生成稳定计划。
+- 同一策略能生成稳定 Research Planner DAG。
 - 节点失败不会污染后续报告。
+- 输出包含 `risk_disclosure`，不包含买卖动作、目标价、收益承诺或投资建议。
+- 默认测试不依赖真实模型、真实财经 API、真实 key 或真实 provider 响应。
 
 ## Lab 10: Evidence Report
 

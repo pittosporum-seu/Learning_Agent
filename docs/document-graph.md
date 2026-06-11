@@ -35,6 +35,7 @@ flowchart TD
     X7 --> P1["Lab 总计划"]
     X7 --> P2["密钥、安全与合规边界"]
     X7 --> P3["Agent 学习展示框架"]
+    X7 --> P4["Lab 09 Planner DAG 设计"]
     X7 --> X5
 ```
 
@@ -166,6 +167,7 @@ flowchart TD
 | [product/personalized-investment-research-agent.md](product/personalized-investment-research-agent.md) | 定义个性化投研 Agent 系统愿景、边界、架构和 Skill 固化思路。 |
 | [product/showcase-framework.md](product/showcase-framework.md) | 固化 Learning_Agent 的可运行展示框架，说明 Parts 0-12、统一数据契约、展示原则和实现顺序。 |
 | [product/lab-plan.md](product/lab-plan.md) | 把 12 篇基础文章映射成 12 个投研 Labs。 |
+| [product/lab09-research-planner-dag-design.md](product/lab09-research-planner-dag-design.md) | Lab 09 Research Planner DAG 设计文档，定义 DAG 节点、依赖、状态流转、失败传播、人工确认边界和后续实现结构。 |
 | [product/security-and-secrets.md](product/security-and-secrets.md) | 定义 Hermes 注入密钥、`.env.example`、提交前检查和财经输出边界。 |
 | [product/AGENTS.md](product/AGENTS.md) | 产品文档修改规则，约束产品定位、Lab 计划同步和财经输出边界。 |
 | [../labs/README.md](../labs/README.md) | Labs 入口，说明投研主线和统一要求。 |
