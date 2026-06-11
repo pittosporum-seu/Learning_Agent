@@ -95,6 +95,10 @@
   - 把 Lab 08 输出组织成有状态 DAG。
   - 生成 `research_dag` 和 `planner_trace`。
   - 正常 mock 路径停在 `waiting_human_confirmation`，不自动通过人工确认。
+- [Lab 10: Evidence Report](labs/10-evidence-report/README.md)
+  - 把 Lab 09 输出整理成可审查证据报告草稿。
+  - 生成 `evidence_report`、`report_generation_trace` 和 `evidence_refs`。
+  - 报告固定带风险提示、限制说明和人工确认边界。
 
 完整设计：
 

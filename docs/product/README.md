@@ -40,6 +40,7 @@
 | [Lab 07: Skill Generation](../../labs/07-skill-generation/README.md) | 已实现 | 从 Lab 06 输出生成可审查 Skill draft，保留 `skill_draft_markdown` 和 `draft_review`。 |
 | [Lab 08: Finance Provider Adapter](../../labs/08-mx-skills-adapter/README.md) | 已实现 | 用 mock-first adapter contract 展示 `adapter_trace`、`safety_gate`，并支持 optional external provider manual integration。 |
 | [Lab 09: Research Planner DAG](../../labs/09-research-planner/README.md) | 已实现 | 把 Lab 08 输出组织成 `research_dag` 和 `planner_trace`，并在 `human_review_gate` 等待人工确认。 |
+| [Lab 10: Evidence Report](../../labs/10-evidence-report/README.md) | 已实现 | 把 Lab 09 输出整理成 `evidence_report`、`report_generation_trace` 和 `evidence_refs`，并保留风险提示和人工确认边界。 |
 
 ## Lab 03-12 简短路线
 
@@ -72,7 +73,7 @@
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-web.ps1 -Lab 01-strategy-intake -Port 8765
 ```
 
-运行 Lab 01 / Lab 02 / Lab 03 / Lab 04 / Lab 05 / Lab 06 / Lab 07 / Lab 08 demo：
+运行 Lab 01 / Lab 02 / Lab 03 / Lab 04 / Lab 05 / Lab 06 / Lab 07 / Lab 08 / Lab 09 / Lab 10 demo：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 01-strategy-intake
@@ -83,6 +84,8 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 05-user-p
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 06-skill-registry
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 07-skill-generation
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 08-mx-skills-adapter
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 09-research-planner
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 10-evidence-report
 ```
 
 运行全部 Lab 测试：

@@ -1,0 +1,54 @@
+{
+  "template_id": "lab10-evidence-report-template",
+  "version": "1.0",
+  "source_lab": "Lab 10 Evidence Report",
+  "default_status": "needs_human_review",
+  "human_review_required": true,
+  "sections": [
+    {
+      "section_id": "report_header",
+      "title": "Report Header",
+      "required_fields": ["report_id", "generated_at", "source_lab", "status", "human_review_required"]
+    },
+    {
+      "section_id": "strategy_summary",
+      "title": "Strategy Summary",
+      "required_fields": ["original_request", "themes", "horizon_days", "routing_mode", "output_type"]
+    },
+    {
+      "section_id": "planner_summary",
+      "title": "Planner Summary",
+      "required_fields": ["planner_status", "completed_nodes", "blocked_nodes", "skipped_nodes", "waiting_human_confirmation_nodes"]
+    },
+    {
+      "section_id": "candidate_observation_pool",
+      "title": "Candidate Observation Pool",
+      "required_fields": ["candidate_id", "candidate_name", "theme", "evidence_refs", "risk_flags", "preference_status"]
+    },
+    {
+      "section_id": "evidence_table",
+      "title": "Evidence Table",
+      "required_fields": ["evidence_id", "source_type", "source_name", "claim", "value_summary", "limitations", "confidence"]
+    },
+    {
+      "section_id": "retrieved_context_table",
+      "title": "Retrieved Context Table",
+      "required_fields": ["source", "chunk_id", "section", "used_for", "matched_terms"]
+    },
+    {
+      "section_id": "risk_and_limitations",
+      "title": "Risk and Limitations",
+      "required_fields": ["risk_disclosure", "mock_data_notice", "evidence_gaps", "uncertainty_notes", "no_investment_advice"]
+    },
+    {
+      "section_id": "human_review_checklist",
+      "title": "Human Review Checklist",
+      "required_fields": ["review_evidence_sources", "confirm_no_trading_action", "confirm_risk_disclosure", "confirm_before_watchlist_simulation_or_publication"]
+    },
+    {
+      "section_id": "next_steps",
+      "title": "Next Steps",
+      "required_fields": ["next_lab", "allowed_next_steps", "not_allowed_actions"]
+    }
+  ]
+}

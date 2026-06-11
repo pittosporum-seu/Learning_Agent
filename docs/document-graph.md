@@ -198,6 +198,14 @@ flowchart TD
 | [../labs/09-research-planner/src/dag_model.py](../labs/09-research-planner/src/dag_model.py) | Lab 09 DAG 模型，定义 `ResearchDagNode`、依赖校验、拓扑排序和依赖状态读取。 |
 | [../labs/09-research-planner/src/planner_executor.py](../labs/09-research-planner/src/planner_executor.py) | Lab 09 mock executor，按拓扑顺序生成 `planner_trace`、节点状态、blocked / skipped / waiting_human_confirmation 结果。 |
 | [../labs/09-research-planner/src/run_lab.py](../labs/09-research-planner/src/run_lab.py) | Lab 09 入口，调用 Lab 08 runner，构建 `research_dag` 并输出 Planner 运行状态。 |
+| [../labs/10-evidence-report/README.md](../labs/10-evidence-report/README.md) | 第十个可运行 Lab，把 Lab 09 输出整理成 Evidence Report，生成 `evidence_report`、`report_generation_trace` 和 `evidence_refs`。 |
+| [../labs/10-evidence-report/AGENTS.md](../labs/10-evidence-report/AGENTS.md) | Lab 10 持久规则，约束证据报告、来源引用、风险提示、人工确认和禁止投资建议。 |
+| [../labs/10-evidence-report/data/report_template.json](../labs/10-evidence-report/data/report_template.json) | Lab 10 报告模板，列出 9 个 section 和必需字段。 |
+| [../labs/10-evidence-report/src/report_model.py](../labs/10-evidence-report/src/report_model.py) | Lab 10 报告模型和安全字段检查。 |
+| [../labs/10-evidence-report/src/evidence_collector.py](../labs/10-evidence-report/src/evidence_collector.py) | Lab 10 证据收集器，从 Planner 输出、adapter trace、候选证据、RAG 和 trace 中整理引用。 |
+| [../labs/10-evidence-report/src/report_builder.py](../labs/10-evidence-report/src/report_builder.py) | Lab 10 报告构建器，生成 9 个 section 和 `report_generation_trace`。 |
+| [../labs/10-evidence-report/src/report_safety.py](../labs/10-evidence-report/src/report_safety.py) | Lab 10 报告安全审查，检查风险提示、人工确认、禁止字段和禁止语义。 |
+| [../labs/10-evidence-report/src/run_lab.py](../labs/10-evidence-report/src/run_lab.py) | Lab 10 入口，调用 Lab 09 runner 并输出证据报告草稿。 |
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |
 | [../labs/shared/testing/README.md](../labs/shared/testing/README.md) | 统一 Lab 测试入口说明。 |
 | [../scripts/run-lab-demo.ps1](../scripts/run-lab-demo.ps1) | 统一 demo 运行封装。 |

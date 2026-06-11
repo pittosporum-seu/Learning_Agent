@@ -330,7 +330,7 @@ Lab 10 实现时至少覆盖这些测试：
 
 ## 十、后续实现目录规划
 
-本轮只新增设计文档，不创建 Lab 目录。下一步实现 Lab 10 时再创建：
+Lab 10 实现目录已按本设计创建：
 
 ```text
 labs/10-evidence-report/
@@ -351,7 +351,7 @@ labs/10-evidence-report/
     `-- .gitkeep
 ```
 
-后续实现建议：
+当前实现分工：
 
 - `report_model.py` 定义 `EvidenceReport`、`ReportSection`、`EvidenceReference` 和安全字段。
 - `evidence_collector.py` 从 Lab 09 输出收集 `adapter_trace`、`candidate_evidence`、`retrieved_context` 和 `planner_trace`。

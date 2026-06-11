@@ -240,6 +240,20 @@ $lab09DagModelTests = Read-RepoFile "labs/09-research-planner/tests/test_dag_mod
 $lab09PlannerBuilderTests = Read-RepoFile "labs/09-research-planner/tests/test_planner_builder.py"
 $lab09PlannerExecutorTests = Read-RepoFile "labs/09-research-planner/tests/test_planner_executor.py"
 $lab09RunLabTests = Read-RepoFile "labs/09-research-planner/tests/test_run_lab.py"
+$lab10Agents = Read-RepoFile "labs/10-evidence-report/AGENTS.md"
+$lab10Readme = Read-RepoFile "labs/10-evidence-report/README.md"
+$lab10Template = Read-RepoFile "labs/10-evidence-report/data/report_template.json"
+$lab10ReportModel = Read-RepoFile "labs/10-evidence-report/src/report_model.py"
+$lab10EvidenceCollector = Read-RepoFile "labs/10-evidence-report/src/evidence_collector.py"
+$lab10ReportBuilder = Read-RepoFile "labs/10-evidence-report/src/report_builder.py"
+$lab10ReportSafety = Read-RepoFile "labs/10-evidence-report/src/report_safety.py"
+$lab10RunLab = Read-RepoFile "labs/10-evidence-report/src/run_lab.py"
+$lab10Demo = Read-RepoFile "labs/10-evidence-report/demo/run_demo.py"
+$lab10ReportModelTests = Read-RepoFile "labs/10-evidence-report/tests/test_report_model.py"
+$lab10EvidenceCollectorTests = Read-RepoFile "labs/10-evidence-report/tests/test_evidence_collector.py"
+$lab10ReportBuilderTests = Read-RepoFile "labs/10-evidence-report/tests/test_report_builder.py"
+$lab10ReportSafetyTests = Read-RepoFile "labs/10-evidence-report/tests/test_report_safety.py"
+$lab10RunLabTests = Read-RepoFile "labs/10-evidence-report/tests/test_run_lab.py"
 
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
@@ -286,6 +300,7 @@ Require-Contains "README.md" $readme @(
     "labs/04-research-rag-basic/README.md",
     "labs/05-user-preference-memory/README.md",
     "labs/09-research-planner/README.md",
+    "labs/10-evidence-report/README.md",
     "AGENTS.md",
     "docs/maintenance/codex-skill-templates",
     "run-lab-web.ps1",
@@ -323,6 +338,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "labs/04-research-rag-basic",
     "labs/05-user-preference-memory",
     "labs/09-research-planner",
+    "labs/10-evidence-report",
     "product/lab-plan.md",
     "product/security-and-secrets.md",
     "AGENTS.md",
@@ -335,7 +351,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter", "Lab 09 Research Planner DAG", "Lab 09: Research Planner DAG", "Lab 10 Evidence Report", "Lab 08 optional external provider integration")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter", "Lab 09 Research Planner DAG", "Lab 09: Research Planner DAG", "Lab 10 Evidence Report", "Lab 10: Evidence Report", "Lab 11 Simulation Portfolio", "Lab 08 optional external provider integration")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -353,7 +369,8 @@ $roadmapTokens = @(
     '[x] Lab 08: optional external provider manual integration',
     '[x] Lab 09: Research Planner',
     'Lab 10 Evidence Report',
-    '[ ] Lab 10: Evidence Report',
+    '[x] Lab 10: Evidence Report',
+    '[ ] Lab 11: Simulation Portfolio',
     'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -398,6 +415,7 @@ Require-Contains "docs/start-here.md" $startHere @(
     "lab10-evidence-report-design.md",
     "planner_trace",
     "report_generation_trace",
+    "evidence_refs",
     "human_review_gate",
     "routing_decision",
     "retrieved_context",
@@ -451,6 +469,8 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "safety_gate",
     "planner_trace",
     "report_generation_trace",
+    "evidence_report",
+    "evidence_refs",
     "human_review_gate",
     "Lab 03-12",
     "SKILL.md",
@@ -520,6 +540,8 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "LLM_API_KEY",
     "candidate-screen",
     "finance-news",
+    "evidence_report",
+    "report_generation_trace",
     "lab09-research-planner-dag-design.md",
     "lab10-evidence-report-design.md"
 )
@@ -659,6 +681,8 @@ Require-Contains "labs/README.md" $labsReadme @(
     "06-skill-registry/README.md",
     "07-skill-generation/README.md",
     "08-mx-skills-adapter/README.md",
+    "09-research-planner/README.md",
+    "10-evidence-report/README.md",
     "12-evaluation-safety",
     "run-lab-demo.ps1",
     "run-lab-web.ps1",
@@ -1457,8 +1481,113 @@ Require-Contains "labs/09-research-planner/tests/test_run_lab.py" $lab09RunLabTe
     "PROHIBITED_KEYS"
 )
 
+Require-Contains "labs/10-evidence-report/AGENTS.md" $lab10Agents @(
+    "Evidence Report",
+    "report_generation_trace",
+    "evidence_refs",
+    "human_review_required",
+    "risk_disclosure"
+)
+Require-Contains "labs/10-evidence-report/README.md" $lab10Readme @(
+    "Evidence Report",
+    "evidence_report",
+    "report_generation_trace",
+    "evidence_refs",
+    "risk_disclosure",
+    "human_review_required",
+    "run-lab-demo.ps1",
+    "run-lab-tests.ps1",
+    "Lab 11 Simulation Portfolio"
+)
+Require-Contains "labs/10-evidence-report/data/report_template.json" $lab10Template @(
+    "report_header",
+    "strategy_summary",
+    "planner_summary",
+    "candidate_observation_pool",
+    "evidence_table",
+    "retrieved_context_table",
+    "risk_and_limitations",
+    "human_review_checklist",
+    "next_steps"
+)
+Require-Contains "labs/10-evidence-report/src/report_model.py" $lab10ReportModel @(
+    "EvidenceReference",
+    "ReportSection",
+    "PROHIBITED_OUTPUT_KEYS",
+    "find_prohibited_output_key_paths",
+    "find_prohibited_semantic_paths",
+    "sanitize_text"
+)
+Require-Contains "labs/10-evidence-report/src/evidence_collector.py" $lab10EvidenceCollector @(
+    "collect_report_inputs",
+    "build_evidence_references",
+    "build_candidate_observations",
+    "build_evidence_gaps",
+    "candidate_evidence",
+    "retrieved_context",
+    "planner_trace"
+)
+Require-Contains "labs/10-evidence-report/src/report_builder.py" $lab10ReportBuilder @(
+    "build_report_from_planner",
+    "build_report_generation_trace",
+    "evidence_report",
+    "report_generation_trace",
+    "human_review_required",
+    "Lab 11 Simulation Portfolio"
+)
+Require-Contains "labs/10-evidence-report/src/report_safety.py" $lab10ReportSafety @(
+    "review_report_output",
+    "missing_risk_disclosure",
+    "missing_human_review_required",
+    "prohibited_output_key",
+    "prohibited_semantic_text"
+)
+Require-Contains "labs/10-evidence-report/src/run_lab.py" $lab10RunLab @(
+    "run_evidence_report",
+    "run_research_planner_dag",
+    "summarize_planner_output",
+    "evidence_report",
+    "report_generation_trace",
+    "report_safety_review",
+    "Lab 11 Simulation Portfolio",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/10-evidence-report/demo/run_demo.py" $lab10Demo @(
+    "run_evidence_report",
+    "--adapter-mode",
+    "report_generation_trace_count",
+    "evidence_ref_count"
+)
+Require-Contains "labs/10-evidence-report/tests/test_report_model.py" $lab10ReportModelTests @(
+    "test_evidence_reference_serializes_required_fields",
+    "test_detects_prohibited_output_keys",
+    "test_sanitize_text_redacts_prohibited_semantics"
+)
+Require-Contains "labs/10-evidence-report/tests/test_evidence_collector.py" $lab10EvidenceCollectorTests @(
+    "test_collects_candidate_context_adapter_and_planner_refs",
+    "test_candidate_observations_keep_evidence_refs"
+)
+Require-Contains "labs/10-evidence-report/tests/test_report_builder.py" $lab10ReportBuilderTests @(
+    "test_builds_report_with_all_core_sections",
+    "test_generation_trace_covers_each_section",
+    "test_blocked_planner_creates_blocked_report_and_gaps"
+)
+Require-Contains "labs/10-evidence-report/tests/test_report_safety.py" $lab10ReportSafetyTests @(
+    "test_review_passes_valid_report",
+    "test_review_detects_missing_risk_disclosure",
+    "test_review_detects_prohibited_output_keys",
+    "test_review_detects_prohibited_semantics"
+)
+Require-Contains "labs/10-evidence-report/tests/test_run_lab.py" $lab10RunLabTests @(
+    "test_normal_request_generates_reviewable_report",
+    "test_blocked_request_generates_blocked_report_with_gaps",
+    "test_report_generation_trace_covers_core_sections",
+    "test_does_not_create_runtime_config_directories",
+    "PROHIBITED_KEYS"
+)
+
 Require-Contains "labs/shared/testing/README.md" $sharedTestingReadme @("run_lab_tests.py")
-Require-Contains "labs/shared/testing/run_lab_tests.py" $sharedTestingRunner @("unittest", "--lab")
+Require-Contains "labs/shared/testing/run_lab_tests.py" $sharedTestingRunner @("unittest", "--lab", "report_builder", "report_safety")
 Require-Contains "scripts/run-lab-tests.ps1" $runLabTests @("run_lab_tests.py")
 Require-Contains "scripts/run-lab-demo.ps1" $runLabDemo @("run_demo.py")
 Require-Contains "scripts/run-lab-web.ps1" $runLabWeb @("server.py", "HostName", "LLM_API_KEY", "LLM_CHAT_COMPLETIONS_URL")
