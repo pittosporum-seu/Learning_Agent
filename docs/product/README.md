@@ -36,7 +36,7 @@
 | [Lab 05: User Preference Memory](../../labs/05-user-preference-memory/README.md) | 已实现 | 用本地 mock 用户偏好展示 Memory，生成 `memory_trace` 和 `preference_adjusted_evidence`。 |
 | [Lab 06: Skill Registry](../../labs/06-skill-registry/README.md) | 已实现 | 用本地 mock Skill 元数据展示 Skill 注册、`skill_selection_trace`、选择、禁用和人工确认边界。 |
 | [Lab 07: Skill Generation](../../labs/07-skill-generation/README.md) | 已实现 | 从 Lab 06 输出生成可审查 Skill draft，保留 `skill_draft_markdown` 和 `draft_review`。 |
-| [Lab 08: Finance Provider Adapter](../../labs/08-mx-skills-adapter/README.md) | 增强中 | 用 mock-first adapter contract 展示 `adapter_trace`、`safety_gate`，并支持 optional external provider manual integration。 |
+| [Lab 08: Finance Provider Adapter](../../labs/08-mx-skills-adapter/README.md) | 已实现 | 用 mock-first adapter contract 展示 `adapter_trace`、`safety_gate`，并支持 optional external provider manual integration。 |
 
 ## Lab 03-12 简短路线
 

@@ -40,7 +40,7 @@
 | Part 5 User Preference Memory | Lab 05 | 05 Memory | 用户风险偏好、排除条件和观察池偏好的记忆 | 已实现 |
 | Part 6 Skill Registry | Lab 06 | 10 Skills | Skill 元数据、能力声明、选择机制和禁用边界 | 已实现 |
 | Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成可审查 `SKILL.md` 草稿 | 已实现 |
-| Part 8 Finance Provider Adapter | Lab 08 | 06 MCP / 03 Tool Use | 外部财经 provider 的 mock-first adapter、optional external provider 和 manual integration 边界 | 增强中 |
+| Part 8 Finance Provider Adapter | Lab 08 | 06 MCP / 03 Tool Use | 外部财经 provider 的 mock-first adapter、optional external provider 和 manual integration 边界 | 已实现 |
 | Part 9 Research Planner DAG | Lab 09 | 07 Agent Harness | 从线性计划升级到 DAG 研究计划 | 计划中 |
 | Part 10 Evidence Report | Lab 10 | 12 Evaluation / Trace / Safety | 带来源、时间、证据和限制条件的报告 | 计划中 |
 | Part 11 Simulation Portfolio & HITL | Lab 11 | 07 Agent Harness / 12 Evaluation | 模拟组合、人工确认、权限边界 | 计划中 |

@@ -49,7 +49,7 @@
 - [x] Lab 06: Skill Registry
 - [x] Lab 07: Skill Generation
 - [x] Lab 08: Finance Provider Adapter
-- [ ] Lab 08: optional real provider manual integration
+- [x] Lab 08: optional external provider manual integration
 - [ ] Lab 09: Research Planner
 - [ ] Lab 10: Evidence Report
 - [ ] Lab 11: Simulation Portfolio

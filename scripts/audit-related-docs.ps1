@@ -46,6 +46,52 @@ function Test-TextHasLabReference {
         $Content.Contains("Part $([int]$LabNumber)")
 }
 
+function Get-SectionBetween {
+    param(
+        [string]$Content,
+        [string]$StartHeading,
+        [string]$EndHeading
+    )
+
+    $pattern = "(?s)$([regex]::Escape($StartHeading))(.*?)$([regex]::Escape($EndHeading))"
+    $match = [regex]::Match($Content, $pattern)
+    if ($match.Success) {
+        return $match.Groups[1].Value
+    }
+    return ""
+}
+
+function Test-RoadmapLabCompleted {
+    param(
+        [string]$Content,
+        [string]$LabNumber
+    )
+
+    return $Content -match "(?m)^\s*-\s*\[x\]\s*Lab ${LabNumber}:"
+}
+
+function Get-LabPlanLine {
+    param(
+        [string]$Content,
+        [string]$LabNumber
+    )
+
+    $match = [regex]::Match($Content, "(?m)^\|\s*$LabNumber\s*\|.*$")
+    if ($match.Success) {
+        return $match.Value
+    }
+    return ""
+}
+
+function Test-LabPlanStatusInProgress {
+    param([string]$Line)
+
+    $planned = -join ([char]0x8BA1, [char]0x5212, [char]0x4E2D)
+    $enhancing = -join ([char]0x589E, [char]0x5F3A, [char]0x4E2D)
+    $inProgress = -join ([char]0x8FDB, [char]0x884C, [char]0x4E2D)
+    return $Line.Contains($planned) -or $Line.Contains($enhancing) -or $Line.Contains($inProgress)
+}
+
 $foundationDocs = @(
     "docs/foundations/01-workflow-vs-agent.md",
     "docs/foundations/02-agent-loop.md",
@@ -267,7 +313,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter", "Lab 09 Research Planner DAG", "Lab 09: Research Planner DAG", "Lab 08 optional external provider integration")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -282,9 +328,30 @@ $roadmapTokens = @(
     '[x] Lab 06: Skill Registry',
     '[x] Lab 07: Skill Generation',
     '[x] Lab 08: Finance Provider Adapter',
+    '[x] Lab 08: optional external provider manual integration',
     'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
+
+$todoDoingSection = Get-SectionBetween $todo "## Doing" "## Next"
+foreach ($index in 1..12) {
+    $labNumber = "{0:D2}" -f $index
+    $labPlanLine = Get-LabPlanLine $labPlan $labNumber
+    $roadmapCompleted = Test-RoadmapLabCompleted $roadmap $labNumber
+
+    if ($roadmapCompleted -and (Test-LabPlanStatusInProgress $labPlanLine)) {
+        Add-Failure "Lab $labNumber is completed in roadmap.md but docs/product/lab-plan.md still has an in-progress status: $labPlanLine"
+    }
+
+    if ($todoDoingSection -match "Lab $labNumber") {
+        if ($roadmapCompleted) {
+            Add-Failure "TODO.md Doing still references completed Lab $labNumber"
+        }
+        elseif (-not (Test-LabPlanStatusInProgress $labPlanLine)) {
+            Add-Failure "TODO.md Doing references Lab $labNumber but docs/product/lab-plan.md is not marked planned, enhancing, or in-progress: $labPlanLine"
+        }
+    }
+}
 
 Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/", "product/AGENTS.md", "maintenance/codex-skill-templates")
 Require-Contains "docs/start-here.md" $startHere @(

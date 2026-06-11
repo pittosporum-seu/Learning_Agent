@@ -185,7 +185,7 @@ flowchart TD
 | [../labs/07-skill-generation/README.md](../labs/07-skill-generation/README.md) | 第七个可运行 Lab，从 Lab 06 输出生成可审查 Skill draft、`skill_draft_markdown` 和 `draft_review`。 |
 | [../labs/07-skill-generation/AGENTS.md](../labs/07-skill-generation/AGENTS.md) | Lab 07 持久规则，约束 Skill draft 生成、人工 review、禁止自动启用和禁止写 runtime 配置。 |
 | [../labs/08-mx-skills-adapter/README.md](../labs/08-mx-skills-adapter/README.md) | 第八个可运行 Lab，用 mock-first adapter contract 展示 Finance Provider Adapter、`adapter_trace`、`safety_gate` 和 optional external provider manual integration。 |
-| [../labs/08-mx-skills-adapter/AGENTS.md](../labs/08-mx-skills-adapter/AGENTS.md) | Lab 08 持久规则，约束 mock adapter、real provider stub、optional real provider、安全门和禁止真实 API 自动启用。 |
+| [../labs/08-mx-skills-adapter/AGENTS.md](../labs/08-mx-skills-adapter/AGENTS.md) | Lab 08 持久规则，约束 mock adapter、external provider stub、optional external provider、安全门和禁止真实 API 自动启用。 |
 | [../labs/08-mx-skills-adapter/src/real_mx_adapter.py](../labs/08-mx-skills-adapter/src/real_mx_adapter.py) | Lab 08 可选真实 provider adapter，只有环境变量和显式命令行允许同时满足时才发送请求，并且不持久化 raw response。 |
 | [../labs/08-mx-skills-adapter/tests/manual_test_real_mx_adapter.py](../labs/08-mx-skills-adapter/tests/manual_test_real_mx_adapter.py) | Lab 08 手动真实 provider integration test，默认跳过，只在本地显式环境闸门满足时运行。 |
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |

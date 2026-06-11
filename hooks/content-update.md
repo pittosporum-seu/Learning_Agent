@@ -2,6 +2,8 @@
 
 这个钩子用于新增或重写 `Agent基础知识` 系列文章、Product 文档、Labs、Skills、Engineering 清单时复用。
 
+Lab 状态变更时，除了导航链接，还必须同步 `TODO.md`、`roadmap.md` 和 `docs/product/lab-plan.md` 的状态字段；`scripts/audit-related-docs.ps1` 会检查明显的 Lab 状态不一致。
+
 ## 触发场景
 
 - 新增一篇 `Agent基础知识 xx` 文章。
@@ -53,7 +55,7 @@ powershell -ExecutionPolicy Bypass -File scripts/audit-related-docs.ps1
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 ```
 
-`audit-related-docs.ps1` 会动态扫描所有 `labs/NN-*` 目录，检查 Lab 必需文件和导航文档引用完整性。
+`audit-related-docs.ps1` 会动态扫描所有 `labs/NN-*` 目录，检查 Lab 必需文件、导航文档引用完整性，以及 TODO / roadmap / lab-plan 之间明显的 Lab 状态不一致。
 
 10. 根据审核结果回看相关文档，修正遗漏的导航、文档图、资源索引或路线状态。
 11. 看一眼 `git diff`，确认没有真实密钥、过程性内容或无关改动。
@@ -84,7 +86,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 - 草稿生成过程可以在本地存在，但不进入正式文章。
 - 每次新增或重写文章都要同步导航、文档图、资源索引和待办状态。
 - 每次涉及 Product、Labs、Skills 或脚本变更，都要同步审核相关文档，并运行密钥检查。
-- 每次新增、完成或调整 Lab 状态，都要运行 `audit-related-docs.ps1`，让动态 Lab 导航检查兜底。
+- 每次新增、完成或调整 Lab 状态，都要运行 `audit-related-docs.ps1`，让动态 Lab 导航检查和状态一致性检查兜底。
 - 每个 Lab 的 demo 用于人工试跑，tests 用于自动回归；两者都应能在无真实 API key 的环境下运行。
 - Web demo 只作为本地实验入口，默认绑定 `127.0.0.1`。
 - `.agents/`、`.codex/` 和真实 provider 响应目录属于本地运行配置或生成痕迹，不进入仓库。

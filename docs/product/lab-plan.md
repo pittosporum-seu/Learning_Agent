@@ -38,7 +38,7 @@
 | 05 | User Preference Memory | 05 Memory | 本地 mock 用户偏好、`memory_trace`、`preference_application` 和 `preference_adjusted_evidence` | 已实现 |
 | 06 | Skill Registry | 06 MCP / 10 Skills | 本地 mock Skill 元数据、`skill_selection_trace`、`selected_skills` 和 `disabled_skills` | 已实现 |
 | 07 | Skill Generation | 10 Skills | 从 Lab 06 输出生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review` | 已实现 |
-| 08 | Finance Provider Adapter | 03 Tool Use / 06 MCP | mock-first adapter contract、`adapter_trace`、`safety_gate`、optional external provider 和 manual integration test | 增强中 |
+| 08 | Finance Provider Adapter | 03 Tool Use / 06 MCP | mock-first adapter contract、`adapter_trace`、`safety_gate`、optional external provider 和 manual integration test | 已实现 |
 | 09 | Research Planner | 07 Agent Harness | 生成投研 DAG 并管理步骤状态 | 计划中 |
 | 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成带来源、时间、证据和风险提示的报告 | 计划中 |
 | 11 | Simulation Portfolio | 11 Browser / Computer Use Agent / Safety | 用 mock 或 `mx-moni` 风格接口做模拟组合验证 | 计划中 |
