@@ -42,7 +42,7 @@
 | Part 7 Skill Generation | Lab 07 | 10 Skills | 从稳定流程生成可审查 `SKILL.md` 草稿 | 已实现 |
 | Part 8 Finance Provider Adapter | Lab 08 | 06 MCP / 03 Tool Use | 外部财经 provider 的 mock-first adapter、optional external provider 和 manual integration 边界 | 已实现 |
 | Part 9 Research Planner DAG | Lab 09 | 07 Agent Harness | 从线性计划升级到 DAG 研究计划，输出 `planner_trace` 和人工确认门 | 已实现 |
-| Part 10 Evidence Report | Lab 10 | 12 Evaluation / Trace / Safety | 带来源、时间、证据和限制条件的报告 | 计划中 |
+| Part 10 Evidence Report | Lab 10 | 12 Evaluation / Trace / Safety | 带来源、时间、证据、限制条件和人工确认项的报告 | 设计已完成，计划中实现 |
 | Part 11 Simulation Portfolio & HITL | Lab 11 | 07 Agent Harness / 12 Evaluation | 模拟组合、人工确认、权限边界 | 计划中 |
 | Part 12 Evaluation & Safety | Lab 12 | 12 Evaluation / Trace / Safety | 回归评测、密钥检查、风险边界和越权检测 | 计划中 |
 
@@ -141,12 +141,13 @@
 
 ### Part 10 Evidence Report
 
-- 展示目标：把工具结果、检索片段和风险判断组织成可审查的投研观察报告。
-- 输入：`StrategySpec`、`TraceEvent`、`ToolCall`、`EvidenceItem`、`SafetyDecision`。
-- 核心输出：证据报告、观察池、限制条件、风险提示、人工确认事项。
+- 设计文档：[Lab 10: Evidence Report 设计](lab10-evidence-report-design.md)。
+- 展示目标：把 Planner 输出、adapter trace、候选证据、检索片段和风险判断组织成可审查的投研观察报告草稿。
+- 输入：`planner_output`、`adapter_trace`、`candidate_evidence`、`retrieved_context`、`planner_trace`、`SafetyDecision`。
+- 核心输出：`evidence_report`、`report_generation_trace`、`evidence_refs`、限制条件、风险提示、人工确认事项。
 - 读者应该观察什么：报告价值来自可追溯证据和不确定性表达，而不是“结论看起来像真的”。
-- 不做什么：不输出保证收益、确定涨跌、买入卖出指令。
-- 验收标准：每个候选观察项都有证据引用；报告包含时间、来源、限制和风险提示。
+- 不做什么：不输出保证收益、确定涨跌、买入卖出指令、目标价或自动执行动作。
+- 验收标准：每个候选观察项都有证据引用；报告包含时间、来源、限制、风险提示和 `human_review_required`；blocked planner 输出只生成 blocked report，不补脑。
 
 ### Part 11 Simulation Portfolio & HITL
 

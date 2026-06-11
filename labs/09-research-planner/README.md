@@ -2,7 +2,7 @@
 
 这个 Lab 展示 `Research Planner DAG` / `Agent Harness`：把 Lab 08 的 Finance Provider Adapter 输出组织成一个有状态、有依赖、有失败传播和人工确认边界的研究计划 DAG。
 
-投研仍然只是教学场景。本 Lab 不调用真实模型 API、不调用真实向量数据库、不调用真实财经 API，不生成投资建议、真实股票推荐、收益承诺或交易动作。
+投研仍然只是教学场景。本 Lab 不调用真实模型 API、不调用真实向量数据库；默认不调用真实财经 API；若显式透传 Lab 08 的 real provider 手动路径，仅作为本地集成验证，不作为默认教学路径。本 Lab 不生成投资建议、真实股票推荐、收益承诺或交易动作。
 
 ## 展示什么
 
@@ -122,7 +122,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 
 - 不调用真实模型 API。
 - 不调用真实向量数据库。
-- 不调用真实财经 API。
+- 默认不调用真实财经 API；若显式透传 Lab 08 的 real provider 手动路径，仅作为本地集成验证，不作为默认教学路径。
 - 不保存真实用户隐私或真实 provider response。
 - 不生成投资建议、收益承诺、真实股票推荐或交易动作。
 - 不自动通过人工确认。

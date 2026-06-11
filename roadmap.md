@@ -52,6 +52,7 @@
 - [x] Lab 08: optional external provider manual integration
 - [x] 设计 Lab 09 Research Planner DAG
 - [x] Lab 09: Research Planner
+- [x] 设计 Lab 10 Evidence Report
 - [ ] Lab 10: Evidence Report
 - [ ] Lab 11: Simulation Portfolio
 - [ ] Lab 12: Evaluation & Safety
@@ -121,5 +122,6 @@
 - [x] 完成 Finance Provider Adapter Lab
 - [x] 设计 Research Planner DAG Lab
 - [x] 完成 Research Planner DAG Lab
+- [x] 设计 Evidence Report Lab
 
 详见：[docs/series-plan.md](docs/series-plan.md)

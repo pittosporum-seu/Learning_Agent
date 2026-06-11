@@ -40,7 +40,7 @@
 | 07 | Skill Generation | 10 Skills | 从 Lab 06 输出生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review` | 已实现 |
 | 08 | Finance Provider Adapter | 03 Tool Use / 06 MCP | mock-first adapter contract、`adapter_trace`、`safety_gate`、optional external provider 和 manual integration test | 已实现 |
 | 09 | Research Planner DAG | 07 Agent Harness | 生成 `research_dag`、`planner_trace`、节点依赖状态、失败传播和 `human_review_gate` 人工确认边界 | 已实现 |
-| 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成带来源、时间、证据和风险提示的报告 | 计划中 |
+| 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成带来源、时间、证据、限制条件、风险提示和人工确认项的报告；设计已明确 | 计划中 |
 | 11 | Simulation Portfolio | 11 Browser / Computer Use Agent / Safety | 用 mock 或 `mx-moni` 风格接口做模拟组合验证 | 计划中 |
 | 12 | Evaluation & Safety | 12 Evaluation / Trace / Safety | 检查密钥泄露、无证据推荐、风险提示缺失 | 计划中 |
 
@@ -253,17 +253,23 @@ outputs/
 
 目标：输出能被人审阅的证据化投研报告。
 
+设计文档：[Lab 10: Evidence Report 设计](lab10-evidence-report-design.md)。
+
 关键点：
 
-- 每个候选结论都要有来源。
-- 报告包含数据日期、检索时间、风险提示和不确定性。
-- 候选股票可以推荐进入观察池，但必须说明不是投资建议。
+- 报告不是模型自由写作，必须来自 Planner 输出、`adapter_trace`、`candidate_evidence`、`retrieved_context` 和 `planner_trace`。
+- 每个候选观察、风险、限制和节点状态都要有来源引用。
+- 报告包含数据日期、生成时间、风险提示、不确定性和 `human_review_required`。
+- 缺少证据时写入 `evidence_gaps`，不补脑。
+- 候选只能作为观察池草稿，必须说明不是投资建议。
 
 验收标准：
 
 - 报告不出现无来源断言。
 - 报告固定包含风险提示。
 - 报告能指出需要人工复核的问题。
+- 报告默认是 `draft` 或 `needs_human_review`。
+- 输出不包含买入、卖出、目标价、收益承诺或自动执行动作。
 
 ## Lab 11: Simulation Portfolio
 

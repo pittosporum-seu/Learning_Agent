@@ -124,6 +124,7 @@ $productVision = Read-RepoFile "docs/product/personalized-investment-research-ag
 $showcaseFramework = Read-RepoFile "docs/product/showcase-framework.md"
 $labPlan = Read-RepoFile "docs/product/lab-plan.md"
 $lab09Design = Read-RepoFile "docs/product/lab09-research-planner-dag-design.md"
+$lab10Design = Read-RepoFile "docs/product/lab10-evidence-report-design.md"
 $securityPlan = Read-RepoFile "docs/product/security-and-secrets.md"
 $envExample = Read-RepoFile ".env.example"
 $gitignore = Read-RepoFile ".gitignore"
@@ -277,6 +278,7 @@ Require-Contains "README.md" $readme @(
     "docs/product/showcase-framework.md",
     "docs/product/lab-plan.md",
     "docs/product/lab09-research-planner-dag-design.md",
+    "docs/product/lab10-evidence-report-design.md",
     "docs/product/security-and-secrets.md",
     "labs/01-strategy-intake/README.md",
     "labs/02-strategy-agent-loop/README.md",
@@ -297,6 +299,7 @@ Require-Contains "hooks/content-update.md" $hook @(
     "docs/glossary.md",
     "docs/product/showcase-framework.md",
     "docs/product/lab09-research-planner-dag-design.md",
+    "docs/product/lab10-evidence-report-design.md",
     "docs/maintenance/codex-skill-templates/",
     "audit-related-docs.ps1",
     "check-secrets.ps1",
@@ -313,6 +316,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "product/README.md",
     "product/showcase-framework.md",
     "product/lab09-research-planner-dag-design.md",
+    "product/lab10-evidence-report-design.md",
     "labs/01-strategy-intake",
     "labs/02-strategy-agent-loop",
     "labs/03-finance-tool-use-mock",
@@ -348,6 +352,8 @@ $roadmapTokens = @(
     '[x] Lab 08: Finance Provider Adapter',
     '[x] Lab 08: optional external provider manual integration',
     '[x] Lab 09: Research Planner',
+    'Lab 10 Evidence Report',
+    '[ ] Lab 10: Evidence Report',
     'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -372,7 +378,7 @@ foreach ($index in 1..12) {
     }
 }
 
-Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/lab09-research-planner-dag-design.md", "product/", "product/AGENTS.md", "maintenance/codex-skill-templates")
+Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/lab09-research-planner-dag-design.md", "product/lab10-evidence-report-design.md", "product/", "product/AGENTS.md", "maintenance/codex-skill-templates")
 Require-Contains "docs/start-here.md" $startHere @(
     "Start Here",
     "Agent Loop",
@@ -387,8 +393,11 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Lab 07",
     "Lab 08",
     "Lab 09",
+    "Lab 10",
     "lab09-research-planner-dag-design.md",
+    "lab10-evidence-report-design.md",
     "planner_trace",
+    "report_generation_trace",
     "human_review_gate",
     "routing_decision",
     "retrieved_context",
@@ -428,6 +437,7 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "showcase-framework.md",
     "lab-plan.md",
     "lab09-research-planner-dag-design.md",
+    "lab10-evidence-report-design.md",
     "security-and-secrets.md",
     "routing_decision",
     "tool_trace",
@@ -440,6 +450,7 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "adapter_trace",
     "safety_gate",
     "planner_trace",
+    "report_generation_trace",
     "human_review_gate",
     "Lab 03-12",
     "SKILL.md",
@@ -459,6 +470,9 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "lab09-research-planner-dag-design.md",
     "planner_trace",
     "human_review_gate",
+    "Part 10 Evidence Report",
+    "lab10-evidence-report-design.md",
+    "report_generation_trace",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
@@ -506,7 +520,8 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "LLM_API_KEY",
     "candidate-screen",
     "finance-news",
-    "lab09-research-planner-dag-design.md"
+    "lab09-research-planner-dag-design.md",
+    "lab10-evidence-report-design.md"
 )
 Require-Contains "docs/product/lab09-research-planner-dag-design.md" $lab09Design @(
     "Research Planner DAG",
@@ -528,6 +543,29 @@ Require-Contains "docs/product/lab09-research-planner-dag-design.md" $lab09Desig
     "risk_disclosure",
     "safety_gate",
     "Lab 10 Evidence Report",
+    "buy",
+    "sell",
+    "recommendation",
+    "target_price"
+)
+Require-Contains "docs/product/lab10-evidence-report-design.md" $lab10Design @(
+    "Evidence Report",
+    "EvidenceReport",
+    "ReportSection",
+    "EvidenceReference",
+    "CandidateObservation",
+    "RiskAndLimitation",
+    "HumanReviewChecklist",
+    "ReportGenerationTrace",
+    "report_generation_trace",
+    "risk_disclosure",
+    "human_review_required",
+    "evidence_gaps",
+    "adapter_trace",
+    "candidate_evidence",
+    "retrieved_context",
+    "planner_trace",
+    "Lab 11 Simulation Portfolio",
     "buy",
     "sell",
     "recommendation",

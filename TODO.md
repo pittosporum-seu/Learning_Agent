@@ -17,7 +17,7 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 设计 Lab 10 Evidence Report | `docs/product/` | 明确证据报告输入、证据引用、风险提示、人工确认边界和后续实现结构 |
+| P0 | 实现 Lab 10 Evidence Report | `labs/10-evidence-report/` | 基于 Planner 输出生成带来源、限制、风险提示和人工确认项的 mock 证据报告 |
 
 ## Next
 
@@ -67,3 +67,4 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-11 | 完成 Lab 08 optional external provider integration | 本轮提交 |
 | 2026-06-11 | 完成 Lab 09 Research Planner DAG 设计 | 本轮提交 |
 | 2026-06-11 | 实现 Lab 09: Research Planner DAG | 本轮提交 |
+| 2026-06-11 | 完成 Lab 10 Evidence Report 设计 | 本轮提交 |

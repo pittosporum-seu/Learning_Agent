@@ -103,6 +103,7 @@
 - [Agent 学习展示框架](docs/product/showcase-framework.md)
 - [个性化投研 Agent Lab 总计划](docs/product/lab-plan.md)
 - [Lab 09: Research Planner DAG 设计](docs/product/lab09-research-planner-dag-design.md)
+- [Lab 10: Evidence Report 设计](docs/product/lab10-evidence-report-design.md)
 - [密钥、安全与合规边界](docs/product/security-and-secrets.md)
 
 启动 Lab 01 网页 demo：

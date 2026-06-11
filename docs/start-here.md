@@ -84,6 +84,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 12. [Lab 07: Skill Generation](../labs/07-skill-generation/README.md)
 13. [Lab 08: Finance Provider Adapter](../labs/08-mx-skills-adapter/README.md)
 14. [Lab 09: Research Planner DAG](../labs/09-research-planner/README.md)
+15. [Lab 10: Evidence Report 设计](product/lab10-evidence-report-design.md)
 
 启动 Lab 01 网页 demo：
 
@@ -110,6 +111,7 @@ http://127.0.0.1:8765/
 - Lab 08 用 mock-first adapter 展示 Finance Provider Adapter，输出 `adapter_trace` 和 `safety_gate`；可在本地显式开启 optional external provider manual integration。
 - Lab 09 把 adapter 能力、证据链、Memory、Skill 状态和安全边界编排成 Research Planner DAG，并用 `planner_trace` 展示状态传播。
 - Lab 09 的设计文档见 [Research Planner DAG 设计](product/lab09-research-planner-dag-design.md)。
+- Lab 10 的设计文档见 [Evidence Report 设计](product/lab10-evidence-report-design.md)，它定义报告结构、证据引用、`report_generation_trace`、风险提示和人工确认边界。
 
 ## 当前可运行
 
@@ -127,7 +129,7 @@ http://127.0.0.1:8765/
 
 当前继续方向：
 
-- 设计 Lab 10: Evidence Report，把 Planner 输出转成可审查证据报告。
+- 实现 Lab 10: Evidence Report，把 Planner 输出转成可审查证据报告。
 - 默认测试不依赖真实 key。
 
 ## 安全边界
