@@ -190,6 +190,12 @@ flowchart TD
 | [../labs/08-mx-skills-adapter/AGENTS.md](../labs/08-mx-skills-adapter/AGENTS.md) | Lab 08 持久规则，约束 mock adapter、external provider stub、optional external provider、安全门和禁止真实 API 自动启用。 |
 | [../labs/08-mx-skills-adapter/src/real_mx_adapter.py](../labs/08-mx-skills-adapter/src/real_mx_adapter.py) | Lab 08 可选真实 provider adapter，只有环境变量和显式命令行允许同时满足时才发送请求，并且不持久化 raw response。 |
 | [../labs/08-mx-skills-adapter/tests/manual_test_real_mx_adapter.py](../labs/08-mx-skills-adapter/tests/manual_test_real_mx_adapter.py) | Lab 08 手动真实 provider integration test，默认跳过，只在本地显式环境闸门满足时运行。 |
+| [../labs/09-research-planner/README.md](../labs/09-research-planner/README.md) | 第九个可运行 Lab，把 Lab 08 输出组织成 Research Planner DAG、`planner_trace`、失败传播和 `human_review_gate`。 |
+| [../labs/09-research-planner/AGENTS.md](../labs/09-research-planner/AGENTS.md) | Lab 09 持久规则，约束 DAG 节点、状态流转、失败传播、人工确认边界和禁止真实投资建议。 |
+| [../labs/09-research-planner/data/planner_template.json](../labs/09-research-planner/data/planner_template.json) | Lab 09 固定教学 DAG 模板，列出 required nodes、依赖、输入、输出和 failure behavior。 |
+| [../labs/09-research-planner/src/dag_model.py](../labs/09-research-planner/src/dag_model.py) | Lab 09 DAG 模型，定义 `ResearchDagNode`、依赖校验、拓扑排序和依赖状态读取。 |
+| [../labs/09-research-planner/src/planner_executor.py](../labs/09-research-planner/src/planner_executor.py) | Lab 09 mock executor，按拓扑顺序生成 `planner_trace`、节点状态、blocked / skipped / waiting_human_confirmation 结果。 |
+| [../labs/09-research-planner/src/run_lab.py](../labs/09-research-planner/src/run_lab.py) | Lab 09 入口，调用 Lab 08 runner，构建 `research_dag` 并输出 Planner 运行状态。 |
 | [../labs/shared/investment_research_case/README.md](../labs/shared/investment_research_case/README.md) | 共享案例材料结构。 |
 | [../labs/shared/testing/README.md](../labs/shared/testing/README.md) | 统一 Lab 测试入口说明。 |
 | [../scripts/run-lab-demo.ps1](../scripts/run-lab-demo.ps1) | 统一 demo 运行封装。 |

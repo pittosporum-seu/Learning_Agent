@@ -39,7 +39,7 @@
 | 06 | Skill Registry | 06 MCP / 10 Skills | 本地 mock Skill 元数据、`skill_selection_trace`、`selected_skills` 和 `disabled_skills` | 已实现 |
 | 07 | Skill Generation | 10 Skills | 从 Lab 06 输出生成 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review` | 已实现 |
 | 08 | Finance Provider Adapter | 03 Tool Use / 06 MCP | mock-first adapter contract、`adapter_trace`、`safety_gate`、optional external provider 和 manual integration test | 已实现 |
-| 09 | Research Planner DAG | 07 Agent Harness | DAG 设计已明确；下一步生成投研 DAG 并管理节点依赖、状态、失败传播和人工确认边界 | 计划中 |
+| 09 | Research Planner DAG | 07 Agent Harness | 生成 `research_dag`、`planner_trace`、节点依赖状态、失败传播和 `human_review_gate` 人工确认边界 | 已实现 |
 | 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成带来源、时间、证据和风险提示的报告 | 计划中 |
 | 11 | Simulation Portfolio | 11 Browser / Computer Use Agent / Safety | 用 mock 或 `mx-moni` 风格接口做模拟组合验证 | 计划中 |
 | 12 | Evaluation & Safety | 12 Evaluation / Trace / Safety | 检查密钥泄露、无证据推荐、风险提示缺失 | 计划中 |
@@ -239,11 +239,13 @@ outputs/
 - Planner trace 记录每个节点为什么 ready、completed、blocked、skipped 或 waiting_human_confirmation。
 - 上游 blocked 时下游必须 skipped 或 blocked，不能静默继续。
 - `human_review_gate` 不自动 completed，正常终态是等待人工确认。
+- 默认 mock 路径整体状态是 `waiting_human_confirmation`，用于展示 Planner 到人工确认门为止的安全边界。
 
 验收标准：
 
 - 同一策略能生成稳定 Research Planner DAG。
 - 节点失败不会污染后续报告。
+- 上游 blocked 时，下游节点会 skipped 或 blocked，不能继续正常 completed。
 - 输出包含 `risk_disclosure`，不包含买卖动作、目标价、收益承诺或投资建议。
 - 默认测试不依赖真实模型、真实财经 API、真实 key 或真实 provider 响应。
 

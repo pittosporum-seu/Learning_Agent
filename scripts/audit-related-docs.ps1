@@ -227,6 +227,18 @@ $lab08RealAdapterTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_rea
 $lab08RealStubTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_real_mx_adapter_stub.py"
 $lab08RunLabTests = Read-RepoFile "labs/08-mx-skills-adapter/tests/test_run_lab.py"
 $lab08ManualRealAdapterTest = Read-RepoFile "labs/08-mx-skills-adapter/tests/manual_test_real_mx_adapter.py"
+$lab09Agents = Read-RepoFile "labs/09-research-planner/AGENTS.md"
+$lab09Readme = Read-RepoFile "labs/09-research-planner/README.md"
+$lab09PlannerTemplate = Read-RepoFile "labs/09-research-planner/data/planner_template.json"
+$lab09DagModel = Read-RepoFile "labs/09-research-planner/src/dag_model.py"
+$lab09PlannerBuilder = Read-RepoFile "labs/09-research-planner/src/planner_builder.py"
+$lab09PlannerExecutor = Read-RepoFile "labs/09-research-planner/src/planner_executor.py"
+$lab09RunLab = Read-RepoFile "labs/09-research-planner/src/run_lab.py"
+$lab09Demo = Read-RepoFile "labs/09-research-planner/demo/run_demo.py"
+$lab09DagModelTests = Read-RepoFile "labs/09-research-planner/tests/test_dag_model.py"
+$lab09PlannerBuilderTests = Read-RepoFile "labs/09-research-planner/tests/test_planner_builder.py"
+$lab09PlannerExecutorTests = Read-RepoFile "labs/09-research-planner/tests/test_planner_executor.py"
+$lab09RunLabTests = Read-RepoFile "labs/09-research-planner/tests/test_run_lab.py"
 
 $sharedCaseReadme = Read-RepoFile "labs/shared/investment_research_case/README.md"
 $sharedStrategyRequest = Read-RepoFile "labs/shared/investment_research_case/strategy_request.md"
@@ -271,6 +283,7 @@ Require-Contains "README.md" $readme @(
     "labs/03-finance-tool-use-mock/README.md",
     "labs/04-research-rag-basic/README.md",
     "labs/05-user-preference-memory/README.md",
+    "labs/09-research-planner/README.md",
     "AGENTS.md",
     "docs/maintenance/codex-skill-templates",
     "run-lab-web.ps1",
@@ -305,6 +318,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "labs/03-finance-tool-use-mock",
     "labs/04-research-rag-basic",
     "labs/05-user-preference-memory",
+    "labs/09-research-planner",
     "product/lab-plan.md",
     "product/security-and-secrets.md",
     "AGENTS.md",
@@ -317,7 +331,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter", "Lab 09 Research Planner DAG", "Lab 09: Research Planner DAG", "Lab 08 optional external provider integration")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter", "Lab 09 Research Planner DAG", "Lab 09: Research Planner DAG", "Lab 10 Evidence Report", "Lab 08 optional external provider integration")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -333,6 +347,7 @@ $roadmapTokens = @(
     '[x] Lab 07: Skill Generation',
     '[x] Lab 08: Finance Provider Adapter',
     '[x] Lab 08: optional external provider manual integration',
+    '[x] Lab 09: Research Planner',
     'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -373,6 +388,8 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Lab 08",
     "Lab 09",
     "lab09-research-planner-dag-design.md",
+    "planner_trace",
+    "human_review_gate",
     "routing_decision",
     "retrieved_context",
     "memory_trace",
@@ -422,6 +439,8 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "draft_review",
     "adapter_trace",
     "safety_gate",
+    "planner_trace",
+    "human_review_gate",
     "Lab 03-12",
     "SKILL.md",
     "API key"
@@ -438,6 +457,8 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 8 Finance Provider Adapter",
     "Part 9 Research Planner DAG",
     "lab09-research-planner-dag-design.md",
+    "planner_trace",
+    "human_review_gate",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
@@ -478,6 +499,8 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "draft_review",
     "adapter_trace",
     "safety_gate",
+    "planner_trace",
+    "human_review_gate",
     "routing_decision",
     "OpenAI-compatible",
     "LLM_API_KEY",
@@ -1306,6 +1329,94 @@ Require-Contains "labs/08-mx-skills-adapter/tests/manual_test_real_mx_adapter.py
     "MX_ALLOW_REAL_PROVIDER",
     "MX_APIKEY",
     "raw_response_persisted"
+)
+
+Require-Contains "labs/09-research-planner/AGENTS.md" $lab09Agents @(
+    "Research Planner DAG",
+    "planner_trace",
+    "human_review_gate",
+    "waiting_human_confirmation",
+    "risk_disclosure"
+)
+Require-Contains "labs/09-research-planner/README.md" $lab09Readme @(
+    "Research Planner DAG",
+    "planner_trace",
+    "research_dag",
+    "blocked_nodes",
+    "skipped_nodes",
+    "waiting_human_confirmation",
+    "risk_disclosure",
+    "run-lab-demo.ps1",
+    "run-lab-tests.ps1",
+    "Lab 10 Evidence Report"
+)
+Require-Contains "labs/09-research-planner/data/planner_template.json" $lab09PlannerTemplate @(
+    "parse_and_route",
+    "adapter_capability_check",
+    "candidate_generation",
+    "market_data_check",
+    "news_risk_check",
+    "evidence_context_attach",
+    "memory_preference_adjustment",
+    "skill_selection",
+    "human_review_gate",
+    "failure_behavior"
+)
+Require-Contains "labs/09-research-planner/src/dag_model.py" $lab09DagModel @(
+    "ResearchDagNode",
+    "VALID_STATUSES",
+    "validate_dag_dependencies",
+    "topological_sort_nodes",
+    "get_dependency_statuses"
+)
+Require-Contains "labs/09-research-planner/src/planner_builder.py" $lab09PlannerBuilder @(
+    "build_research_dag",
+    "REQUIRED_NODE_IDS",
+    "planner_template.json",
+    "safety_gate",
+    "risk_disclosure_present"
+)
+Require-Contains "labs/09-research-planner/src/planner_executor.py" $lab09PlannerExecutor @(
+    "execute_research_planner",
+    "planner_trace",
+    "waiting_human_confirmation",
+    "human_review_gate",
+    "PROHIBITED_OUTPUT_KEYS",
+    "contains_prohibited_output_key"
+)
+Require-Contains "labs/09-research-planner/src/run_lab.py" $lab09RunLab @(
+    "run_research_planner_dag",
+    "run_finance_provider_adapter",
+    "research_dag",
+    "planner_trace",
+    "Lab 10 Evidence Report",
+    "PROHIBITED_OUTPUT_KEYS"
+)
+Require-Contains "labs/09-research-planner/demo/run_demo.py" $lab09Demo @(
+    "run_research_planner_dag",
+    "--adapter-mode",
+    "planner_trace_count",
+    "waiting_human_confirmation_nodes"
+)
+Require-Contains "labs/09-research-planner/tests/test_dag_model.py" $lab09DagModelTests @(
+    "test_validate_dag_dependencies_accepts_valid_dag",
+    "test_validate_dag_dependencies_rejects_missing_dependency",
+    "test_validate_dag_dependencies_rejects_cycle"
+)
+Require-Contains "labs/09-research-planner/tests/test_planner_builder.py" $lab09PlannerBuilderTests @(
+    "test_builder_generates_all_required_nodes",
+    "test_builder_injects_adapter_context"
+)
+Require-Contains "labs/09-research-planner/tests/test_planner_executor.py" $lab09PlannerExecutorTests @(
+    "test_normal_mock_path_waits_for_human_confirmation",
+    "test_upstream_blocked_skips_downstream_nodes",
+    "test_missing_risk_disclosure_blocks_human_review_gate",
+    "test_planner_trace_contains_each_node_status_and_reason"
+)
+Require-Contains "labs/09-research-planner/tests/test_run_lab.py" $lab09RunLabTests @(
+    "test_run_lab_normal_request_waits_for_human_confirmation",
+    "test_run_lab_blocked_request_propagates_to_dag",
+    "PROHIBITED_KEYS"
 )
 
 Require-Contains "labs/shared/testing/README.md" $sharedTestingReadme @("run_lab_tests.py")

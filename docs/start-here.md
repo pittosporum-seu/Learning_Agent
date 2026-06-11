@@ -83,7 +83,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 11. [Lab 06: Skill Registry](../labs/06-skill-registry/README.md)
 12. [Lab 07: Skill Generation](../labs/07-skill-generation/README.md)
 13. [Lab 08: Finance Provider Adapter](../labs/08-mx-skills-adapter/README.md)
-14. [Lab 09: Research Planner DAG 设计](product/lab09-research-planner-dag-design.md)
+14. [Lab 09: Research Planner DAG](../labs/09-research-planner/README.md)
 
 启动 Lab 01 网页 demo：
 
@@ -108,7 +108,8 @@ http://127.0.0.1:8765/
 - Lab 06 用本地 mock Skill 元数据展示 Skill Registry，输出 `skill_selection_trace`、`selected_skills` 和 `disabled_skills`。
 - Lab 07 用 Lab 06 输出展示 Skill Generation，输出 `generated_skill_draft`、`skill_draft_markdown` 和 `draft_review`。
 - Lab 08 用 mock-first adapter 展示 Finance Provider Adapter，输出 `adapter_trace` 和 `safety_gate`；可在本地显式开启 optional external provider manual integration。
-- Lab 09 设计文档说明 Planner 如何把 adapter 能力、证据链、Memory、Skill 状态和安全边界编排成 Research Planner DAG。
+- Lab 09 把 adapter 能力、证据链、Memory、Skill 状态和安全边界编排成 Research Planner DAG，并用 `planner_trace` 展示状态传播。
+- Lab 09 的设计文档见 [Research Planner DAG 设计](product/lab09-research-planner-dag-design.md)。
 
 ## 当前可运行
 
@@ -122,10 +123,11 @@ http://127.0.0.1:8765/
 | [Lab 06: Skill Registry](../labs/06-skill-registry/README.md) | 本地 mock Skill 元数据、`skill_selection_trace`、`selected_skills`、`disabled_skills` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 06-skill-registry` |
 | [Lab 07: Skill Generation](../labs/07-skill-generation/README.md) | 可审查 Skill draft、`skill_draft_markdown`、`draft_review` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 07-skill-generation` |
 | [Lab 08: Finance Provider Adapter](../labs/08-mx-skills-adapter/README.md) | mock-first adapter、optional external provider、`adapter_trace`、`safety_gate` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 08-mx-skills-adapter` |
+| [Lab 09: Research Planner DAG](../labs/09-research-planner/README.md) | 有状态 DAG、`planner_trace`、失败传播、`human_review_gate` | `powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 09-research-planner` |
 
 当前继续方向：
 
-- 实现 Lab 09: Research Planner DAG，把 adapter 能力纳入有状态研究计划。
+- 设计 Lab 10: Evidence Report，把 Planner 输出转成可审查证据报告。
 - 默认测试不依赖真实 key。
 
 ## 安全边界

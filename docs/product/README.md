@@ -38,7 +38,7 @@
 | [Lab 06: Skill Registry](../../labs/06-skill-registry/README.md) | 已实现 | 用本地 mock Skill 元数据展示 Skill 注册、`skill_selection_trace`、选择、禁用和人工确认边界。 |
 | [Lab 07: Skill Generation](../../labs/07-skill-generation/README.md) | 已实现 | 从 Lab 06 输出生成可审查 Skill draft，保留 `skill_draft_markdown` 和 `draft_review`。 |
 | [Lab 08: Finance Provider Adapter](../../labs/08-mx-skills-adapter/README.md) | 已实现 | 用 mock-first adapter contract 展示 `adapter_trace`、`safety_gate`，并支持 optional external provider manual integration。 |
-| [Lab 09: Research Planner DAG 设计](lab09-research-planner-dag-design.md) | 设计已完成 | 明确 DAG 节点、依赖、状态流转、失败传播、人工确认边界和后续实现结构。 |
+| [Lab 09: Research Planner DAG](../../labs/09-research-planner/README.md) | 已实现 | 把 Lab 08 输出组织成 `research_dag` 和 `planner_trace`，并在 `human_review_gate` 等待人工确认。 |
 
 ## Lab 03-12 简短路线
 
@@ -50,7 +50,7 @@
 | 06 | Skill Registry | 建立 Skill 元数据和选择机制。 |
 | 07 | Skill Generation | 从稳定流程生成可审查 `SKILL.md` 草稿。 |
 | 08 | Finance Provider Adapter | 将 mock 工具和未来可选外部财经 provider 放到统一 adapter contract 下；MX Skills 是一个 provider profile。 |
-| 09 | Research Planner DAG | 将 adapter、证据、Memory、Skill 和安全边界编排成有状态 DAG；设计文档见 [Lab 09: Research Planner DAG 设计](lab09-research-planner-dag-design.md)。 |
+| 09 | Research Planner DAG | 将 adapter、证据、Memory、Skill 和安全边界编排成有状态 DAG；输出 `planner_trace` 和人工确认门。 |
 | 10 | Evidence Report | 生成带来源、时间、证据和风险提示的报告。 |
 | 11 | Simulation Portfolio | 用 mock 或模拟组合接口验证流程，保留人工确认。 |
 | 12 | Evaluation & Safety | 自动检查密钥、证据、风险提示和越权动作。 |

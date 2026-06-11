@@ -17,13 +17,13 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 实现 Lab 09: Research Planner DAG | `labs/09-research-planner/` | 能把 adapter 能力编排成可观察、可测试、可失败关闭的研究计划 DAG |
+| P0 | 设计 Lab 10 Evidence Report | `docs/product/` | 明确证据报告输入、证据引用、风险提示、人工确认边界和后续实现结构 |
 
 ## Next
 
 | 优先级 | 任务 | 产出 | 验收标准 |
 | --- | --- | --- | --- |
-| P0 | 实现 Lab 09: Research Planner DAG | `labs/09-research-planner/` | 能把 adapter 能力编排成可观察、可测试、可失败关闭的研究计划 DAG |
+| P0 | 实现 Lab 10 Evidence Report | `labs/10-evidence-report/` | 基于 Planner 输出生成带来源、限制、风险提示和人工确认项的 mock 证据报告 |
 | P1 | 设计投研 Skill 示例 | `skills/investment-research-workflow/SKILL.md` | 包含触发场景、禁用场景、步骤、输出格式、风险提示和测试样例 |
 | P1 | 补工程化清单第一批 | `docs/engineering/permission-boundary.md`、`trace-and-logging.md`、`evaluation-checklist.md` | 每篇是短清单，包含上线前检查项，并覆盖财经输出边界 |
 | P1 | 给 Lab 01 增加可选手动集成测试 | `labs/01-strategy-intake/tests/` 或 `demo/` | 有真实 MiMo key 时可手动验证，但默认测试仍不消耗 token |
@@ -66,3 +66,4 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 2026-06-09 | 实现 Lab 08: Finance Provider Adapter | 本轮提交 |
 | 2026-06-11 | 完成 Lab 08 optional external provider integration | 本轮提交 |
 | 2026-06-11 | 完成 Lab 09 Research Planner DAG 设计 | 本轮提交 |
+| 2026-06-11 | 实现 Lab 09: Research Planner DAG | 本轮提交 |

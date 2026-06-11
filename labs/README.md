@@ -70,7 +70,11 @@ labs/
   - 用统一 adapter contract 串起 Lab 03 mock tools 和可选外部财经 provider。
   - 生成 `adapter_trace` 和 `safety_gate`。
   - 默认只使用 `mock-finance`；`external-finance` 必须由环境变量和 `--allow-real-provider` 手动启用，MX Skills 只是 `mx-skills` provider profile。
-- [ ] Lab 09-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
+- [x] [Lab 09: Research Planner DAG](09-research-planner/README.md)
+  - 把 Lab 08 输出组织成有状态 DAG。
+  - 生成 `research_dag`、`planner_trace`、`blocked_nodes`、`skipped_nodes` 和 `waiting_human_confirmation_nodes`。
+  - 正常 mock 路径停在 `human_review_gate`，不会自动通过人工确认。
+- [ ] Lab 10-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试
 
@@ -134,6 +138,12 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 07-skill-
 powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 08-mx-skills-adapter
 ```
 
+运行 Lab 09 demo：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-demo.ps1 -Lab 09-research-planner
+```
+
 运行全部 Lab 测试：
 
 ```powershell
@@ -143,7 +153,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 只运行某个 Lab：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 08-mx-skills-adapter
+powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1 -Lab 09-research-planner
 ```
 
 ## 统一要求

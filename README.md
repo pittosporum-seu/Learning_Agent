@@ -91,6 +91,10 @@
   - 用 mock-first 方式展示外部财经 provider 适配层。
   - 生成 `adapter_trace` 和 `safety_gate`，默认只调用 `mock-finance`。
   - `external-finance` 必须由环境变量和 `--allow-real-provider` 手动启用；MX Skills 只是 `mx-skills` provider profile。
+- [Lab 09: Research Planner DAG](labs/09-research-planner/README.md)
+  - 把 Lab 08 输出组织成有状态 DAG。
+  - 生成 `research_dag` 和 `planner_trace`。
+  - 正常 mock 路径停在 `waiting_human_confirmation`，不自动通过人工确认。
 
 完整设计：
 

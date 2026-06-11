@@ -1,0 +1,85 @@
+{
+  "nodes": [
+    {
+      "node_id": "parse_and_route",
+      "node_type": "intake",
+      "depends_on": [],
+      "inputs": ["request", "strategy_spec", "routing_decision"],
+      "outputs": ["strategy_spec", "routing_summary"],
+      "requires_human_confirmation": false,
+      "failure_behavior": "If routing is blocked, downstream adapter and evidence nodes must not execute normally."
+    },
+    {
+      "node_id": "adapter_capability_check",
+      "node_type": "safety_check",
+      "depends_on": ["parse_and_route"],
+      "inputs": ["registered_adapters", "adapter_mode", "provider_mode", "safety_gate"],
+      "outputs": ["available_capabilities", "disabled_capabilities", "safety_gate_summary"],
+      "requires_human_confirmation": false,
+      "failure_behavior": "If adapter safety is blocked, adapter dependent nodes must be skipped or blocked."
+    },
+    {
+      "node_id": "candidate_generation",
+      "node_type": "adapter_call",
+      "depends_on": ["adapter_capability_check"],
+      "inputs": ["strategy_spec", "candidate-screen"],
+      "outputs": ["candidate_count", "candidate_ids", "candidate_generation_summary"],
+      "requires_human_confirmation": false,
+      "failure_behavior": "If candidate generation is blocked or empty, evidence nodes must not produce normal completed outputs."
+    },
+    {
+      "node_id": "market_data_check",
+      "node_type": "adapter_call",
+      "depends_on": ["candidate_generation"],
+      "inputs": ["candidate_ids", "market-data"],
+      "outputs": ["market_evidence_count", "market_data_summary"],
+      "requires_human_confirmation": false,
+      "failure_behavior": "If market evidence is missing, downstream evidence attachment must record a gap."
+    },
+    {
+      "node_id": "news_risk_check",
+      "node_type": "adapter_call",
+      "depends_on": ["candidate_generation"],
+      "inputs": ["candidate_ids", "finance-news", "risk_filters"],
+      "outputs": ["news_item_count", "risk_flags", "news_risk_summary"],
+      "requires_human_confirmation": false,
+      "failure_behavior": "If news risk evidence is missing, downstream evidence attachment must record a gap."
+    },
+    {
+      "node_id": "evidence_context_attach",
+      "node_type": "evidence_join",
+      "depends_on": ["market_data_check", "news_risk_check"],
+      "inputs": ["candidate_evidence", "retrieved_context", "adapter_trace"],
+      "outputs": ["augmented_evidence_summary", "evidence_gaps"],
+      "requires_human_confirmation": false,
+      "failure_behavior": "Do not create unsourced assertions; blocked upstream evidence must propagate."
+    },
+    {
+      "node_id": "memory_preference_adjustment",
+      "node_type": "memory_policy",
+      "depends_on": ["evidence_context_attach"],
+      "inputs": ["memory_snapshot", "effective_user_profile", "augmented_evidence_summary"],
+      "outputs": ["preference_adjusted_evidence_summary", "memory_policy_summary"],
+      "requires_human_confirmation": false,
+      "failure_behavior": "Memory may only adjust a view and must not overwrite original evidence or safety boundaries."
+    },
+    {
+      "node_id": "skill_selection",
+      "node_type": "skill_policy",
+      "depends_on": ["memory_preference_adjustment"],
+      "inputs": ["selected_skills", "disabled_skills", "skill_selection_trace"],
+      "outputs": ["available_skills", "disabled_skill_reasons", "skill_confirmation_needs"],
+      "requires_human_confirmation": false,
+      "failure_behavior": "Execution-like skills must be disabled when evidence, safety, or disclosure is missing."
+    },
+    {
+      "node_id": "human_review_gate",
+      "node_type": "human_gate",
+      "depends_on": ["skill_selection"],
+      "inputs": ["risk_disclosure", "evidence_gaps", "skill_confirmation_needs", "safety_gate"],
+      "outputs": ["required_confirmations", "blocked_until_confirmed", "human_review_summary"],
+      "requires_human_confirmation": true,
+      "failure_behavior": "Normal status is waiting_human_confirmation; missing risk disclosure must block."
+    }
+  ]
+}
