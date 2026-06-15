@@ -1,6 +1,6 @@
 # Start Here
 
-这个仓库是一个面向后端工程师和 Agent 初学者的学习入口：先用 12 篇基础文章建立概念，再用一个连续的个性化投研 Agent 案例，把 Agent Loop、Tool Use、RAG、Memory、Skills、Evaluation 和 Safety 跑成可观察、可测试、可复盘的实验。
+这个仓库是一个面向后端工程师和 Agent 初学者的学习入口：先用 13 篇基础文章建立概念，再用一个连续的个性化投研 Agent 案例，把 Agent Loop、Tool Use、RAG、Memory、Skills、Evaluation、Safety 和 Loop Engineering 跑成可观察、可测试、可复盘的实验。
 
 ## 适合谁
 
@@ -45,9 +45,10 @@ powershell -ExecutionPolicy Bypass -File scripts/run-lab-tests.ps1
 1. [07 Agent Harness](foundations/07-agent-harness.md)
 2. [08 Coding Agent](foundations/08-coding-agent.md)
 3. [12 Evaluation / Trace / Safety](foundations/12-evaluation-trace-safety.md)
-4. [Engineering](engineering/README.md)
-5. [密钥、安全与合规边界](product/security-and-secrets.md)
-6. [Document Graph](document-graph.md)
+4. [13 Loop Engineering](foundations/13-loop-engineering.md)
+5. [Engineering](engineering/README.md)
+6. [密钥、安全与合规边界](product/security-and-secrets.md)
+7. [Document Graph](document-graph.md)
 
 可运行命令：
 

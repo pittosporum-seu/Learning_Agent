@@ -7,6 +7,7 @@
 | Agent | 能根据目标、上下文和环境反馈自主选择下一步动作的系统 | 处理无法预先完全写死路径的任务 | [02 Agent Loop](foundations/02-agent-loop.md) |
 | Workflow | 预先定义好步骤和分支的确定性流程 | 处理规则明确、路径稳定、可预测的任务 | [01 Workflow vs Agent](foundations/01-workflow-vs-agent.md) |
 | Agent Loop | Agent 反复观察、决策、行动、接收结果的循环 | 让系统根据中间结果调整行为，而不是一次性输出 | [02 Agent Loop](foundations/02-agent-loop.md) |
+| Loop Engineering | 闭环工程 / 循环工程，把重复或多步任务设计成可调度、可验证、可记忆、可停止、可人工交接的 Agent 闭环 | 当任务需要持续触发、工具调用、状态管理、验证和人工确认时，避免只靠更长提示词硬撑 | [13 Loop Engineering](foundations/13-loop-engineering.md) |
 | Tool Use | 模型通过宿主程序调用外部工具、函数、API 或脚本 | 让 Agent 获取数据、执行动作、验证结果 | [03 Tool Use](foundations/03-tool-use.md) |
 | RAG | Retrieval-Augmented Generation，检索增强生成 | 让回答基于资料和证据，而不是只靠模型记忆 | [04 RAG](foundations/04-rag.md) |
 | Memory | Agent 对用户偏好、历史任务、长期事实或短期状态的记忆机制 | 让系统跨轮次保留有用信息，并能解释和清除 | [05 Memory](foundations/05-memory.md) |

@@ -1,6 +1,6 @@
 # Agent 学习展示框架
 
-这个文档定义 `Learning_Agent` 的整体可运行展示系统：用一个个性化投研场景，把 Agent 的任务理解、路由、循环、工具调用、RAG、Memory、Skills、Planner、证据报告、Evaluation 和 Safety 串成可观察、可测试、可复盘的学习路径。
+这个文档定义 `Learning_Agent` 的整体可运行展示系统：用一个个性化投研场景，把 Agent 的任务理解、路由、循环、工具调用、RAG、Memory、Skills、Planner、证据报告、Evaluation、Safety 和 Loop Engineering 串成可观察、可测试、可复盘的学习路径。
 
 投研只是贯穿案例，不是投资建议系统。本仓库不承诺收益，不输出确定性涨跌判断，不绕过人工确认执行交易，也不把真实 key 写入仓库。
 
@@ -23,7 +23,7 @@
 | 层级 | 主要位置 | 作用 |
 | --- | --- | --- |
 | 学习入口层 | `README.md`, `docs/start-here.md`, `docs/glossary.md` | 帮读者选择路线、统一术语、找到可运行入口。 |
-| 概念文章层 | `docs/foundations/` | 解释 Workflow vs Agent、Agent Loop、Tool Use、RAG、Memory、MCP、Skills、Evaluation 等基础概念。 |
+| 概念文章层 | `docs/foundations/` | 解释 Workflow vs Agent、Agent Loop、Tool Use、RAG、Memory、MCP、Skills、Evaluation、Loop Engineering 等基础概念。 |
 | 贯穿案例层 | `docs/product/` | 固化个性化投研 Agent 的愿景、展示框架、Lab 计划和安全边界。 |
 | 可运行展示层 | `labs/` | 用 mock-first 的 Lab 把每个概念做成 demo、tests 和可观察输出。 |
 | 工程资产层 | `scripts/`, `hooks/`, `docs/maintenance/`, `AGENTS.md` | 提供检查脚本、内容同步规则、仓库规则和可复用维护模板。 |
@@ -45,6 +45,8 @@
 | Part 10 Evidence Report | Lab 10 | 12 Evaluation / Trace / Safety | 带来源、时间、证据、限制条件和人工确认项的报告 | 已实现 |
 | Part 11 Simulation Portfolio & HITL | Lab 11 | 07 Agent Harness / 12 Evaluation | 模拟组合、人工确认、权限边界 | 计划中 |
 | Part 12 Evaluation & Safety | Lab 12 | 12 Evaluation / Trace / Safety | 回归评测、密钥检查、风险边界和越权检测 | 计划中 |
+
+第 13 篇 [Loop Engineering](../foundations/13-loop-engineering.md) 不单独对应一个 Lab，而是作为 Part 0-12 的收束视角：把 Prompt、Workflow、Agent Loop、Tool、RAG、Memory、Skill、Adapter、Planner、Evidence Report、Evaluation 和 Human Review 组织成可运行闭环。
 
 ## 四、每个 Part 的设计
 

@@ -23,6 +23,7 @@
 - [x] Skills
 - [x] Browser / Computer Use Agent
 - [x] Evaluation / Trace / Safety
+- [x] Loop Engineering
 
 ## 2. 资料精读
 
@@ -85,10 +86,11 @@
 
 ## 6. 系列规划
 
-- [x] 建立 12 篇文章总规划
+- [x] 建立 13 篇文章总规划
 - [x] 明确三组写作节奏
 - [x] 固定每篇文章结构
-- [x] 完成 12 篇基础文章正文
+- [x] 完成 13 篇基础文章正文
+- [x] 新增 Agent基础知识 13 Loop Engineering
 
 ## 7. 维护钩子
 

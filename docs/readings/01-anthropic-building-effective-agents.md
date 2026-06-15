@@ -22,6 +22,7 @@
 | Agent Loop | [02-agent-loop.md](../foundations/02-agent-loop.md) |
 | Subagent / Multi-Agent | [09-subagent-multi-agent.md](../foundations/09-subagent-multi-agent.md) |
 | Evaluation / Trace / Safety | [12-evaluation-trace-safety.md](../foundations/12-evaluation-trace-safety.md) |
+| Loop Engineering | [13-loop-engineering.md](../foundations/13-loop-engineering.md) |
 
 ## 四、对工程实践有什么启发
 
@@ -37,8 +38,8 @@
 - 02 Agent Loop
 - 09 Subagent / Multi-Agent
 - 12 Evaluation / Trace / Safety
+- 13 Loop Engineering
 
 ## 资料链接
 
 - [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents)
-

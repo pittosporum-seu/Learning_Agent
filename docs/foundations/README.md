@@ -18,6 +18,7 @@
 | 10 | Skills | [10-skills.md](10-skills.md) |
 | 11 | Browser / Computer Use Agent | [11-browser-computer-use-agent.md](11-browser-computer-use-agent.md) |
 | 12 | Evaluation / Trace / Safety | [12-evaluation-trace-safety.md](12-evaluation-trace-safety.md) |
+| 13 | Loop Engineering | [13-loop-engineering.md](13-loop-engineering.md) |
 
 核心脉络：
 
@@ -34,4 +35,5 @@
   -> 用 Skills 把重复流程沉淀成可复用能力包
   -> 理解 Browser / Computer Use Agent 的界面操作闭环和安全边界
   -> 用 Evaluation / Trace / Safety 把 Agent 从 Demo 推向可上线系统
+  -> 用 Loop Engineering 把 Prompt、工具、Skill、验证、状态和人工确认组织成可运行闭环
 ```

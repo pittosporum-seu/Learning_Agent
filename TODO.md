@@ -41,6 +41,7 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 
 | 时间 | 任务 | 提交 |
 | --- | --- | --- |
+| 2026-06-15 | 新增 Agent基础知识 13 Loop Engineering | 本轮提交 |
 | 2026-06-05 | 完成 `Agent基础知识` 01-12 篇正文 | `181d374` |
 | 2026-06-05 | 新增文档图和相关文档审核 hook | `4e361c1` |
 | 2026-06-05 | 新增 readings / patterns / engineering / skills 扩展骨架 | `905b7fa` |

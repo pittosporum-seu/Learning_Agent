@@ -58,6 +58,7 @@ flowchart LR
     D09 --> D12
     D10 --> D12
     D11 --> D12
+    D12 --> D13["13 Loop Engineering"]
 
     D01 --> L01["labs/01-strategy-intake"]
     D02 --> L02["labs/02-strategy-agent-loop"]
@@ -69,6 +70,9 @@ flowchart LR
     D10 --> L06["labs/06-skill-registry"]
     D10 --> L07["labs/07-skill-generation"]
     D12 --> L12["labs/12-evaluation-safety"]
+    D13 --> L09
+    D13 --> L10["labs/10-evidence-report"]
+    D13 --> L11["labs/11-simulation-portfolio"]
 ```
 
 ## 投研 Lab 主线
@@ -143,6 +147,7 @@ flowchart TD
 | 10 | Skills | [10-skills.md](foundations/10-skills.md) |
 | 11 | Browser / Computer Use Agent | [11-browser-computer-use-agent.md](foundations/11-browser-computer-use-agent.md) |
 | 12 | Evaluation / Trace / Safety | [12-evaluation-trace-safety.md](foundations/12-evaluation-trace-safety.md) |
+| 13 | Loop Engineering | [13-loop-engineering.md](foundations/13-loop-engineering.md) |
 
 ## 扩展层映射
 
@@ -167,7 +172,7 @@ flowchart TD
 | [product/README.md](product/README.md) | 个性化投研 Agent 产品案例入口，说明投研只是贯穿案例，并给出阅读顺序和财经输出边界。 |
 | [product/personalized-investment-research-agent.md](product/personalized-investment-research-agent.md) | 定义个性化投研 Agent 系统愿景、边界、架构和 Skill 固化思路。 |
 | [product/showcase-framework.md](product/showcase-framework.md) | 固化 Learning_Agent 的可运行展示框架，说明 Parts 0-12、统一数据契约、展示原则和实现顺序。 |
-| [product/lab-plan.md](product/lab-plan.md) | 把 12 篇基础文章映射成 12 个投研 Labs。 |
+| [product/lab-plan.md](product/lab-plan.md) | 把前 12 篇基础文章映射成 12 个投研 Labs，并由第 13 篇 Loop Engineering 收束整体闭环。 |
 | [product/lab09-research-planner-dag-design.md](product/lab09-research-planner-dag-design.md) | Lab 09 Research Planner DAG 设计文档，定义 DAG 节点、依赖、状态流转、失败传播、人工确认边界和后续实现结构。 |
 | [product/lab10-evidence-report-design.md](product/lab10-evidence-report-design.md) | Lab 10 Evidence Report 设计文档，定义报告结构、证据引用、风险限制、人工确认边界和后续实现结构。 |
 | [product/security-and-secrets.md](product/security-and-secrets.md) | 定义 Hermes 注入密钥、`.env.example`、提交前检查和财经输出边界。 |

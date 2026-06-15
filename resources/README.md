@@ -12,6 +12,7 @@
 | Claude Code Docs | 官方文档 | 用于补充 Coding Agent、Subagents、Skills、Hooks 等工程化主题。 |
 | MCP Documentation | 官方文档 | 用于理解 Agent 工具和数据源的统一接口。 |
 | SWE-bench / WebArena / AgentBench | Benchmark | 用于补充 Coding Agent、Browser Agent 和 Agent 评测视角。 |
+| 《提示词工程已死，Loop Engineering 来了！》 | 文章线索 | 用于补充第 13 篇 Loop Engineering，帮助把 Prompt、工具、状态、验证和人工确认放进闭环工程视角。 |
 | 小米 MiMo | 模型服务 | 个性化投研 Agent 系统的模型层，真实密钥由运行环境注入。 |
 | 东方财富妙想 Skills | 金融数据与工具能力 | 用于投研 Labs 的候选筛选、行情财务、资讯搜索、自选股和模拟组合接口参考。 |
 

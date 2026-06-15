@@ -104,11 +104,13 @@ $foundationDocs = @(
     "docs/foundations/09-subagent-multi-agent.md",
     "docs/foundations/10-skills.md",
     "docs/foundations/11-browser-computer-use-agent.md",
-    "docs/foundations/12-evaluation-trace-safety.md"
+    "docs/foundations/12-evaluation-trace-safety.md",
+    "docs/foundations/13-loop-engineering.md"
 )
 
 $readme = Read-RepoFile "README.md"
 $foundationsReadme = Read-RepoFile "docs/foundations/README.md"
+$foundationLoopEngineering = Read-RepoFile "docs/foundations/13-loop-engineering.md"
 $seriesPlan = Read-RepoFile "docs/series-plan.md"
 $documentGraph = Read-RepoFile "docs/document-graph.md"
 $resources = Read-RepoFile "resources/README.md"
@@ -275,12 +277,27 @@ foreach ($doc in $foundationDocs) {
     Require-Contains "docs/document-graph.md" $documentGraph @($fileName)
 }
 
-foreach ($index in 1..12) {
+foreach ($index in 1..13) {
     $number = "{0:D2}" -f $index
     if ($seriesPlan -notmatch "\|\s*$number\s*\|") {
         Add-Failure "docs/series-plan.md is missing row $number"
     }
 }
+
+Require-Contains "docs/foundations/13-loop-engineering.md" $foundationLoopEngineering @(
+    "Loop Engineering",
+    "Prompt Engineering",
+    "Trigger / Scheduler",
+    "Context Loading",
+    "Verifier / Evaluation",
+    "Memory / State",
+    "Stop Condition",
+    "Human Review",
+    "Cost / Budget",
+    "Lab 10 Evidence Report",
+    "mermaid",
+    "datawhalechina/Agent-Learning-Hub"
+)
 
 Require-Contains "README.md" $readme @(
     "docs/start-here.md",
@@ -307,8 +324,8 @@ Require-Contains "README.md" $readme @(
     "run-lab-tests.ps1"
 )
 
-Require-Contains "resources/README.md" $resources @("datawhalechina/Agent-Learning-Hub")
-Require-Contains "docs/series-plan.md" $seriesPlan @("Agent-Learning-Hub")
+Require-Contains "resources/README.md" $resources @("datawhalechina/Agent-Learning-Hub", "Loop Engineering")
+Require-Contains "docs/series-plan.md" $seriesPlan @("Agent-Learning-Hub", "13", "Loop Engineering")
 Require-Contains "hooks/content-update.md" $hook @(
     "docs/start-here.md",
     "docs/glossary.md",
@@ -351,7 +368,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter", "Lab 09 Research Planner DAG", "Lab 09: Research Planner DAG", "Lab 10 Evidence Report", "Lab 10: Evidence Report", "Lab 11 Simulation Portfolio", "Lab 08 optional external provider integration")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter", "Lab 09 Research Planner DAG", "Lab 09: Research Planner DAG", "Lab 10 Evidence Report", "Lab 10: Evidence Report", "Lab 11 Simulation Portfolio", "Lab 08 optional external provider integration", "13 Loop Engineering")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -371,6 +388,7 @@ $roadmapTokens = @(
     'Lab 10 Evidence Report',
     '[x] Lab 10: Evidence Report',
     '[ ] Lab 11: Simulation Portfolio',
+    'Loop Engineering',
     'Skill'
 )
 Require-Contains "roadmap.md" $roadmap $roadmapTokens
@@ -400,6 +418,8 @@ Require-Contains "docs/start-here.md" $startHere @(
     "Start Here",
     "Agent Loop",
     "Tool Use",
+    "Loop Engineering",
+    "foundations/13-loop-engineering.md",
     "showcase-framework.md",
     "Lab 01",
     "Lab 02",
@@ -432,6 +452,7 @@ Require-Contains "docs/glossary.md" $glossary @(
     "Agent",
     "Workflow",
     "Agent Loop",
+    "Loop Engineering",
     "Tool Use",
     "RAG",
     "Memory",
@@ -454,6 +475,7 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "personalized-investment-research-agent.md",
     "showcase-framework.md",
     "lab-plan.md",
+    "13-loop-engineering.md",
     "lab09-research-planner-dag-design.md",
     "lab10-evidence-report-design.md",
     "security-and-secrets.md",
@@ -478,6 +500,8 @@ Require-Contains "docs/product/README.md" $productReadme @(
 )
 Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 0 Showcase Overview",
+    "Loop Engineering",
+    "13-loop-engineering.md",
     "Part 1 Strategy Intake & Router",
     "Part 2 Agent Loop & Structured Trace",
     "Part 3 Finance Tool Use Mock",

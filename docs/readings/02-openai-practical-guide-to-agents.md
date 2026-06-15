@@ -23,6 +23,7 @@
 | Tool Use | [03-tool-use.md](../foundations/03-tool-use.md) |
 | Agent Harness | [07-agent-harness.md](../foundations/07-agent-harness.md) |
 | Evaluation / Trace / Safety | [12-evaluation-trace-safety.md](../foundations/12-evaluation-trace-safety.md) |
+| Loop Engineering | [13-loop-engineering.md](../foundations/13-loop-engineering.md) |
 
 ## 四、对工程实践有什么启发
 
@@ -38,8 +39,8 @@
 - 03 Tool Use
 - 07 Agent Harness
 - 12 Evaluation / Trace / Safety
+- 13 Loop Engineering
 
 ## 资料链接
 
 - [A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/)
-

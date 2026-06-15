@@ -7,7 +7,7 @@
 - [`start-here.md`](start-here.md): 第一次进入仓库的学习路线，包含从零、工程落地和产品案例三条路径。
 - [`glossary.md`](glossary.md): Agent、Workflow、RAG、Memory、Skill、Trace 等核心术语表。
 - [`document-graph.md`](document-graph.md): 用 Mermaid 图整理来源路线、文章依赖和维护关系。
-- [`series-plan.md`](series-plan.md): Agent 基础知识系列的 12 篇写作规划。
+- [`series-plan.md`](series-plan.md): Agent 基础知识系列的 13 篇写作规划。
 - [`product/README.md`](product/README.md): 个性化投研 Agent 产品案例入口。
 - [`product/showcase-framework.md`](product/showcase-framework.md): Learning_Agent 可运行展示系统的 Parts、数据契约和实现顺序。
 - [`product/lab09-research-planner-dag-design.md`](product/lab09-research-planner-dag-design.md): Lab 09 Research Planner DAG 的设计文档。

@@ -4,7 +4,7 @@
 
 系列最初围绕 [datawhalechina/Agent-Learning-Hub](https://github.com/datawhalechina/Agent-Learning-Hub) 的学习路线展开，再结合 Anthropic、OpenAI、Claude Code、MCP、SWE-bench、WebArena 等资料补充扩展。
 
-系列先按 12 篇推进：前 6 篇讲基础概念，后 6 篇讲工程化和真实 Agent 系统。写作主线从 Workflow / Agent 区分开始，逐步推进到 Agent Loop、Tool Use、RAG、Memory、MCP、Harness、Coding Agent、Subagent、Skills、Browser Agent、Evaluation 和 Safety。
+系列以 13 篇为当前基础框架：前 6 篇讲基础概念，第 7-12 篇讲工程化和真实 Agent 系统，第 13 篇用 Loop Engineering 收束整条主线。写作主线从 Workflow / Agent 区分开始，逐步推进到 Agent Loop、Tool Use、RAG、Memory、MCP、Harness、Coding Agent、Subagent、Skills、Browser Agent、Evaluation / Safety，最后回到可验证闭环。
 
 ## 系列总规划
 
@@ -22,10 +22,11 @@
 | 10 | Skills | Skill 和 Prompt、Tool、MCP 有什么区别？ | 已完成 |
 | 11 | Browser / Computer Use Agent | Browser Agent 为什么难？视觉、点击、失败恢复怎么处理？ | 已完成 |
 | 12 | Evaluation / Trace / Safety | 怎么判断 Agent 真有用？怎么避免瞎跑、越权、退化？ | 已完成 |
+| 13 | Loop Engineering | 如何把 Prompt、工具、Skill、验证、状态和人工确认组织成可运行闭环？ | 已完成 |
 
 ## 写作节奏
 
-先不要一口气写完 12 篇，可以按三组推进。
+前 12 篇按三组推进，第 13 篇作为收束篇补齐全局工程视角。
 
 ```text
 第一组：基础概念
@@ -45,6 +46,9 @@
 10 Skills
 11 Browser Agent
 12 Eval / Safety
+
+收束篇：
+13 Loop Engineering
 ```
 
 ## 每篇固定结构
@@ -62,7 +66,7 @@
 
 ## 后续维护方向
 
-12 篇基础文章已经完成。后续维护可以转向：
+13 篇基础文章已经完成。后续维护可以转向：
 
 - 给重点文章补充最小可运行实验。
 - 按论文、官方文档和工程博客补充 `resources/` 阅读索引，并在 `docs/readings/` 中沉淀精读笔记。
