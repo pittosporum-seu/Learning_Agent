@@ -33,6 +33,7 @@ GitHub Issues 适合公开协作和长期追踪；这个 `TODO.md` 适合跟仓�
 | 优先级 | 任务 | 产出 | 说明 |
 | --- | --- | --- | --- |
 | P1 | 建立链接检查机制 | `scripts/check-links.ps1` | 先检查 Markdown 中的明显坏链接和路径参数 |
+| P2 | 小修第 13 篇 Loop Engineering | `docs/foundations/13-loop-engineering.md` | 补正文内联参考，并在 Lab 11 / Lab 12 相关表述中明确其仍处于计划中；等 Lab 主线做完后再处理 |
 | P2 | 做 GitHub Issues 迁移 | GitHub Issues | 将 `TODO.md` 中长期任务迁到 Issues |
 | P2 | 补更多 benchmark 阅读笔记 | `docs/readings/` | SWE-bench、WebArena、AgentBench、OSWorld 等 |
 | P2 | 接入真实 MiMo 手动集成测试 | `labs/01-strategy-intake/`、集成测试说明 | 默认 mock 仍可运行，有环境变量时才切换真实模型源 |
