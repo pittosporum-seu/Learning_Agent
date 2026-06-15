@@ -43,7 +43,7 @@
 | Part 8 Finance Provider Adapter | Lab 08 | 06 MCP / 03 Tool Use | 外部财经 provider 的 mock-first adapter、optional external provider 和 manual integration 边界 | 已实现 |
 | Part 9 Research Planner DAG | Lab 09 | 07 Agent Harness | 从线性计划升级到 DAG 研究计划，输出 `planner_trace` 和人工确认门 | 已实现 |
 | Part 10 Evidence Report | Lab 10 | 12 Evaluation / Trace / Safety | 带来源、时间、证据、限制条件和人工确认项的报告 | 已实现 |
-| Part 11 Simulation Portfolio & HITL | Lab 11 | 07 Agent Harness / 12 Evaluation | 模拟组合、人工确认、权限边界 | 计划中 |
+| Part 11 Simulation Portfolio & HITL | Lab 11 | 07 Agent Harness / 12 Evaluation | 模拟组合、人工确认、权限边界 | 设计已明确，计划中 |
 | Part 12 Evaluation & Safety | Lab 12 | 12 Evaluation / Trace / Safety | 回归评测、密钥检查、风险边界和越权检测 | 计划中 |
 
 第 13 篇 [Loop Engineering](../foundations/13-loop-engineering.md) 不单独对应一个 Lab，而是作为 Part 0-12 的收束视角：把 Prompt、Workflow、Agent Loop、Tool、RAG、Memory、Skill、Adapter、Planner、Evidence Report、Evaluation 和 Human Review 组织成可运行闭环。
@@ -153,12 +153,13 @@
 
 ### Part 11 Simulation Portfolio & HITL
 
+- 设计文档：[Lab 11: Simulation Portfolio 设计](lab11-simulation-portfolio-design.md)。
 - 展示目标：展示模拟组合或观察池变更为什么必须经过人工确认。
-- 输入：报告候选项、模拟组合状态、用户确认或拒绝。
-- 核心输出：待确认动作、确认记录、模拟执行结果、撤销或拒绝原因。
-- 读者应该观察什么：HITL 是系统边界的一部分，不是界面上的“确认按钮”装饰。
-- 不做什么：不接真实交易，不自动买卖，不把用户一次确认扩展成长期授权。
-- 验收标准：所有高风险动作都有确认记录；拒绝和取消路径可测试；默认 mock-first。
+- 输入：Lab 10 的 `evidence_report`、`risk_disclosure`、`human_review_required`、`candidate_observation_pool`、`human_review_checklist`、`evidence_refs` 和 `report_safety_review`。
+- 核心输出：`simulation_proposal`、`simulation_portfolio`、`simulation_trace`、`human_confirmation_gate`、`simulation_safety_review`。
+- 读者应该观察什么：HITL 是状态机边界的一部分；Evidence Report 的 `needs_human_review` 不能被当成已确认，用户偏好、Skill draft 或 selected skill 也不能变成执行授权。
+- 不做什么：不接真实账户、自选股、资金、委托或交易接口；不自动执行模拟加入、移除、调仓或撤销动作；不把 mock portfolio 当成真实收益或真实持仓。
+- 验收标准：正常路径停在 `waiting_human_confirmation`；所有 proposed actions 都需要人工确认；blocked 上游、安全审查失败、缺风险提示或缺证据时 fail closed；默认 mock-first。
 
 ### Part 12 Evaluation & Safety
 

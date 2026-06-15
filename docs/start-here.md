@@ -113,6 +113,7 @@ http://127.0.0.1:8765/
 - Lab 09 把 adapter 能力、证据链、Memory、Skill 状态和安全边界编排成 Research Planner DAG，并用 `planner_trace` 展示状态传播。
 - Lab 09 的设计文档见 [Research Planner DAG 设计](product/lab09-research-planner-dag-design.md)。
 - Lab 10 把 Planner 输出整理成 Evidence Report，输出 `evidence_report`、`report_generation_trace`、`evidence_refs`、风险提示和人工确认边界；设计文档见 [Evidence Report 设计](product/lab10-evidence-report-design.md)。
+- Lab 11 的设计文档见 [Simulation Portfolio 设计](product/lab11-simulation-portfolio-design.md)，它把报告之后的 mock 模拟组合提案停在人工确认门前。
 
 ## 当前可运行
 
@@ -131,7 +132,7 @@ http://127.0.0.1:8765/
 
 当前继续方向：
 
-- 设计 Lab 11: Simulation Portfolio，把证据报告之后的模拟组合和人工确认边界先固化清楚。
+- 实现 Lab 11: Simulation Portfolio，把证据报告之后的 mock 模拟组合提案、状态机和人工确认门跑成可测试 Lab。
 - 默认测试不依赖真实 key。
 
 ## 安全边界

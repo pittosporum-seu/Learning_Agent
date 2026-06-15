@@ -37,6 +37,7 @@ flowchart TD
     X7 --> P3["Agent 学习展示框架"]
     X7 --> P4["Lab 09 Planner DAG 设计"]
     X7 --> P5["Lab 10 Evidence Report 设计"]
+    X7 --> P6["Lab 11 Simulation Portfolio 设计"]
     X7 --> X5
 ```
 
@@ -175,6 +176,7 @@ flowchart TD
 | [product/lab-plan.md](product/lab-plan.md) | 把前 12 篇基础文章映射成 12 个投研 Labs，并由第 13 篇 Loop Engineering 收束整体闭环。 |
 | [product/lab09-research-planner-dag-design.md](product/lab09-research-planner-dag-design.md) | Lab 09 Research Planner DAG 设计文档，定义 DAG 节点、依赖、状态流转、失败传播、人工确认边界和后续实现结构。 |
 | [product/lab10-evidence-report-design.md](product/lab10-evidence-report-design.md) | Lab 10 Evidence Report 设计文档，定义报告结构、证据引用、风险限制、人工确认边界和后续实现结构。 |
+| [product/lab11-simulation-portfolio-design.md](product/lab11-simulation-portfolio-design.md) | Lab 11 Simulation Portfolio 设计文档，定义 mock 模拟组合提案、状态机、人工确认门、安全边界和后续实现结构。 |
 | [product/security-and-secrets.md](product/security-and-secrets.md) | 定义 Hermes 注入密钥、`.env.example`、提交前检查和财经输出边界。 |
 | [product/AGENTS.md](product/AGENTS.md) | 产品文档修改规则，约束产品定位、Lab 计划同步和财经输出边界。 |
 | [../labs/README.md](../labs/README.md) | Labs 入口，说明投研主线和统一要求。 |

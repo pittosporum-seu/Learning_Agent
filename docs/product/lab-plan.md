@@ -41,7 +41,7 @@
 | 08 | Finance Provider Adapter | 03 Tool Use / 06 MCP | mock-first adapter contract、`adapter_trace`、`safety_gate`、optional external provider 和 manual integration test | 已实现 |
 | 09 | Research Planner DAG | 07 Agent Harness | 生成 `research_dag`、`planner_trace`、节点依赖状态、失败传播和 `human_review_gate` 人工确认边界 | 已实现 |
 | 10 | Evidence Report | 04 RAG / 12 Evaluation | 生成 `evidence_report`、`report_generation_trace`、`evidence_refs`、风险提示和人工确认项 | 已实现 |
-| 11 | Simulation Portfolio | 11 Browser / Computer Use Agent / Safety | 用 mock 或 `mx-moni` 风格接口做模拟组合验证 | 计划中 |
+| 11 | Simulation Portfolio | 11 Browser / Computer Use Agent / Safety | Simulation Portfolio 设计已明确；后续用 mock proposal、状态机、人工确认门和安全审查展示模拟组合流程 | 计划中 |
 | 12 | Evaluation & Safety | 12 Evaluation / Trace / Safety | 检查密钥泄露、无证据推荐、风险提示缺失 | 计划中 |
 
 ## 统一结构
@@ -275,19 +275,26 @@ outputs/
 
 ## Lab 11: Simulation Portfolio
 
+设计文档：[Lab 11: Simulation Portfolio 设计](lab11-simulation-portfolio-design.md)。
+
 目标：用模拟组合验证观察池或策略执行流程。
 
 关键点：
 
-- 默认 mock 组合。
-- 真实 `mx-moni` 只用于模拟组合，不用于真实交易。
-- 买入、卖出、撤单类动作必须有人类确认。
+- 默认只生成 mock simulation proposal，不连接真实账户、自选股、资金或委托。
+- 从 Lab 10 的 `evidence_report`、`evidence_refs`、`risk_disclosure`、`human_review_required` 和 `report_safety_review` 进入模拟组合状态机。
+- 正常路径停在 `waiting_human_confirmation`，不能默认进入 `confirmed_mock`。
+- `add_to_mock_portfolio`、`remove_from_mock_portfolio`、`rebalance_mock_portfolio` 等动作都只是 proposed action，必须显式人工确认。
+- 真实 `mx-moni` 只可作为未来模拟组合接口参考，不用于真实交易。
 
 验收标准：
 
-- 能查询模拟持仓和资金。
-- 能生成模拟执行计划。
-- 未确认前不能执行模拟买卖动作。
+- 能生成带 `evidence_refs` 的 mock simulation proposal。
+- 能生成 `simulation_trace`、`human_confirmation_gate` 和 `simulation_safety_review`。
+- 未确认前不能进入 `confirmed_mock`。
+- blocked 报告、安全审查失败、缺风险提示或缺证据时必须 fail closed。
+- 输出包含 `risk_disclosure`、`mock_data_notice`、`no_real_trade_notice` 和 `human_review_required`。
+- 不输出真实交易动作、收益承诺、目标价或自动执行语义。
 
 ## Lab 12: Evaluation & Safety
 

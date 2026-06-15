@@ -12,9 +12,10 @@ Lab 状态变更时，除了导航链接，还必须同步 `TODO.md`、`roadmap.
 - 新增或调整 Product、Labs、Skills、Engineering 等长期维护文档。
 - 新增真实 API 适配、密钥环境变量或安全边界。
 - 新增可运行 demo、测试框架或脚本。
-- 新增 Product / Lab 设计文档，例如 Planner DAG、Evidence Report 或 Evaluation 方案。
+- 新增 Product / Lab 设计文档，例如 Planner DAG、Evidence Report、Simulation Portfolio 或 Evaluation 方案。
 - 当前 Planner DAG 设计文档路径是 `docs/product/lab09-research-planner-dag-design.md`。
 - 当前 Evidence Report 设计文档路径是 `docs/product/lab10-evidence-report-design.md`。
+- 当前 Simulation Portfolio 设计文档路径是 `docs/product/lab11-simulation-portfolio-design.md`。
 
 ## 执行步骤
 

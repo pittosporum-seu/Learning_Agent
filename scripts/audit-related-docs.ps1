@@ -127,6 +127,7 @@ $showcaseFramework = Read-RepoFile "docs/product/showcase-framework.md"
 $labPlan = Read-RepoFile "docs/product/lab-plan.md"
 $lab09Design = Read-RepoFile "docs/product/lab09-research-planner-dag-design.md"
 $lab10Design = Read-RepoFile "docs/product/lab10-evidence-report-design.md"
+$lab11Design = Read-RepoFile "docs/product/lab11-simulation-portfolio-design.md"
 $securityPlan = Read-RepoFile "docs/product/security-and-secrets.md"
 $envExample = Read-RepoFile ".env.example"
 $gitignore = Read-RepoFile ".gitignore"
@@ -310,6 +311,7 @@ Require-Contains "README.md" $readme @(
     "docs/product/lab-plan.md",
     "docs/product/lab09-research-planner-dag-design.md",
     "docs/product/lab10-evidence-report-design.md",
+    "docs/product/lab11-simulation-portfolio-design.md",
     "docs/product/security-and-secrets.md",
     "labs/01-strategy-intake/README.md",
     "labs/02-strategy-agent-loop/README.md",
@@ -332,6 +334,7 @@ Require-Contains "hooks/content-update.md" $hook @(
     "docs/product/showcase-framework.md",
     "docs/product/lab09-research-planner-dag-design.md",
     "docs/product/lab10-evidence-report-design.md",
+    "docs/product/lab11-simulation-portfolio-design.md",
     "docs/maintenance/codex-skill-templates/",
     "audit-related-docs.ps1",
     "check-secrets.ps1",
@@ -349,6 +352,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
     "product/showcase-framework.md",
     "product/lab09-research-planner-dag-design.md",
     "product/lab10-evidence-report-design.md",
+    "product/lab11-simulation-portfolio-design.md",
     "labs/01-strategy-intake",
     "labs/02-strategy-agent-loop",
     "labs/03-finance-tool-use-mock",
@@ -368,7 +372,7 @@ Require-Contains "docs/document-graph.md" $documentGraph @(
 if ($todo -notlike "*## Doing*" -or $todo -notlike "*## Next*" -or $todo -notlike "*## Backlog*" -or $todo -notlike "*## Done*") {
     Add-Failure "TODO.md is missing one of the required board sections"
 }
-Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter", "Lab 09 Research Planner DAG", "Lab 09: Research Planner DAG", "Lab 10 Evidence Report", "Lab 10: Evidence Report", "Lab 11 Simulation Portfolio", "Lab 08 optional external provider integration", "13 Loop Engineering")
+Require-Contains "TODO.md" $todo @("P0", "structured trace", "Lab 03: Finance Tool Use Mock", "Lab 04: Research RAG Basic", "Lab 05: User Preference Memory", "Lab 06: Skill Registry", "Lab 07: Skill Generation", "Lab 08: Finance Provider Adapter", "Lab 09 Research Planner DAG", "Lab 09: Research Planner DAG", "Lab 10 Evidence Report", "Lab 10: Evidence Report", "Lab 11 Simulation Portfolio", "Lab 12 Evaluation & Safety", "Lab 08 optional external provider integration", "13 Loop Engineering")
 $roadmapTokens = @(
     '[x] P0',
     'Start Here',
@@ -387,6 +391,7 @@ $roadmapTokens = @(
     '[x] Lab 09: Research Planner',
     'Lab 10 Evidence Report',
     '[x] Lab 10: Evidence Report',
+    'Simulation Portfolio Lab',
     '[ ] Lab 11: Simulation Portfolio',
     'Loop Engineering',
     'Skill'
@@ -413,7 +418,7 @@ foreach ($index in 1..12) {
     }
 }
 
-Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/lab09-research-planner-dag-design.md", "product/lab10-evidence-report-design.md", "product/", "product/AGENTS.md", "maintenance/codex-skill-templates")
+Require-Contains "docs/README.md" $docsReadme @("start-here.md", "glossary.md", "product/README.md", "product/showcase-framework.md", "product/lab09-research-planner-dag-design.md", "product/lab10-evidence-report-design.md", "product/lab11-simulation-portfolio-design.md", "product/", "product/AGENTS.md", "maintenance/codex-skill-templates")
 Require-Contains "docs/start-here.md" $startHere @(
     "Start Here",
     "Agent Loop",
@@ -478,6 +483,7 @@ Require-Contains "docs/product/README.md" $productReadme @(
     "13-loop-engineering.md",
     "lab09-research-planner-dag-design.md",
     "lab10-evidence-report-design.md",
+    "lab11-simulation-portfolio-design.md",
     "security-and-secrets.md",
     "routing_decision",
     "tool_trace",
@@ -517,6 +523,10 @@ Require-Contains "docs/product/showcase-framework.md" $showcaseFramework @(
     "Part 10 Evidence Report",
     "lab10-evidence-report-design.md",
     "report_generation_trace",
+    "Part 11 Simulation Portfolio",
+    "lab11-simulation-portfolio-design.md",
+    "simulation_trace",
+    "human_confirmation_gate",
     "Part 12 Evaluation & Safety",
     "StrategySpec",
     "RoutingDecision",
@@ -567,7 +577,8 @@ Require-Contains "docs/product/lab-plan.md" $labPlan @(
     "evidence_report",
     "report_generation_trace",
     "lab09-research-planner-dag-design.md",
-    "lab10-evidence-report-design.md"
+    "lab10-evidence-report-design.md",
+    "lab11-simulation-portfolio-design.md"
 )
 Require-Contains "docs/product/lab09-research-planner-dag-design.md" $lab09Design @(
     "Research Planner DAG",
@@ -612,6 +623,29 @@ Require-Contains "docs/product/lab10-evidence-report-design.md" $lab10Design @(
     "retrieved_context",
     "planner_trace",
     "Lab 11 Simulation Portfolio",
+    "buy",
+    "sell",
+    "recommendation",
+    "target_price"
+)
+Require-Contains "docs/product/lab11-simulation-portfolio-design.md" $lab11Design @(
+    "Simulation Portfolio",
+    "SimulationPortfolio",
+    "SimulationProposal",
+    "SimulationPosition",
+    "SimulationAction",
+    "HumanConfirmationGate",
+    "SimulationTraceEvent",
+    "SimulationSafetyReview",
+    "waiting_human_confirmation",
+    "confirmed_mock",
+    "evidence_refs",
+    "risk_disclosure",
+    "mock_data_notice",
+    "no_real_trade_notice",
+    "human_review_required",
+    "human_confirmation_gate",
+    "Lab 12 Evaluation & Safety",
     "buy",
     "sell",
     "recommendation",

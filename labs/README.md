@@ -78,7 +78,8 @@ labs/
   - 把 Lab 09 输出整理成可审查报告草稿。
   - 生成 `evidence_report`、`report_generation_trace`、`evidence_refs` 和 `report_safety_review`。
   - 报告固定保留风险提示、限制说明和人工确认边界。
-- [ ] Lab 11-12: 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
+- [ ] Lab 11: Simulation Portfolio 已完成 [设计文档](../docs/product/lab11-simulation-portfolio-design.md)，实现目录尚未创建。
+- [ ] Lab 12: Evaluation & Safety 按 [Lab 总计划](../docs/product/lab-plan.md) 推进。
 
 ## Demo 与测试
 

@@ -12,6 +12,7 @@
 - [`product/showcase-framework.md`](product/showcase-framework.md): Learning_Agent 可运行展示系统的 Parts、数据契约和实现顺序。
 - [`product/lab09-research-planner-dag-design.md`](product/lab09-research-planner-dag-design.md): Lab 09 Research Planner DAG 的设计文档。
 - [`product/lab10-evidence-report-design.md`](product/lab10-evidence-report-design.md): Lab 10 Evidence Report 的设计文档。
+- [`product/lab11-simulation-portfolio-design.md`](product/lab11-simulation-portfolio-design.md): Lab 11 Simulation Portfolio 的设计文档。
 - [`product/AGENTS.md`](product/AGENTS.md): 产品文档的持久规则。
 - [`maintenance/codex-skill-templates/`](maintenance/codex-skill-templates/README.md): 仓库维护 Skill 模板资料，不是本地运行配置。
 - `product/`: 个性化投研 Agent 系统的产品愿景、展示框架、Lab 总计划和安全边界。

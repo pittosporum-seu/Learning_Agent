@@ -24,8 +24,9 @@
 4. [Lab 总计划](lab-plan.md): 看前 12 篇基础文章如何映射到 12 个 Labs，并由 [Loop Engineering](../foundations/13-loop-engineering.md) 收束整体闭环。
 5. [Lab 09: Research Planner DAG 设计](lab09-research-planner-dag-design.md): 理解 Planner 如何组织 adapter、证据、Skill 和安全边界。
 6. [Lab 10: Evidence Report 设计](lab10-evidence-report-design.md): 理解如何把 Planner 输出整理成带来源、限制、风险提示和人工确认项的报告草稿。
-7. [密钥、安全与合规边界](security-and-secrets.md): 先明确真实 key、财经输出和人工确认规则。
-8. [Labs 入口](../../labs/README.md): 进入当前可运行实验。
+7. [Lab 11: Simulation Portfolio 设计](lab11-simulation-portfolio-design.md): 理解证据报告之后的 mock 模拟组合提案、状态机和人工确认边界。
+8. [密钥、安全与合规边界](security-and-secrets.md): 先明确真实 key、财经输出和人工确认规则。
+9. [Labs 入口](../../labs/README.md): 进入当前可运行实验。
 
 ## 当前做到哪里
 
@@ -54,7 +55,7 @@
 | 08 | Finance Provider Adapter | 将 mock 工具和未来可选外部财经 provider 放到统一 adapter contract 下；MX Skills 是一个 provider profile。 |
 | 09 | Research Planner DAG | 将 adapter、证据、Memory、Skill 和安全边界编排成有状态 DAG；输出 `planner_trace` 和人工确认门。 |
 | 10 | Evidence Report | 生成带来源、时间、证据、限制条件、风险提示和人工确认项的报告，并输出 `report_generation_trace`；设计文档见 [Lab 10 Evidence Report 设计](lab10-evidence-report-design.md)。 |
-| 11 | Simulation Portfolio | 用 mock 或模拟组合接口验证流程，保留人工确认。 |
+| 11 | Simulation Portfolio | 用 mock simulation proposal 验证报告之后的组合状态机和人工确认门；设计文档见 [Lab 11 Simulation Portfolio 设计](lab11-simulation-portfolio-design.md)。 |
 | 12 | Evaluation & Safety | 自动检查密钥、证据、风险提示和越权动作。 |
 
 ## 财经输出边界

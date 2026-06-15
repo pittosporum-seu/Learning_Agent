@@ -55,6 +55,7 @@
 - [x] Lab 09: Research Planner
 - [x] 设计 Lab 10 Evidence Report
 - [x] Lab 10: Evidence Report
+- [x] 设计 Lab 11 Simulation Portfolio
 - [ ] Lab 11: Simulation Portfolio
 - [ ] Lab 12: Evaluation & Safety
 - [x] 建立 labs 实验目录说明
@@ -126,5 +127,6 @@
 - [x] 完成 Research Planner DAG Lab
 - [x] 设计 Evidence Report Lab
 - [x] 完成 Evidence Report Lab
+- [x] 设计 Simulation Portfolio Lab
 
 详见：[docs/series-plan.md](docs/series-plan.md)
